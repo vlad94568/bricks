@@ -187,14 +187,15 @@ while True:
             fire_rocket(playerX + 8)
 
     # Randomly place bricks.
-    if random.randint(0, 255) < 5:
+    if len(bricks) < 4 and random.randint(0, 100) < 20:
         brickX = random.randint(20, 620)
+
         if random.randint(0, 100) < 10:
             kind = 2
             speed = 2 # Ammo bricks have constant "slow" speed but they move left to right.
         else:
             kind = 1
-            speed = random.randint(2, 6) # Random speed for red bricks.
+            speed = random.randint(2, 5) # Random speed for red bricks.
 
         bricks.append(Brick(brickX, 0, speed, kind))
 
