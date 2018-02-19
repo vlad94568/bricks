@@ -115,7 +115,7 @@ def draw_bricks():
             lives -= 1
             bricks.remove(brick)
         else:
-            # Move white brick left or right.
+            # Move white brick left or right (change direction every 15 frames, i.e. every second).
             if brick.kind == 2 and brick.frameCnt % 15 == 0:
                 if random.randint(0, 100) > 50:
                     brick.x_adj = brick.speed
