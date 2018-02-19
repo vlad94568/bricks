@@ -30,6 +30,9 @@ class Brick:
         self.speed = speed
         self.kind = kind
 
+        self.frameCnt = 0
+        self.x_adj = 0
+
 
 RED_COLOR = (255, 0, 0)
 GREEN_COLOR = (0, 255, 0)
@@ -84,7 +87,7 @@ def draw_rockets():
     for rocket in rockets:
         pygame.draw.rect(screen, mk_random_color(), (rocket.x, rocket.y, 5, 8), 1)
 
-        rocket.y = rocket.y - 6
+        rocket.y -= 6
 
         if rocket.y < 0:
             rockets.remove(rocket)
@@ -101,17 +104,27 @@ def draw_bricks():
         else:
             pygame.draw.rect(screen, WHITE_COLOR, (brick.x, brick.y, 15, 10), 3)
 
+        brick.frameCnt += 1
+
         if brick.kind == 2 and brick.y > 450 and playerX - 15 <= brick.x <= playerX + 20:
             # Player touches ammo brick.
-            ammo = ammo + 20
+            ammo += 20
             bricks.remove(brick)
         elif brick.y >= 480:
             # Bricks reached the bottom.
-            lives = lives - 1
+            lives -= 1
             bricks.remove(brick)
         else:
+            # Move white brick left or right.
+            if brick.kind == 2 and brick.frameCnt % 15 == 0:
+                if random.randint(0, 100) > 50:
+                    brick.x_adj = brick.speed
+                else:
+                    brick.x_adj = -brick.speed
+
             # Brick is still falling down.
-            brick.y = brick.y + brick.speed
+            brick.y += brick.speed
+            brick.x += brick.x_adj
 
 
 # Checking for a crash with the rocket and brick.
@@ -121,7 +134,7 @@ def check_bricks_rockets():
 
     for brick in bricks:
         for rocket in rockets:
-            if brick.x <= rocket.x <= brick.x + 15 and rocket.y <= brick.y:
+            if brick.x - 5 <= rocket.x <= brick.x + 15 and rocket.y <= brick.y:
                 # Hide/remove brick and the rocket that killed it.
                 rockets.remove(rocket)
                 bricks.remove(brick)
@@ -176,15 +189,16 @@ while True:
     # Randomly place bricks.
     if random.randint(0, 255) < 5:
         brickX = random.randint(20, 620)
-        speed = random.randint(2, 6)
         if random.randint(0, 100) < 10:
             kind = 2
+            speed = 2 # Ammo bricks have constant "slow" speed but they move left to right.
         else:
             kind = 1
+            speed = random.randint(2, 6) # Random speed for red bricks.
 
         bricks.append(Brick(brickX, 0, speed, kind))
 
-        # Clear the screen.
+    # Clear the screen.
     screen.fill(BLACK_COLOR)
 
     # Check bricks and rockets for collision.
