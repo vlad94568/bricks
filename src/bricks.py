@@ -80,8 +80,8 @@ def draw_player():
     else:
         player_color = WHITE_COLOR
 
-    pygame.draw.rect(screen, player_color, (playerX, 450, 20, 20), 5)
-    pygame.draw.line(screen, player_color, [playerX + 9, 450], [playerX + 9, 435], 5)
+    pygame.draw.rect(screen, player_color, (playerX, 450, 20, 20), 5) # Base.
+    pygame.draw.line(screen, player_color, [playerX + 9, 450], [playerX + 9, 435], 5) # Turret.
 
 
 # Draws all the rockets in 'rockets' list.
