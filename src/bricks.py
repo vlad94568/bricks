@@ -199,15 +199,15 @@ while True:
 
         rnd = random.randint(0, 100)
 
-        if rnd < 5:
+        if rnd < 10:
             kind = 3
             speed = 4 # Live bricks have constant "medium" speed.
-        elif rnd < 15:
+        elif rnd < 20:
             kind = 2
             speed = 2 # Ammo bricks have constant "slow" speed but they move left to right.
         else:
             kind = 1
-            speed = random.randint(2, 5) # Random speed for red bricks.
+            speed = random.randint(2, 4) # Random speed for red bricks.
 
         bricks.append(Brick(brickX, 0, speed, kind))
 
