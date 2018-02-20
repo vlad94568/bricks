@@ -61,7 +61,7 @@ screen = pygame.display.set_mode((640, 480))
 clock = pygame.time.Clock()
 headerFont = pygame.font.SysFont("monospace", 15)
 
-pygame.display.set_caption("BRICKS")
+pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
 
 # Generate random color.
