@@ -22,14 +22,16 @@ class Rocket:
 
 class Brick:
     # kinds:
-    # 1 - normal brick
-    # 2 - ammo brick
+    # 1 - normal brick (RED)
+    # 2 - ammo brick (WHITE)
+    # 3 - live break (GREEN)
     def __init__(self, x, y, speed, kind):
         self.x = x
         self.y = y
         self.speed = speed
         self.kind = kind
 
+        self.state = 1 # 1 - falling (normal), 2 - explosion
         self.frameCnt = 0
         self.x_adj = 0
 
@@ -101,14 +103,20 @@ def draw_bricks():
     for brick in bricks:
         if brick.kind == 1:
             pygame.draw.rect(screen, RED_COLOR, (brick.x, brick.y, 15, 10), 3)
-        else:
+        elif brick.kind == 2:
             pygame.draw.rect(screen, WHITE_COLOR, (brick.x, brick.y, 15, 10), 3)
+        else: # kind == 3
+            pygame.draw.rect(screen, GREEN_COLOR, (brick.x, brick.y, 15, 10), 3)
 
         brick.frameCnt += 1
 
         if brick.kind == 2 and brick.y > 450 and playerX - 15 <= brick.x <= playerX + 20:
             # Player touches ammo brick.
             ammo += 20
+            bricks.remove(brick)
+        elif brick.kind == 3 and brick.y > 450 and playerX - 15 <= brick.x <= playerX + 20:
+            # Player touches live brick.
+            lives += 5
             bricks.remove(brick)
         elif brick.y >= 480:
             # Bricks reached the bottom.
@@ -129,8 +137,7 @@ def draw_bricks():
 
 # Checking for a crash with the rocket and brick.
 def check_bricks_rockets():
-    global score
-    global ammo
+    global score, ammo, lives
 
     for brick in bricks:
         for rocket in rockets:
@@ -139,7 +146,7 @@ def check_bricks_rockets():
                 rockets.remove(rocket)
                 bricks.remove(brick)
 
-                if brick.kind == 1:
+                if brick.kind == 1: # RED brick.
                     # Add score for normal killed brick.
                     score = score + 1
 
@@ -190,7 +197,12 @@ while True:
     if len(bricks) < 4 and random.randint(0, 100) < 20:
         brickX = random.randint(20, 620)
 
-        if random.randint(0, 100) < 10:
+        rnd = random.randint(0, 100)
+
+        if rnd < 5:
+            kind = 3
+            speed = 4 # Live bricks have constant "medium" speed.
+        elif rnd < 15:
             kind = 2
             speed = 2 # Ammo bricks have constant "slow" speed but they move left to right.
         else:
