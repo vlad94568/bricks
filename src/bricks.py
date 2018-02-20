@@ -110,15 +110,7 @@ def draw_bricks():
 
         brick.frameCnt += 1
 
-        if brick.kind == 2 and brick.y > 450 and playerX - 15 <= brick.x <= playerX + 20:
-            # Player touches ammo brick.
-            ammo += 20
-            bricks.remove(brick)
-        elif brick.kind == 3 and brick.y > 450 and playerX - 15 <= brick.x <= playerX + 20:
-            # Player touches live brick.
-            lives += 5
-            bricks.remove(brick)
-        elif brick.y >= 480:
+        if brick.y >= 480:
             # Bricks reached the bottom.
             lives -= 1
             bricks.remove(brick)
@@ -149,6 +141,12 @@ def check_bricks_rockets():
                 if brick.kind == 1: # RED brick.
                     # Add score for normal killed brick.
                     score = score + 1
+                elif brick.kind == 2: # WHITE brick.
+                    # Add ammo.
+                    ammo += 20
+                elif brick.kind == 3: # GREEN brick.
+                    # Add lives.
+                    lives += 3
 
 
 # Draw score, live and ammo.
