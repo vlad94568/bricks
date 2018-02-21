@@ -22,14 +22,16 @@ class Rocket:
 
 class Brick:
     # kinds:
-    # 1 - normal brick
-    # 2 - ammo brick
+    # 1 - normal brick (RED)
+    # 2 - ammo brick (WHITE)
+    # 3 - live break (GREEN)
     def __init__(self, x, y, speed, kind):
         self.x = x
         self.y = y
         self.speed = speed
         self.kind = kind
 
+        self.state = 1 # 1 - falling (normal), 2 - explosion
         self.frameCnt = 0
         self.x_adj = 0
 
@@ -59,7 +61,7 @@ screen = pygame.display.set_mode((640, 480))
 clock = pygame.time.Clock()
 headerFont = pygame.font.SysFont("monospace", 15)
 
-pygame.display.set_caption("BRICKS")
+pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
 
 # Generate random color.
@@ -77,8 +79,8 @@ def draw_player():
     else:
         player_color = WHITE_COLOR
 
-    pygame.draw.rect(screen, player_color, (playerX, 450, 20, 20), 5)
-    pygame.draw.line(screen, player_color, [playerX + 9, 450], [playerX + 9, 435], 5)
+    pygame.draw.rect(screen, player_color, (playerX, 450, 20, 20), 5) # Base.
+    pygame.draw.line(screen, player_color, [playerX + 9, 450], [playerX + 9, 435], 5) # Turret.
 
 
 # Draws all the rockets in 'rockets' list.
@@ -100,16 +102,14 @@ def draw_bricks():
     for brick in bricks:
         if brick.kind == 1:
             pygame.draw.rect(screen, RED_COLOR, (brick.x, brick.y, 15, 10), 3)
-        else:
+        elif brick.kind == 2:
             pygame.draw.rect(screen, WHITE_COLOR, (brick.x, brick.y, 15, 10), 3)
+        else: # kind == 3
+            pygame.draw.rect(screen, GREEN_COLOR, (brick.x, brick.y, 15, 10), 3)
 
         brick.frameCnt += 1
 
-        if brick.kind == 2 and brick.y > 450 and playerX - 15 <= brick.x <= playerX + 20:
-            # Player touches ammo brick.
-            ammo += 20
-            bricks.remove(brick)
-        elif brick.y >= 480:
+        if brick.y >= 480:
             # Bricks reached the bottom.
             lives -= 1
             bricks.remove(brick)
@@ -128,8 +128,7 @@ def draw_bricks():
 
 # Checking for a crash with the rocket and brick.
 def check_bricks_rockets():
-    global score
-    global ammo
+    global score, ammo, lives
 
     for brick in bricks:
         for rocket in rockets:
@@ -138,9 +137,15 @@ def check_bricks_rockets():
                 rockets.remove(rocket)
                 bricks.remove(brick)
 
-                if brick.kind == 1:
+                if brick.kind == 1: # RED brick.
                     # Add score for normal killed brick.
                     score = score + 1
+                elif brick.kind == 2: # WHITE brick.
+                    # Add ammo.
+                    ammo += 20
+                elif brick.kind == 3: # GREEN brick.
+                    # Add lives.
+                    lives += 3
 
 
 # Draw score, live and ammo.
@@ -194,12 +199,17 @@ while True:
     if len(bricks) < 4 and random.randint(0, 100) < 20:
         brickX = random.randint(20, 620)
 
-        if random.randint(0, 100) < 10:
+        rnd = random.randint(0, 100)
+
+        if rnd < 10:
+            kind = 3
+            speed = 4 # Live bricks have constant "medium" speed.
+        elif rnd < 20:
             kind = 2
             speed = 2 # Ammo bricks have constant "slow" speed but they move left to right.
         else:
             kind = 1
-            speed = random.randint(2, 5) # Random speed for red bricks.
+            speed = random.randint(2, 4) # Random speed for red bricks.
 
         bricks.append(Brick(brickX, 0, speed, kind))
 
