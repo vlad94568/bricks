@@ -7,11 +7,11 @@
 #
 #  By Vlad Ivanov, 2018.
 #  Email: vlad94568@gmail.com
-#
 
 import pygame
 import random
 import sys
+import time
 
 
 class Rocket:
@@ -47,7 +47,7 @@ FPS = 30
 score = 0
 lives = 20
 ammo = 100
-playerX = 0
+playerX = 320
 
 rockets = []
 bricks = []
@@ -69,7 +69,6 @@ def mk_random_color():
     b = random.randint(0, 255)
 
     return r, g, b
-
 
 # Draws the player at 'playerX' coordinate.
 def draw_player():
@@ -178,8 +177,13 @@ while True:
 
         if typ == pygame.QUIT:
             end_game()
-        elif typ == pygame.MOUSEMOTION:
+        elif typ == pygame.MOUSEMOTION :
             playerX = event.pos[0]
+        elif event.type==KEYDOWN:
+            if event.key==K_left:
+                playerX=playerX-5
+            elif event.key==K_right:
+                playerX+5
         elif typ == pygame.MOUSEBUTTONDOWN and event.button == 1 and ammo > 0:
             fire_rocket(event.pos[0] + 8)
         elif typ == pygame.KEYDOWN and event.key == pygame.K_SPACE and ammo > 0:
@@ -215,6 +219,11 @@ while True:
     pygame.display.update()
 
     if lives == 0:
+        screen.fill(BLACK_COLOR)
+        fscore_label = headerFont.render("Your final score: "+str(lives), 5, YELLOW_COLOR)
+        screen.blit(fscore_label, (320, 240))
+        pygame.display.update()
+        time.sleep(5)
         end_game()
 
     # Wait for FPS.
