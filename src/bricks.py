@@ -7,6 +7,7 @@
 #
 #  By Vlad Ivanov, 2018.
 #  Email: vlad94568@gmail.com
+from _curses import KEY_ENTER
 
 import pygame
 import random
@@ -47,9 +48,10 @@ START_BRICK_Y = 0
 
 FPS = 30
 score = 0
-lives = 20
+lives = 1
 ammo = 100
 playerX = 320
+click=0
 
 rockets = []
 bricks = []
@@ -175,66 +177,92 @@ def fire_rocket(x):
     ammo = ammo - 1
 
 
+def draw_title():
+    screen.fill(BLACK_COLOR)
+    label = headerFont.render("--==B.R.I.C.K.S==--", 15, YELLOW_COLOR)
+    screen.blit(label, (320, 240))
+    # Update (refresh) screen.
+    pygame.display.update()
+
+    is_enter_pressed = False
+
+    while not is_enter_pressed:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                end_game()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                is_enter_pressed = True
+
+
+# Shows final score. Wait for 'ESC' button to end the game.
+def draw_final_score():
+    global click
+
+    screen.fill(BLACK_COLOR)
+    fscore_label = headerFont.render("Your final score: " + str(lives), 5, YELLOW_COLOR)
+    screen.blit(fscore_label, (320, 240))
+
+
+draw_title()
+
 # Main game loop.
 while True:
+    # Clear the screen.
+    screen.fill(BLACK_COLOR)
+
+    if lives == 0:
+        bricks.clear()
+        rockets.clear()
+
+        draw_final_score()
+
     for event in pygame.event.get():
         typ = event.type
 
         if typ == pygame.QUIT:
             end_game()
-        elif typ == pygame.MOUSEMOTION :
+        elif typ == pygame.MOUSEMOTION and lives > 0:
             playerX = event.pos[0]
-        elif event.type==KEYDOWN:
-            if event.key==K_left:
-                playerX=playerX-5
-            elif event.key==K_right:
-                playerX+5
-        elif typ == pygame.MOUSEBUTTONDOWN and event.button == 1 and ammo > 0:
+        elif typ == pygame.MOUSEBUTTONDOWN and event.button == 1 and ammo > 0 and lives > 0:
             fire_rocket(event.pos[0] + 8)
-        elif typ == pygame.KEYDOWN and event.key == pygame.K_SPACE and ammo > 0:
-            # Add new rocket using last 'playerX'.
-            fire_rocket(playerX + 8)
+        elif typ == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and ammo > 0 and lives > 0:
+                # Add new rocket using last 'playerX'.
+                fire_rocket(playerX + 8)
+            elif event.key == pygame.K_ESCAPE and lives == 0:
+                # If 'ESC' is pressed and live is zero - we end the game.
+                end_game()
 
-    # Randomly place bricks.
-    if len(bricks) < 4 and random.randint(0, 100) < 20:
-        brickX = random.randint(20, 620)
+    if lives > 0:
+        # Randomly place bricks.
+        if len(bricks) < 4 and random.randint(0, 100) < 20:
+            brickX = random.randint(20, 620)
 
-        rnd = random.randint(0, 100)
+            rnd = random.randint(0, 100)
 
-        if rnd < 10:
-            kind = 3
-            speed = 4 # Live bricks have constant "medium" speed.
-        elif rnd < 20:
-            kind = 2
-            speed = 2 # Ammo bricks have constant "slow" speed but they move left to right.
-        else:
-            kind = 1
-            speed = random.randint(2, 4) # Random speed for red bricks.
+            if rnd < 10:
+                kind = 3
+                speed = 4 # Live bricks have constant "medium" speed.
+            elif rnd < 20:
+                kind = 2
+                speed = 2 # Ammo bricks have constant "slow" speed but they move left to right.
+            else:
+                kind = 1
+                speed = random.randint(2, 4) # Random speed for red bricks.
 
-        bricks.append(Brick(brickX, 0, speed, kind))
+            bricks.append(Brick(brickX, 0, speed, kind))
 
-    # Clear the screen.
-    screen.fill(BLACK_COLOR)
+        # Check bricks and rockets for collision.
+        check_bricks_rockets()
 
-    # Check bricks and rockets for collision.
-    check_bricks_rockets()
-
-    # Draw player, bricks & rockets & score & lives.
-    draw_player()
-    draw_rockets()
-    draw_bricks()
-    draw_header()
+        # Draw player, bricks & rockets & score & lives.
+        draw_player()
+        draw_rockets()
+        draw_bricks()
+        draw_header()
 
     # Update (refresh) screen.
     pygame.display.update()
-
-    if lives == 0:
-        screen.fill(BLACK_COLOR)
-        fscore_label = headerFont.render("Your final score: "+str(lives), 5, YELLOW_COLOR)
-        screen.blit(fscore_label, (320, 240))
-        pygame.display.update()
-        time.sleep(5)
-        end_game()
 
     # Wait for FPS.
     clock.tick(FPS)
