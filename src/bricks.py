@@ -48,11 +48,10 @@ START_BRICK_Y = 0
 
 FPS = 30
 score = 0
-lives = 1
+lives = 20
 ammo = 100
 playerX = 320
 click=0
-
 rockets = []
 bricks = []
 
@@ -179,7 +178,7 @@ def fire_rocket(x):
 
 def draw_title():
     screen.fill(BLACK_COLOR)
-    label = headerFont.render("--==B.R.I.C.K.S==--", 15, YELLOW_COLOR)
+    label = headerFont.render("--==B.R.I.C.K.S==--", 10, YELLOW_COLOR)
     screen.blit(label, (320, 240))
     # Update (refresh) screen.
     pygame.display.update()
@@ -199,7 +198,7 @@ def draw_final_score():
     global click
 
     screen.fill(BLACK_COLOR)
-    fscore_label = headerFont.render("Your final score: " + str(lives), 5, YELLOW_COLOR)
+    fscore_label = headerFont.render("Your final score: " + str(score), 5, YELLOW_COLOR)
     screen.blit(fscore_label, (320, 240))
 
 
