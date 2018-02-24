@@ -48,7 +48,7 @@ START_BRICK_Y = 0
 
 FPS = 30
 score = 0
-lives = 20
+lives = 1
 ammo = 100
 playerX = 0
 click=0
@@ -237,9 +237,11 @@ def draw_title():
 def draw_final_score():
     global click
 
+    final_font = pygame.font.SysFont("monospace", 35)
+
     screen.fill(BLACK_COLOR)
-    end_label=headerFont.render(":<  The Game Has Ended  >:",15,RED_COLOR)
-    fscore_label = headerFont.render("Your final score: " + str(score), 15, YELLOW_COLOR)
+    end_label=final_font.render(":<  The Game Has Ended  >:", 1,RED_COLOR)
+    fscore_label = final_font.render("Your final score: " + str(score), 1, YELLOW_COLOR)
     screen.blit(fscore_label, (270, 240))
     screen.blit(end_label,(250,190))
 
