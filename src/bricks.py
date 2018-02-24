@@ -7,12 +7,10 @@
 #
 #  By Vlad Ivanov, 2018.
 #  Email: vlad94568@gmail.com
-from _curses import KEY_ENTER
 
 import pygame
 import random
 import sys
-import time
 
 
 class Rocket:
@@ -73,6 +71,7 @@ def mk_random_color():
     b = random.randint(0, 255)
 
     return r, g, b
+
 
 # Draws the player at 'playerX' coordinate.
 def draw_player():
@@ -260,7 +259,6 @@ def draw_final_score():
     fscore_label = final_font.render("Your final score: " + str(score), 1, YELLOW_COLOR)
     screen.blit(fscore_label, (270, 240))
     pygame.display.update()
-
 
 
 draw_title()
