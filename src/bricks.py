@@ -256,8 +256,8 @@ def draw_final_score():
         screen.blit(final_font.render(line, 1, WHITE_COLOR), (x, y))
         y += 15
 
-    fscore_label = final_font.render("Your final score: " + str(score), 1, YELLOW_COLOR)
-    screen.blit(fscore_label, (270, 240))
+    final_score_label = final_font.render("Your final score: " + str(score), 1, YELLOW_COLOR)
+    screen.blit(final_score_label, (270, 240))
     pygame.display.update()
 
 
