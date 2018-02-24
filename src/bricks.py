@@ -237,13 +237,29 @@ def draw_title():
 def draw_final_score():
     global click
 
+    game_over=[
+        "  ________",
+        " /  _____/_____    _____   ____     _______  __ ___________",
+        "/   \  ___\__  \  /     \_/ __ \   /  _ \  \/ // __ \_  __ \\",
+        "\    \_\  \/ __ \|  Y Y  \  ___/  (  <_> )   /\  ___/|  | \/",
+        " \______  (____  /__|_|  /\___  >  \____/ \_/  \___  >__|",
+        "        \/     \/      \/     \/                   \/"
+    ]
+
     final_font = pygame.font.SysFont("monospace", 35)
+    x = 50
+    y = 50
 
     screen.fill(BLACK_COLOR)
-    end_label=final_font.render(":<  The Game Has Ended  >:", 1,RED_COLOR)
+
+    for line in game_over:
+        screen.blit(final_font.render(line, 1, WHITE_COLOR), (x, y))
+        y += 15
+
     fscore_label = final_font.render("Your final score: " + str(score), 1, YELLOW_COLOR)
     screen.blit(fscore_label, (270, 240))
-    screen.blit(end_label,(250,190))
+    pygame.display.update()
+
 
 
 draw_title()
