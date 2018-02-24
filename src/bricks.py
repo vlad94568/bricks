@@ -30,7 +30,7 @@ class Brick:
         self.speed = speed
         self.kind = kind
 
-        self.state = 1 # 1 - falling (normal), 2 - explosion
+        self.state = 1  # 1 - falling (normal), 2 - explosion
         self.frameCnt = 0
         self.x_adj = 0
 
@@ -53,13 +53,19 @@ click=0
 rockets = []
 bricks = []
 
-# Initialize the game.
+# Initialize the game & modeles.
 pygame.init()
 pygame.mixer.init()
 pygame.font.init()
+
+# Pygame initialization.
 screen = pygame.display.set_mode((640, 480))
 clock = pygame.time.Clock()
+
+# Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
 headerFont = pygame.font.Font("fonts/Anonymous.ttf", 13)
+title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
+final_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
 
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
@@ -189,7 +195,6 @@ def draw_title():
         "_/_/_/    _/    _/  _/_/_/    _/_/_/  _/    _/  _/_/_/"
     ]
 
-    title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
     x = 50
     y = 50
 
@@ -246,7 +251,6 @@ def draw_final_score():
         "        \/     \/      \/     \/                   \/"
     ]
 
-    final_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
     x = 50
     y = 50
 
