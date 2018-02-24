@@ -95,6 +95,10 @@ def draw_rockets():
             rockets.remove(rocket)
 
 
+def draw_brick(x, y, color):
+    pygame.draw.rect(screen, color, (x, y, 15, 10), 3)
+
+
 # Draws all the bricks in 'bricks' list.
 def draw_bricks():
     global lives
@@ -102,11 +106,11 @@ def draw_bricks():
 
     for brick in bricks:
         if brick.kind == 1:
-            pygame.draw.rect(screen, RED_COLOR, (brick.x, brick.y, 15, 10), 3)
+            draw_brick(brick.x, brick.y, RED_COLOR)
         elif brick.kind == 2:
-            pygame.draw.rect(screen, WHITE_COLOR, (brick.x, brick.y, 15, 10), 3)
+            draw_brick(brick.x, brick.y, WHITE_COLOR)
         else: # kind == 3
-            pygame.draw.rect(screen, GREEN_COLOR, (brick.x, brick.y, 15, 10), 3)
+            draw_brick(brick.x, brick.y, GREEN_COLOR)
 
         brick.frameCnt += 1
 
@@ -177,19 +181,55 @@ def fire_rocket(x):
 
 
 def draw_title():
+    name = [
+        "    _/_/_/    _/_/_/    _/_/_/    _/_/_/  _/    _/    _/_/_/",
+        "   _/    _/  _/    _/    _/    _/        _/  _/    _/",
+        "  _/_/_/    _/_/_/      _/    _/        _/_/        _/_/",
+        " _/    _/  _/    _/    _/    _/        _/  _/          _/",
+        "_/_/_/    _/    _/  _/_/_/    _/_/_/  _/    _/  _/_/_/"
+    ]
+
+    title_font = pygame.font.SysFont("monospace", 15)
+    x = 50
+    y = 50
+
     screen.fill(BLACK_COLOR)
-    label = headerFont.render("--==B.R.I.C.K.S==--", 10, YELLOW_COLOR)
-    screen.blit(label, (320, 240))
+
+    for line in name:
+        screen.blit(title_font.render(line, 1, WHITE_COLOR), (x, y))
+        y += 15
+
+    screen.blit(title_font.render("--== Copyright 2018 (C) by Vlad Ivanov ==--", 1, YELLOW_COLOR), (115, 150))
+
+    x2 = 260
+    y2 = 225
+
+    draw_brick(x2, y2, RED_COLOR)
+    screen.blit(title_font.render("+1 score", 1, YELLOW_COLOR), (x2 + 30, y2 - 5))
+
+    y2 += 20
+
+    draw_brick(x2, y2, WHITE_COLOR)
+    screen.blit(title_font.render("+5 ammo", 1, YELLOW_COLOR), (x2 + 30, y2 - 5))
+
+    y2 += 20
+
+    draw_brick(x2, y2, GREEN_COLOR)
+    screen.blit(title_font.render("+1 live", 1, YELLOW_COLOR), (x2 + 30, y2 - 5))
+
+    screen.blit(title_font.render("SPACE to shoot | MOUSE to move", 1, YELLOW_COLOR), (180, 330))
+    screen.blit(title_font.render("Press ENTER to start", 1, WHITE_COLOR), (220, 400))
+
     # Update (refresh) screen.
     pygame.display.update()
 
     is_enter_pressed = False
 
     while not is_enter_pressed:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+        for evt in pygame.event.get():
+            if evt.type == pygame.QUIT:
                 end_game()
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+            elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_RETURN:
                 is_enter_pressed = True
 
 
