@@ -189,7 +189,7 @@ def draw_title():
         "_/_/_/    _/    _/  _/_/_/    _/_/_/  _/    _/  _/_/_/"
     ]
 
-    title_font = pygame.font.SysFont("monospace", 15)
+    title_font = pygame.font.SysFont("Courier", 15)
     x = 50
     y = 50
 
