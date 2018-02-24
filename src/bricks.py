@@ -50,7 +50,7 @@ FPS = 30
 score = 0
 lives = 20
 ammo = 100
-playerX = 320
+playerX = 0
 click=0
 rockets = []
 bricks = []
@@ -238,8 +238,10 @@ def draw_final_score():
     global click
 
     screen.fill(BLACK_COLOR)
-    fscore_label = headerFont.render("Your final score: " + str(score), 5, YELLOW_COLOR)
-    screen.blit(fscore_label, (320, 240))
+    end_label=headerFont.render(":<  The Game Has Ended  >:",15,RED_COLOR)
+    fscore_label = headerFont.render("Your final score: " + str(score), 15, YELLOW_COLOR)
+    screen.blit(fscore_label, (270, 240))
+    screen.blit(end_label,(250,190))
 
 
 draw_title()
