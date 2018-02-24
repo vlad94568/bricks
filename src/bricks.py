@@ -58,6 +58,7 @@ bricks = []
 # Initialize the game.
 pygame.init()
 pygame.mixer.init()
+pygame.font.init()
 screen = pygame.display.set_mode((640, 480))
 clock = pygame.time.Clock()
 headerFont = pygame.font.SysFont("monospace", 15)
@@ -189,7 +190,7 @@ def draw_title():
         "_/_/_/    _/    _/  _/_/_/    _/_/_/  _/    _/  _/_/_/"
     ]
 
-    title_font = pygame.font.SysFont("monospace", 15)
+    title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
     x = 50
     y = 50
 
