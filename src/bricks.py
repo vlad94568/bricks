@@ -246,7 +246,7 @@ def draw_final_score():
         "        \/     \/      \/     \/                   \/"
     ]
 
-    final_font = pygame.font.SysFont("monospace", 35)
+    final_font = pygame.font.SysFont("monospace", 15)
     x = 50
     y = 50
 
