@@ -61,7 +61,7 @@ pygame.mixer.init()
 pygame.font.init()
 screen = pygame.display.set_mode((640, 480))
 clock = pygame.time.Clock()
-headerFont = pygame.font.SysFont("monospace", 15)
+headerFont = pygame.font.Font("fonts/Anonymous.ttf", 13)
 
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
@@ -247,7 +247,7 @@ def draw_final_score():
         "        \/     \/      \/     \/                   \/"
     ]
 
-    final_font = pygame.font.SysFont("monospace", 15)
+    final_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
     x = 50
     y = 50
 
