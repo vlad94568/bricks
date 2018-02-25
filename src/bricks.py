@@ -69,6 +69,8 @@ headerFont = pygame.font.Font("fonts/Anonymous.ttf", 13)
 title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
+
+# Window title.
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
 
@@ -257,6 +259,9 @@ def draw_title():
 def draw_final_score():
     global click
 
+    # Stop all sounds.
+    pygame.mixer.stop()
+
     game_over=[
         "  ________",
         " /  _____/_____    _____   ____     _______  __ ___________",
@@ -282,6 +287,7 @@ def draw_final_score():
 
 draw_title()
 
+# Start background music.
 pygame.mixer.Channel(0).play(bg_sound, -1)
 
 # Main game loop.
