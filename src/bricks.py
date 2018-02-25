@@ -53,10 +53,12 @@ click=0
 rockets = []
 bricks = []
 
-# Initialize the game & modeles.
+# Initialize the game & modules.
 pygame.init()
 pygame.mixer.init()
 pygame.font.init()
+
+bg_sound = pygame.mixer.Sound("sounds/background_sound.ogg")
 
 # Pygame initialization.
 screen = pygame.display.set_mode((640, 480))
@@ -69,16 +71,20 @@ final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
+
 def boom_sound():
-    pygame.mixer.music.load("sounds/Blastwave_FX_GrenadeExplosion_S08WA.229.mp3")
-    pygame.mixer.music.play()
+    # pygame.mixer.music.load("sounds/0342.ogg")
+    # pygame.mixer.music.play()
+    pass
+
 
 def squish_sound():
-    pygame.mixer.music.load("sounds/zapsplat_impact_body_fall_to_ground.mp3")
-    pygame.mixer.music.play()
+    # pygame.mixer.music.load("sounds/0342.ogg")
+    # pygame.mixer.music.play()
+    pass
+
 
 # Generate random color.
-
 def mk_random_color():
     r = random.randint(0, 255)
     g = random.randint(0, 255)
@@ -275,6 +281,8 @@ def draw_final_score():
 
 
 draw_title()
+
+pygame.mixer.Channel(0).play(bg_sound, -1)
 
 # Main game loop.
 while True:
