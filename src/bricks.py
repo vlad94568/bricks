@@ -49,7 +49,7 @@ START_BRICK_Y = 0
 
 FPS = 30
 score = 0
-lives = 20
+lives = 1
 ammo = 100
 playerX = 0
 rockets = []
@@ -173,7 +173,9 @@ def check_bricks_rockets():
                 # Hide/remove brick and the rocket that killed it.
                 rockets.remove(rocket)
                 bricks.remove(brick)
+
                 boom_sound()
+
                 if brick.kind == 1: # RED brick.
                     # Add score for normal killed brick.
                     score = score + 1
@@ -187,9 +189,9 @@ def check_bricks_rockets():
 
 # Draw score, live and ammo.
 def draw_header():
-    score_label = headerFont.render("score: " + str(score), 1, YELLOW_COLOR)
-    lives_label = headerFont.render("lives: " + str(lives), 1, YELLOW_COLOR)
-    ammo_label = headerFont.render("ammo: " + str(ammo), 1, YELLOW_COLOR)
+    score_label = headerFont.render("score: " + str(score), 1, RED_COLOR)
+    lives_label = headerFont.render("lives: " + str(lives), 1, GREEN_COLOR)
+    ammo_label = headerFont.render("ammo: " + str(ammo), 1, WHITE_COLOR)
 
     screen.blit(score_label, (10, 10))
     screen.blit(lives_label, (150, 10))
@@ -212,6 +214,18 @@ def fire_rocket(x):
     ammo = ammo - 1
 
 
+# Waits until given keyboard key is pressed.
+def wait_key_pressed(key):
+    is_pressed = False
+
+    while not is_pressed:
+        for evt in pygame.event.get():
+            if evt.type == pygame.QUIT:
+                end_game()
+            elif evt.type == pygame.KEYDOWN and evt.key == key:
+                is_pressed = True
+
+
 def draw_title():
     name = [
         "    _/_/_/    _/_/_/    _/_/_/    _/_/_/  _/    _/    _/_/_/",
@@ -227,7 +241,7 @@ def draw_title():
     screen.fill(BLACK_COLOR)
 
     for line in name:
-        screen.blit(title_font.render(line, 1, WHITE_COLOR), (x, y))
+        screen.blit(title_font.render(line, 1, mk_random_color()), (x, y))
         y += 15
 
     screen.blit(title_font.render("--== Copyright 2018 (C) by Vlad Ivanov ==--", 1, YELLOW_COLOR), (115, 150))
@@ -236,17 +250,17 @@ def draw_title():
     y2 = 225
 
     draw_brick(x2, y2, RED_COLOR)
-    screen.blit(title_font.render("+1 score", 1, YELLOW_COLOR), (x2 + 30, y2 - 5))
+    screen.blit(title_font.render("+1 score", 1, YELLOW_COLOR), (x2 + 30, y2))
 
     y2 += 20
 
     draw_brick(x2, y2, WHITE_COLOR)
-    screen.blit(title_font.render("+5 ammo", 1, YELLOW_COLOR), (x2 + 30, y2 - 5))
+    screen.blit(title_font.render("+5 ammo", 1, YELLOW_COLOR), (x2 + 30, y2))
 
     y2 += 20
 
     draw_brick(x2, y2, GREEN_COLOR)
-    screen.blit(title_font.render("+1 live", 1, YELLOW_COLOR), (x2 + 30, y2 - 5))
+    screen.blit(title_font.render("+1 live", 1, YELLOW_COLOR), (x2 + 30, y2))
 
     screen.blit(title_font.render("SPACE to shoot | MOUSE to move", 1, YELLOW_COLOR), (180, 330))
     screen.blit(title_font.render("Press ENTER to start", 1, WHITE_COLOR), (220, 400))
@@ -254,14 +268,7 @@ def draw_title():
     # Update (refresh) screen.
     pygame.display.update()
 
-    is_enter_pressed = False
-
-    while not is_enter_pressed:
-        for evt in pygame.event.get():
-            if evt.type == pygame.QUIT:
-                end_game()
-            elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_RETURN:
-                is_enter_pressed = True
+    wait_key_pressed(pygame.K_RETURN)
 
 
 # Shows final score. Wait for 'ESC' button to end the game.
@@ -269,8 +276,9 @@ def draw_final_score():
     # Stop all sounds.
     pygame.mixer.stop()
 
-    game_over=[
+    game_over = [
         "  ________",
+        " /  _____/_____    _____   ____     _______  __ ___________",
         "/   \  ___\__  \  /     \_/ __ \   /  _ \  \/ // __ \_  __ \\",
         "\    \_\  \/ __ \|  v v  \  ___/  (  <_> )   /\  ___/|  | \/",
         " \______  (____  /__|_|  /\___  >  \____/ \_/  \___  >__|",
@@ -283,12 +291,15 @@ def draw_final_score():
     screen.fill(BLACK_COLOR)
 
     for line in game_over:
-        screen.blit(final_font1.render(line, 1, WHITE_COLOR), (x, y))
+        screen.blit(final_font1.render(line, 1, mk_random_color()), (x, y))
         y += 15
 
-    final_score_label = final_font2.render("Your final score: " + str(score), 1, YELLOW_COLOR)
-    screen.blit(final_score_label, (215, 240))
+    screen.blit(final_font2.render("Your final score: " + str(score), 1, RED_COLOR), (215, 240))
+    screen.blit(final_font1.render("Press ESC to exit the game", 1, WHITE_COLOR), (210, 360))
+
     pygame.display.update()
+
+    wait_key_pressed(pygame.K_ESCAPE)
 
 
 draw_title()
