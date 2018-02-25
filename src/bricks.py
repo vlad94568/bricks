@@ -46,7 +46,7 @@ START_BRICK_Y = 0
 
 FPS = 30
 score = 0
-lives = 1
+lives = 20
 ammo = 100
 playerX = 0
 click=0
@@ -65,12 +65,20 @@ clock = pygame.time.Clock()
 # Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
 headerFont = pygame.font.Font("fonts/Anonymous.ttf", 13)
 title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
-final_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
-
+final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
+final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
+def boom_sound():
+    pygame.mixer.music.load("sounds/Blastwave_FX_GrenadeExplosion_S08WA.229.mp3")
+    pygame.mixer.music.play()
+
+def squish_sound():
+    pygame.mixer.music.load("sounds/zapsplat_impact_body_fall_to_ground.mp3")
+    pygame.mixer.music.play()
 
 # Generate random color.
+
 def mk_random_color():
     r = random.randint(0, 255)
     g = random.randint(0, 255)
@@ -124,6 +132,7 @@ def draw_bricks():
             # Bricks reached the bottom.
             lives -= 1
             bricks.remove(brick)
+            squish_sound()
         else:
             # Move white brick left or right (change direction every 15 frames, i.e. every second).
             if brick.kind == 2 and brick.frameCnt % 15 == 0:
@@ -147,7 +156,7 @@ def check_bricks_rockets():
                 # Hide/remove brick and the rocket that killed it.
                 rockets.remove(rocket)
                 bricks.remove(brick)
-
+                boom_sound()
                 if brick.kind == 1: # RED brick.
                     # Add score for normal killed brick.
                     score = score + 1
@@ -246,22 +255,22 @@ def draw_final_score():
         "  ________",
         " /  _____/_____    _____   ____     _______  __ ___________",
         "/   \  ___\__  \  /     \_/ __ \   /  _ \  \/ // __ \_  __ \\",
-        "\    \_\  \/ __ \|  Y Y  \  ___/  (  <_> )   /\  ___/|  | \/",
+        "\    \_\  \/ __ \|  v v  \  ___/  (  <_> )   /\  ___/|  | \/",
         " \______  (____  /__|_|  /\___  >  \____/ \_/  \___  >__|",
         "        \/     \/      \/     \/                   \/"
     ]
 
-    x = 50
+    x = 54
     y = 50
 
     screen.fill(BLACK_COLOR)
 
     for line in game_over:
-        screen.blit(final_font.render(line, 1, WHITE_COLOR), (x, y))
+        screen.blit(final_font1.render(line, 1, WHITE_COLOR), (x, y))
         y += 15
 
-    final_score_label = final_font.render("Your final score: " + str(score), 1, YELLOW_COLOR)
-    screen.blit(final_score_label, (270, 240))
+    final_score_label = final_font2.render("Your final score: " + str(score), 1, YELLOW_COLOR)
+    screen.blit(final_score_label, (215, 240))
     pygame.display.update()
 
 
