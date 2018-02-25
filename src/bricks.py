@@ -18,16 +18,19 @@ class Rocket:
         self.x = x
         self.y = y
 
+        self.frameCnt = 0
+        self.color = mk_random_color()
+
 
 class Brick:
     # kinds:
     # 1 - normal brick (RED)
     # 2 - ammo brick (WHITE)
     # 3 - live break (GREEN)
-    def __init__(self, x, y, speed, kind):
+    def __init__(self, x, y, y_speed, kind):
         self.x = x
         self.y = y
-        self.speed = speed
+        self.y_speed = y_speed
         self.kind = kind
 
         self.state = 1  # 1 - falling (normal), 2 - explosion
@@ -49,7 +52,6 @@ score = 0
 lives = 20
 ammo = 100
 playerX = 0
-click=0
 rockets = []
 bricks = []
 
@@ -58,6 +60,7 @@ pygame.init()
 pygame.mixer.init()
 pygame.font.init()
 
+# Sounds.
 bg_sound = pygame.mixer.Sound("sounds/background_sound.ogg")
 
 # Pygame initialization.
@@ -97,26 +100,25 @@ def mk_random_color():
 
 # Draws the player at 'playerX' coordinate.
 def draw_player():
-    if ammo > 0:
-        player_color = GREEN_COLOR
-    else:
-        player_color = WHITE_COLOR
-
-    pygame.draw.rect(screen, player_color, (playerX, 450, 20, 20), 5) # Base.
-    pygame.draw.line(screen, player_color, [playerX + 9, 450], [playerX + 9, 435], 5) # Turret.
+    pygame.draw.rect(screen, GREEN_COLOR, (playerX, 450, 20, 20), 5)  # Base.
+    pygame.draw.line(screen, GREEN_COLOR, [playerX + 9, 450], [playerX + 9, 435], 5)  # Turret.
 
 
 # Draws all the rockets in 'rockets' list.
 def draw_rockets():
+    rockets[:] = [rocket for rocket in rockets if rocket.y > 5]
+
     for rocket in rockets:
-        pygame.draw.rect(screen, mk_random_color(), (rocket.x, rocket.y, 5, 8), 1)
+        if rocket.frameCnt % 5 == 0:
+            rocket.color = mk_random_color()
+
+        pygame.draw.rect(screen, rocket.color, (rocket.x, rocket.y, 5, 8), 1)
 
         rocket.y -= 6
-
-        if rocket.y < 0:
-            rockets.remove(rocket)
+        rocket.frameCnt += 1
 
 
+# Draws a brick with given (x, y) coordinates and color.
 def draw_brick(x, y, color):
     pygame.draw.rect(screen, color, (x, y, 15, 10), 3)
 
@@ -125,6 +127,16 @@ def draw_brick(x, y, color):
 def draw_bricks():
     global lives
     global ammo
+
+    old_cnt = len(bricks)
+    bricks[:] = [brick for brick in bricks if brick.y < 470]
+    new_cnt = len(bricks)
+
+    if old_cnt != new_cnt:
+        squished = True
+        lives -= old_cnt - new_cnt
+    else:
+        squished = False
 
     for brick in bricks:
         if brick.kind == 1:
@@ -136,22 +148,19 @@ def draw_bricks():
 
         brick.frameCnt += 1
 
-        if brick.y >= 480:
-            # Bricks reached the bottom.
-            lives -= 1
-            bricks.remove(brick)
-            squish_sound()
-        else:
-            # Move white brick left or right (change direction every 15 frames, i.e. every second).
-            if brick.kind == 2 and brick.frameCnt % 15 == 0:
-                if random.randint(0, 100) > 50:
-                    brick.x_adj = brick.speed
-                else:
-                    brick.x_adj = -brick.speed
+        # Move white brick left or right (change direction every 15 frames, i.e. every second).
+        if brick.kind == 2 and brick.frameCnt % 15 == 0:
+            if random.randint(0, 100) > 50:
+                brick.x_adj = brick.y_speed
+            else:
+                brick.x_adj = -brick.y_speed
 
-            # Brick is still falling down.
-            brick.y += brick.speed
-            brick.x += brick.x_adj
+        # Brick is still falling down.
+        brick.y += brick.y_speed
+        brick.x += brick.x_adj
+
+    if squished:
+        squish_sound()
 
 
 # Checking for a crash with the rocket and brick.
@@ -257,14 +266,11 @@ def draw_title():
 
 # Shows final score. Wait for 'ESC' button to end the game.
 def draw_final_score():
-    global click
-
     # Stop all sounds.
     pygame.mixer.stop()
 
     game_over=[
         "  ________",
-        " /  _____/_____    _____   ____     _______  __ ___________",
         "/   \  ___\__  \  /     \_/ __ \   /  _ \  \/ // __ \_  __ \\",
         "\    \_\  \/ __ \|  v v  \  ___/  (  <_> )   /\  ___/|  | \/",
         " \______  (____  /__|_|  /\___  >  \____/ \_/  \___  >__|",
