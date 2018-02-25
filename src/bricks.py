@@ -49,13 +49,13 @@ START_BRICK_Y = 0
 
 fps = 30
 score = 0
-lives = 1
+lives = 20
 ammo = 100
 playerX = 0
 rockets = []
 bricks = []
 
-# Initialize the game & modules.
+# Initialize pygame & its modules.
 pygame.init()
 pygame.mixer.init()
 pygame.font.init()
@@ -77,19 +77,28 @@ final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
 
+# Sounds kill of the brick.
 def boom_sound():
     # pygame.mixer.music.load("sounds/0342.ogg")
     # pygame.mixer.music.play()
     pass
 
 
+# Sounds of the brick hitting the bottom.
 def squish_sound():
     # pygame.mixer.music.load("sounds/0342.ogg")
     # pygame.mixer.music.play()
     pass
 
 
-# Generate random color.
+# Sounds the rocket firing.
+def rocket_sound():
+    # pygame.mixer.music.load("sounds/0342.ogg")
+    # pygame.mixer.music.play()
+    pass
+
+
+# Generates random color.
 def mk_random_color():
     r = random.randint(0, 255)
     g = random.randint(0, 255)
@@ -106,7 +115,7 @@ def draw_player(x):
 
 # Draws all the rockets in 'rockets' list.
 def draw_rockets():
-    rockets[:] = [rocket for rocket in rockets if rocket.y > 5]
+    rockets[:] = [rocket for rocket in rockets if rocket.y > 5]  # Filter out out of screen rockets.
 
     for rocket in rockets:
         if rocket.frameCnt % 5 == 0:
@@ -129,7 +138,7 @@ def draw_bricks():
     global ammo
 
     old_cnt = len(bricks)
-    bricks[:] = [brick for brick in bricks if brick.y < 470]
+    bricks[:] = [brick for brick in bricks if brick.y < 470]  # Filter out fallen bricks.
     new_cnt = len(bricks)
 
     if old_cnt != new_cnt:
@@ -163,28 +172,37 @@ def draw_bricks():
         squish_sound()
 
 
-# Checking for a crash with the rocket and brick.
+# Checking for crashes between rockets and bricks.
 def check_bricks_rockets():
     global score, ammo, lives
 
+    bricks_to_remove = []
+    rockets_to_remove = []
+
     for brick in bricks:
-        for rocket in rockets:
-            if brick.x - 5 <= rocket.x <= brick.x + 15 and rocket.y <= brick.y:
-                # Hide/remove brick and the rocket that killed it.
-                rockets.remove(rocket)
-                bricks.remove(brick)
+        if brick not in bricks_to_remove:
+            for rocket in rockets:
+                if rocket not in rockets_to_remove:
+                    if brick.x - 5 <= rocket.x <= brick.x + 15 and rocket.y <= brick.y + 10:
+                        # Rocket hit that brick...
+                        rockets_to_remove.append(rocket)
+                        bricks_to_remove.append(brick)
 
-                boom_sound()
+                        if brick.kind == 1: # RED brick.
+                            # Add score for normal killed brick.
+                            score += 1
+                        elif brick.kind == 2: # WHITE brick.
+                            # Add ammo.
+                            ammo += 5
+                        elif brick.kind == 3: # GREEN brick.
+                            # Add lives.
+                            lives += 1
 
-                if brick.kind == 1: # RED brick.
-                    # Add score for normal killed brick.
-                    score = score + 1
-                elif brick.kind == 2: # WHITE brick.
-                    # Add ammo.
-                    ammo += 20
-                elif brick.kind == 3: # GREEN brick.
-                    # Add lives.
-                    lives += 3
+    if len(bricks_to_remove) > 0:
+        boom_sound()
+
+    bricks[:] = [brick for brick in bricks if brick not in bricks_to_remove]
+    rockets[:] = [rocket for rocket in rockets if rocket not in rockets_to_remove]
 
 
 # Draw score, live and ammo.
@@ -204,6 +222,7 @@ def end_game():
     sys.exit()
 
 
+# Fires the rocket.
 def fire_rocket(x):
     global ammo
 
@@ -212,6 +231,9 @@ def fire_rocket(x):
 
     # Decrease ammo.
     ammo = ammo - 1
+
+    # BANG!
+    rocket_sound()
 
 
 # Waits until given keyboard key is pressed.
@@ -226,6 +248,7 @@ def wait_key_pressed(key):
                 is_pressed = True
 
 
+# Draws the game's welcome screen (aka title).
 def draw_title():
     name = [
         "    _/_/_/    _/_/_/    _/_/_/    _/_/_/  _/    _/    _/_/_/",
@@ -302,6 +325,7 @@ def draw_final_score():
     wait_key_pressed(pygame.K_ESCAPE)
 
 
+# Main game loop.
 def main_game_loop():
     # Start background music.
     pygame.mixer.Channel(0).play(bg_sound, -1)
@@ -319,7 +343,7 @@ def main_game_loop():
             game_over = False
 
         if game_over:
-            pygame.time.delay(2.5 * 1000)  # 2.5 seconds delays.
+            pygame.time.delay(3 * 1000)  # 3 seconds delays.
 
             # Clear data.
             bricks.clear()
