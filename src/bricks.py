@@ -49,7 +49,7 @@ START_BRICK_Y = 0
 
 fps = 30
 score = 0
-lives = 20
+lives = 1
 ammo = 100
 playerX = 0
 rockets = []
@@ -60,8 +60,16 @@ pygame.init()
 pygame.mixer.init()
 pygame.font.init()
 
+# Mixer channels:
+# 0 - background (title and main game)
+# 1 - rocket fire
+# 2 - brick kill
+# 3 - brick squished (reached the bottom)
+
 # Sounds.
-bg_sound = pygame.mixer.Sound("sounds/background_sound0.ogg")
+main_bg_sound = pygame.mixer.Sound("sounds/background_sound0.ogg")
+title_bg_sound = pygame.mixer.Sound("sounds/ambiance4.ogg")
+final_bg_sound = pygame.mixer.Sound("sounds/rnd-moan12.ogg")
 
 # Pygame initialization.
 screen = pygame.display.set_mode((640, 480))
@@ -288,6 +296,9 @@ def draw_title():
     screen.blit(title_font.render("SPACE to shoot | MOUSE to move", 1, YELLOW_COLOR), (180, 330))
     screen.blit(title_font.render("Press ENTER to start", 1, WHITE_COLOR), (220, 400))
 
+    # Start title background music.
+    pygame.mixer.Channel(0).play(title_bg_sound, -1)
+
     # Update (refresh) screen.
     pygame.display.update()
 
@@ -320,6 +331,9 @@ def draw_final_score():
     screen.blit(final_font2.render("Your final score: " + str(score), 1, RED_COLOR), (215, 240))
     screen.blit(final_font1.render("Press ESC to exit the game", 1, WHITE_COLOR), (210, 360))
 
+    # Start title background music.
+    pygame.mixer.Channel(0).play(final_bg_sound, -1)
+
     pygame.display.update()
 
     wait_key_pressed(pygame.K_ESCAPE)
@@ -327,8 +341,8 @@ def draw_final_score():
 
 # Main game loop.
 def main_game_loop():
-    # Start background music.
-    pygame.mixer.Channel(0).play(bg_sound, -1)
+    # Start main background music.
+    pygame.mixer.Channel(0).play(main_bg_sound, -1)
 
     player_x = 0
 
@@ -343,7 +357,10 @@ def main_game_loop():
             game_over = False
 
         if game_over:
-            pygame.time.delay(3 * 1000)  # 3 seconds delays.
+            game_over_delay = 3 * 1000  # 3 seconds delays.
+
+            pygame.mixer.Channel(0).fadeout(game_over_delay - 250)
+            pygame.time.delay(game_over_delay)
 
             # Clear data.
             bricks.clear()
