@@ -6,4 +6,4 @@ This is rather simple shoot'em type of the game. It is retro-inspired with ASCII
 
 I hope you enjoyed it!
 
-![Screenshot](/src/images/pic3.png?raw=true | width=640)
+![Screenshot](/src/images/pic3.png?raw=true&s=640)
