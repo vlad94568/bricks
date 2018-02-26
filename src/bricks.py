@@ -70,6 +70,8 @@ pygame.font.init()
 main_bg_sound = pygame.mixer.Sound("sounds/background_sound0.ogg")
 title_bg_sound = pygame.mixer.Sound("sounds/ambiance4.ogg")
 final_bg_sound = pygame.mixer.Sound("sounds/rnd-moan12.ogg")
+rocket_fire_sound = pygame.mixer.Sound("sounds/crylink-impact.ogg")
+brick_kill_sound = pygame.mixer.Sound("sounds/weaponpickup.ogg")
 
 # Pygame initialization.
 screen = pygame.display.set_mode((640, 480))
@@ -87,9 +89,8 @@ pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
 # Sounds kill of the brick.
 def boom_sound():
-    # pygame.mixer.music.load("sounds/0342.ogg")
-    # pygame.mixer.music.play()
-    pass
+    #pygame.mixer.Channel(2).set_volume(0.3)
+    pygame.mixer.Channel(2).play(brick_kill_sound)
 
 
 # Sounds of the brick hitting the bottom.
@@ -101,9 +102,8 @@ def squish_sound():
 
 # Sounds the rocket firing.
 def rocket_sound():
-    # pygame.mixer.music.load("sounds/0342.ogg")
-    # pygame.mixer.music.play()
-    pass
+    pygame.mixer.Channel(1).set_volume(0.3)
+    pygame.mixer.Channel(1).play(rocket_fire_sound)
 
 
 # Generates random color.
@@ -160,7 +160,7 @@ def draw_bricks():
             draw_brick(brick.x, brick.y, RED_COLOR)
         elif brick.kind == 2:
             draw_brick(brick.x, brick.y, WHITE_COLOR)
-        else: # kind == 3
+        else:  # kind == 3
             draw_brick(brick.x, brick.y, GREEN_COLOR)
 
         brick.frameCnt += 1
@@ -196,13 +196,13 @@ def check_bricks_rockets():
                         rockets_to_remove.append(rocket)
                         bricks_to_remove.append(brick)
 
-                        if brick.kind == 1: # RED brick.
+                        if brick.kind == 1:  # RED brick.
                             # Add score for normal killed brick.
                             score += 1
-                        elif brick.kind == 2: # WHITE brick.
+                        elif brick.kind == 2:  # WHITE brick.
                             # Add ammo.
                             ammo += 5
-                        elif brick.kind == 3: # GREEN brick.
+                        elif brick.kind == 3:  # GREEN brick.
                             # Add lives.
                             lives += 1
 
@@ -328,8 +328,8 @@ def draw_final_score():
         screen.blit(final_font1.render(line, 1, mk_random_color()), (x, y))
         y += 15
 
-    screen.blit(final_font2.render("Your final score: " + str(score), 1, RED_COLOR), (215, 240))
-    screen.blit(final_font1.render("Press ESC to exit the game", 1, WHITE_COLOR), (210, 360))
+    screen.blit(final_font2.render("Your final score: " + str(score), 1, RED_COLOR), (205, 240))
+    screen.blit(final_font1.render("Press ESC to exit the game", 1, WHITE_COLOR), (200, 360))
 
     # Start title background music.
     pygame.mixer.Channel(0).play(final_bg_sound, -1)
