@@ -13,7 +13,7 @@ I hope you enjoyed it!
 git clone https://github.com/vlad94568/bricks.git
 ```
 
-2. Change to src directory.
+2. Change to `src` directory.
 ```commandline
 cd src
 ```
