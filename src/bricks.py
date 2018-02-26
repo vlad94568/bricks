@@ -49,7 +49,7 @@ START_BRICK_Y = 0
 
 fps = 30
 score = 0
-lives = 1
+lives = 20
 ammo = 100
 playerX = 0
 rockets = []
