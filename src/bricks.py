@@ -61,7 +61,7 @@ pygame.mixer.init()
 pygame.font.init()
 
 # Sounds.
-bg_sound = pygame.mixer.Sound("sounds/background_sound.ogg")
+bg_sound = pygame.mixer.Sound("sounds/background_sound0.ogg")
 
 # Pygame initialization.
 screen = pygame.display.set_mode((640, 480))
