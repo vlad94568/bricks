@@ -68,10 +68,11 @@ pygame.font.init()
 
 # Sounds.
 main_bg_sound = pygame.mixer.Sound("sounds/background_sound0.ogg")
-title_bg_sound = pygame.mixer.Sound("sounds/ambiance4.ogg")
-final_bg_sound = pygame.mixer.Sound("sounds/rnd-moan12.ogg")
-rocket_fire_sound = pygame.mixer.Sound("sounds/crylink-impact.ogg")
-brick_kill_sound = pygame.mixer.Sound("sounds/weaponpickup.ogg")
+title_bg_sound = pygame.mixer.Sound("sounds/background_sound1.ogg")
+final_bg_sound = pygame.mixer.Sound("sounds/background_sound2.ogg")
+rocket_fire_sound = pygame.mixer.Sound("sounds/rocket_fired.ogg")
+brick_kill_sound = pygame.mixer.Sound("sounds/brick_kill.ogg")
+brick_squish_sound = pygame.mixer.Sound("sounds/brick_squished.ogg")
 
 # Pygame initialization.
 screen = pygame.display.set_mode((640, 480))
@@ -89,15 +90,12 @@ pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
 # Sounds kill of the brick.
 def boom_sound():
-    #pygame.mixer.Channel(2).set_volume(0.3)
     pygame.mixer.Channel(2).play(brick_kill_sound)
 
 
 # Sounds of the brick hitting the bottom.
 def squish_sound():
-    # pygame.mixer.music.load("sounds/0342.ogg")
-    # pygame.mixer.music.play()
-    pass
+    pygame.mixer.Channel(3).play(brick_squish_sound)
 
 
 # Sounds the rocket firing.
