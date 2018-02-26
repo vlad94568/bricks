@@ -5,4 +5,5 @@ starting with Scratch, a bit of JavaScript and now Python. I've built this game 
 This is rather simple shoot'em type of the game. It is retro-inspired with ASCII art and simple geometry.
 
 I hope you enjoyed it!
-![Screenshot](/src/images/pic3.png?raw=true)
+
+![Screenshot](/src/images/pic3.png?raw=true | width=640)
