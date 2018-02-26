@@ -20,7 +20,7 @@ cd src
 
 2. Run it
 ```commandline
-/usr/local/bin/python3 bricks.py 
+python3 bricks.py 
 ```
 
 ## Screenshots
