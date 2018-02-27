@@ -18,7 +18,7 @@ class Rocket:
         self.x = x
         self.y = y
 
-        self.frameCnt = 0
+        self.frame_cnt = 0
         self.color = mk_random_color()
 
 
@@ -34,7 +34,7 @@ class Brick:
         self.kind = kind
 
         self.state = 1  # 1 - falling (normal), 2 - explosion
-        self.frameCnt = 0
+        self.frame_cnt = 0
         self.x_adj = 0
 
 
@@ -124,13 +124,13 @@ def draw_rockets():
     rockets[:] = [rocket for rocket in rockets if rocket.y > 5]  # Filter out out of screen rockets.
 
     for rocket in rockets:
-        if rocket.frameCnt % 5 == 0:
+        if rocket.frame_cnt % 5 == 0:
             rocket.color = mk_random_color()
 
         pygame.draw.rect(screen, rocket.color, (rocket.x, rocket.y, 5, 8), 1)
 
         rocket.y -= 6
-        rocket.frameCnt += 1
+        rocket.frame_cnt += 1
 
 
 # Draws a brick with given (x, y) coordinates and color.
@@ -161,10 +161,10 @@ def draw_bricks():
         else:  # kind == 3
             draw_brick(brick.x, brick.y, GREEN_COLOR)
 
-        brick.frameCnt += 1
+        brick.frame_cnt += 1
 
         # Move white brick left or right (change direction every 15 frames, i.e. every second).
-        if brick.kind == 2 and brick.frameCnt % 15 == 0:
+        if brick.kind == 2 and brick.frame_cnt % 15 == 0:
             if random.randint(0, 100) > 50:
                 brick.x_adj = brick.y_speed
             else:
