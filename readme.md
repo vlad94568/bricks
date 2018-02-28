@@ -7,18 +7,26 @@ This is rather simple shoot'em type of the game. It is retro-inspired with ASCII
 I hope you enjoyed it!
 
 ## How to run
+As a prerequisite you need to have `Python3` and `git` installed 
+in your system. You can find download instructions at https://www.python.org/downloads/ and https://git-scm.com/downloads
+ 
+1. Make sure you have `pygame` library installed:
+```commandline
+pip3 install pygame
+```
 
-1. Clone git poject
+2. Clone this git project:
 ```
 git clone https://github.com/vlad94568/bricks.git
 ```
+Alternatively you can download ZIP archive of this project and unzip it.
 
-2. Change to `src` directory.
+3. Change to `src` directory:
 ```commandline
 cd src
 ```
 
-2. Run it
+4. Run it:
 ```commandline
 python3 bricks.py 
 ```
