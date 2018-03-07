@@ -22,6 +22,27 @@ class Rocket:
         self.color = mk_random_color()
 
 
+class Explosion:
+    def __init__(self, frags):
+        self.frags = frags
+
+
+class Fragment:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+        self.speed = random.randint(2, 8)  # Speed in pixels per frame.
+        self.angle = random.randint(0, 360)
+        self.frame_cnt = 0
+        self.size = random.randint(3, 16)  # Size of the square in pixels.
+
+        # Color components.
+        self.red = random.randint(0, 255)
+        self.blue = random.randint(0, 255)
+        self.green = random.randint(0, 255)
+
+
 class Brick:
     # kinds:
     # 1 - normal brick (RED)
@@ -52,8 +73,11 @@ score = 0
 lives = 20
 ammo = 100
 playerX = 0
+
+# List of rockets, bricks and explosions.
 rockets = []
 bricks = []
+explosions = []
 
 # Initialize pygame & its modules.
 pygame.init()
@@ -138,6 +162,45 @@ def draw_brick(x, y, color):
     pygame.draw.rect(screen, color, (x, y, 15, 10), 3)
 
 
+# Draws all the explosions.
+def draw_explosions():
+    for exp in explosions:
+        for frag in exp.frags:
+            draw_fragment(frag)
+
+
+# Draws an individual fragment.
+def draw_fragment(frag):
+    color = (frag.red, frag.green, frag.blue)
+
+    pygame.draw.rect(screen, color, (frag.x, frag.y, frag.size, frag.size), 2)
+
+    frag.frame_cnt += 1
+
+    frag.red = fade_color_channel(frag.red)
+    frag.green = fade_color_channel(frag.green)
+    frag.blue = fade_color_channel(frag.blue)
+
+    if frag.angle > 180:
+        frag.x -= frag.speed
+    else:
+        frag.x += frag.speed
+
+    if frag.angle < 45 or frag.angle > 270:
+        frag.y -= frag.speed
+    else:
+        frag.y += frag.speed
+
+
+def fade_color_channel(value):
+    newVal = value - 15
+
+    if newVal < 0:
+        return 0
+    else:
+        return newVal
+
+
 # Draws all the bricks in 'bricks' list.
 def draw_bricks():
     global lives
@@ -203,6 +266,11 @@ def check_bricks_rockets():
                         elif brick.kind == 3:  # GREEN brick.
                             # Add lives.
                             lives += 1
+
+                        frag_x = brick.x + 4
+                        frag_y = brick.y
+
+                        explosions.append(Explosion([Fragment(frag_x, frag_y) for x in range(5)]))
 
     if len(bricks_to_remove) > 0:
         boom_sound()
@@ -411,6 +479,7 @@ def main_game_loop():
             draw_rockets()
             draw_bricks()
             draw_header()
+            draw_explosions()
 
         # Update (refresh) screen.
         pygame.display.update()
