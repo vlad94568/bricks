@@ -12,6 +12,7 @@ import pygame
 import random
 import sys
 import math
+from pygame import gfxdraw
 
 
 class Rocket:
@@ -37,9 +38,10 @@ class Fragment:
         self.y = y
 
         self.speed = random.randint(2, 4)  # Speed in pixels per frame.
-        self.angle = random.randint(0, 360)
+        self.angle = random.randint(0, 360)  # Angle of movement.
+        self.turn_angle = random.randint(0, 360)  # Angle of turning.
         self.frame_cnt = 0
-        self.size = random.randint(3, 16)  # Size of the square in pixels.
+        self.size = random.randint(3, 10)  # Size of the square in pixels.
 
         # Color components.
         self.red = random.randint(0, 255)
@@ -179,48 +181,67 @@ def draw_explosions():
 
     explosions[:] = [exp for exp in explosions if exp not in exp_to_remove]
 
-    print(len(explosions))
-
 
 # Draws an individual fragment.
 def draw_fragment(frag):
     color = (frag.red, frag.green, frag.blue)
 
-    pygame.draw.rect(screen, color, (frag.x, frag.y, frag.size, frag.size), 2)
+    draw_turned_square(frag.x, frag.y, frag.size, color, frag.turn_angle)
 
+    frag.turn_angle += 20
     frag.frame_cnt += 1
 
     frag.red = fade_color_channel(frag.red)
     frag.green = fade_color_channel(frag.green)
     frag.blue = fade_color_channel(frag.blue)
 
-    direction_x = 1
-    direction_y = 1
+    frag.x, frag.y = transform(frag.x, frag.y, frag.speed, frag.angle)
 
-    if frag.angle <= 90:
-        direction_x = 1
-        direction_y = -1
-    elif frag.angle <= 180:
-        direction_x = 1
-        direction_y = 1
-    elif frag.angle <= 270:
-        direction_x = -1
-        direction_y = 1
+
+# Draws a square with (x, y) center, 2*size diagonal, and turned at the angle.
+def draw_turned_square(x, y, size, color, angle):
+    x1, y1 = transform(x, y, size, angle % 360)
+    x2, y2 = transform(x, y, size, (angle + 90) % 360)
+    x3, y3 = transform(x, y, size, (angle + 180) % 360)
+    x4, y4 = transform(x, y, size, (angle + 270) % 360)
+
+    pygame.gfxdraw.filled_polygon(screen, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)], color)
+
+
+# Transforms (x, y) coordinate to distance at a given angle.
+# Returns new (x, y) coordinate for the new location.
+def transform(x, y, distance, angle):
+    if angle <= 90:
+        rad = math.radians(angle)
+
+        new_x = x + distance * math.sin(rad)
+        new_y = y - distance * math.cos(rad)
+    elif angle <= 180:
+        rad = math.radians(180 - angle)
+
+        new_x = x + distance * math.sin(rad)
+        new_y = y + distance * math.cos(rad)
+    elif angle <= 270:
+        rad = math.radians(270 - angle)
+
+        new_x = x - distance * math.cos(rad)
+        new_y = y + distance * math.sin(rad)
     else:
-        direction_x = -1
-        direction_y = -1
+        rad = math.radians(360 - angle)
 
-    frag.x += frag.speed * math.sin(frag.angle) * direction_x
-    frag.y += frag.speed * math.cos(frag.angle) * direction_y
+        new_x = x - distance * math.sin(rad)
+        new_y = y - distance * math.cos(rad)
+
+    return new_x, new_y
 
 
 def fade_color_channel(value):
-    newVal = value - 15
+    new_val = value - 10
 
-    if newVal < 0:
+    if new_val < 0:
         return 0
     else:
-        return newVal
+        return new_val
 
 
 # Draws all the bricks in 'bricks' list.
