@@ -11,6 +11,7 @@
 import pygame
 import random
 import sys
+import math
 
 
 class Rocket:
@@ -26,13 +27,16 @@ class Explosion:
     def __init__(self, frags):
         self.frags = frags
 
+    def is_done(self):
+        return self.frags[0].frame_cnt == 15
+
 
 class Fragment:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-        self.speed = random.randint(2, 8)  # Speed in pixels per frame.
+        self.speed = random.randint(2, 4)  # Speed in pixels per frame.
         self.angle = random.randint(0, 360)
         self.frame_cnt = 0
         self.size = random.randint(3, 16)  # Size of the square in pixels.
@@ -164,9 +168,18 @@ def draw_brick(x, y, color):
 
 # Draws all the explosions.
 def draw_explosions():
+    exp_to_remove = []
+
     for exp in explosions:
-        for frag in exp.frags:
-            draw_fragment(frag)
+        if exp.is_done():
+            exp_to_remove.append(exp)
+        else:
+            for frag in exp.frags:
+                draw_fragment(frag)
+
+    explosions[:] = [exp for exp in explosions if exp not in exp_to_remove]
+
+    print(len(explosions))
 
 
 # Draws an individual fragment.
@@ -181,15 +194,24 @@ def draw_fragment(frag):
     frag.green = fade_color_channel(frag.green)
     frag.blue = fade_color_channel(frag.blue)
 
-    if frag.angle > 180:
-        frag.x -= frag.speed
-    else:
-        frag.x += frag.speed
+    direction_x = 1
+    direction_y = 1
 
-    if frag.angle < 45 or frag.angle > 270:
-        frag.y -= frag.speed
+    if frag.angle <= 90:
+        direction_x = 1
+        direction_y = -1
+    elif frag.angle <= 180:
+        direction_x = 1
+        direction_y = 1
+    elif frag.angle <= 270:
+        direction_x = -1
+        direction_y = 1
     else:
-        frag.y += frag.speed
+        direction_x = -1
+        direction_y = -1
+
+    frag.x += frag.speed * math.sin(frag.angle) * direction_x
+    frag.y += frag.speed * math.cos(frag.angle) * direction_y
 
 
 def fade_color_channel(value):
