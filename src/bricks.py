@@ -205,7 +205,7 @@ def draw_turned_square(x, y, size, color, angle):
     x3, y3 = transform(x, y, size, (angle + 180) % 360)
     x4, y4 = transform(x, y, size, (angle + 270) % 360)
 
-    pygame.gfxdraw.filled_polygon(screen, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)], color)
+    pygame.gfxdraw.aapolygon(screen, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)], color)
 
 
 # Transforms (x, y) coordinate to distance at a given angle.
@@ -310,8 +310,8 @@ def check_bricks_rockets():
                             # Add lives.
                             lives += 1
 
-                        frag_x = brick.x + 4
-                        frag_y = brick.y
+                        frag_x = brick.x + 7
+                        frag_y = brick.y + 5
 
                         explosions.append(Explosion([Fragment(frag_x, frag_y) for x in range(5)]))
 
@@ -347,7 +347,7 @@ def fire_rocket(x):
     rockets.append(Rocket(x, START_ROCKET_Y - 20))
 
     # Decrease ammo.
-    ammo = ammo - 1
+    ammo -= 1
 
     # BANG!
     rocket_sound()
