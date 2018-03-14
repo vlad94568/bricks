@@ -29,10 +29,10 @@ class Explosion:
         self.frags = frags
 
     def is_done(self):
-        return self.frags[0].frame_cnt == 15
+        return self.frags[0].frame_cnt == 30
 
 
-class Fragment:
+class AirFragment:
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -43,10 +43,24 @@ class Fragment:
         self.frame_cnt = 0
         self.size = random.randint(3, 10)  # Size of the square in pixels.
 
-        # Color components.
-        self.red = random.randint(0, 255)
-        self.blue = random.randint(0, 255)
-        self.green = random.randint(0, 255)
+
+class GroundFragment:
+    def __init__(self, x, y, brick_kind):
+        self.x = x
+        self.y = y
+
+        if brick_kind == 1:
+            self.color = RED_COLOR
+        elif brick_kind == 2:
+            self.color = WHITE_COLOR
+        else:  # kind == 3
+            self.color = GREEN_COLOR
+
+        self.speed = random.randint(2, 4)  # Speed in pixels per frame.
+        self.angle = random.randint(10, 170)  # Angle of movement.
+        self.turn_angle = random.randint(0, 360)  # Angle of turning.
+        self.frame_cnt = 0
+        self.size = random.randint(3, 10)  # Size of the square in pixels.
 
 
 class Brick:
@@ -93,8 +107,8 @@ pygame.font.init()
 # Mixer channels:
 # 0 - background (title and main game)
 # 1 - rocket fire
-# 2 - brick kill
-# 3 - brick squished (reached the bottom)
+# 2 - brick air-kill (killed by rocket)
+# 3 - brick ground-kill (reached the bottom)
 
 # Sounds.
 main_bg_sound = pygame.mixer.Sound("sounds/background_sound0.ogg")
@@ -184,18 +198,21 @@ def draw_explosions():
 
 # Draws an individual fragment.
 def draw_fragment(frag):
-    color = (frag.red, frag.green, frag.blue)
+    if type(frag) is AirFragment:
+        draw_turned_square(frag.x, frag.y, frag.size, mk_random_color(), frag.turn_angle)
 
-    draw_turned_square(frag.x, frag.y, frag.size, color, frag.turn_angle)
+        frag.turn_angle += frag.speed + 10
+        frag.frame_cnt += 1
 
-    frag.turn_angle += 20
-    frag.frame_cnt += 1
+        frag.x, frag.y = transform(frag.x, frag.y, frag.speed, frag.angle)
+    else:  # GroundFragment
+        draw_turned_square(frag.x, frag.y, frag.size, frag.color, frag.turn_angle)
 
-    frag.red = fade_color_channel(frag.red)
-    frag.green = fade_color_channel(frag.green)
-    frag.blue = fade_color_channel(frag.blue)
+        frag.turn_angle += frag.speed + 10
+        frag.frame_cnt += 1
 
-    frag.x, frag.y = transform(frag.x, frag.y, frag.speed, frag.angle)
+        # Transform with the angle in [280, 80] range (upper two quadrants).
+        frag.x, frag.y = transform(frag.x, frag.y, frag.speed, (360 + frag.angle - 90) % 360)
 
 
 # Draws a square with (x, y) center, 2*size diagonal, and turned at the angle.
@@ -235,19 +252,12 @@ def transform(x, y, distance, angle):
     return new_x, new_y
 
 
-def fade_color_channel(value):
-    new_val = value - 10
-
-    if new_val < 0:
-        return 0
-    else:
-        return new_val
-
-
 # Draws all the bricks in 'bricks' list.
 def draw_bricks():
     global lives
     global ammo
+
+    explosions.extend([Explosion([GroundFragment(brick.x, brick.y, brick.kind) for x in range(5)]) for brick in bricks if brick.y >= 470])
 
     old_cnt = len(bricks)
     bricks[:] = [brick for brick in bricks if brick.y < 470]  # Filter out fallen bricks.
@@ -313,7 +323,7 @@ def check_bricks_rockets():
                         frag_x = brick.x + 7
                         frag_y = brick.y + 5
 
-                        explosions.append(Explosion([Fragment(frag_x, frag_y) for x in range(5)]))
+                        explosions.append(Explosion([AirFragment(frag_x, frag_y) for x in range(5)]))
 
     if len(bricks_to_remove) > 0:
         boom_sound()
