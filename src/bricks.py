@@ -88,6 +88,12 @@ BLACK_COLOR = (0, 0, 0)
 START_ROCKET_Y = 450
 START_BRICK_Y = 0
 
+# Horizontal speed in pixels.
+HOR_PIXELS = 8
+
+left = 0
+right = 0
+
 fps = 30
 score = 0
 lives = 20
@@ -464,6 +470,8 @@ def main_game_loop():
     pygame.mixer.Channel(0).play(main_bg_sound, -1)
 
     player_x = 0
+    left = 0
+    right = 0
 
     # Main game loop.
     while True:
@@ -496,15 +504,28 @@ def main_game_loop():
 
                 if typ == pygame.QUIT:
                     end_game()
-                elif typ == pygame.MOUSEMOTION:
-                    # Move the player.
-                    player_x = event.pos[0]
-                elif typ == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    # Fire the rocket with mouse X coordinate.
-                    fire_rocket(event.pos[0] + 8)
                 elif typ == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     # Fire the rocket using last 'playerX'.
-                    fire_rocket(player_x + 8)
+                    fire_rocket(player_x + 7)
+                elif typ == pygame.KEYDOWN and event.key == pygame.K_LEFT:
+                    # Move the player left.
+                    left = 1
+                    right = 0
+                elif typ == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+                    # Move the player right.
+                    right = 1
+                    left = 0
+                elif typ == pygame.KEYUP and event.key == pygame.K_LEFT:
+                    # Stop left movement.
+                    left = 0
+                elif typ == pygame.KEYUP and event.key == pygame.K_RIGHT:
+                    # Stop right movement.
+                    right = 0
+
+            if left == 1:
+                player_x = player_x - HOR_PIXELS
+            elif right == 1:
+                player_x = player_x + HOR_PIXELS
 
             # Randomly place bricks.
             if len(bricks) < 5:
