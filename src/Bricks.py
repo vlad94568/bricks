@@ -7,6 +7,7 @@
 #
 #  By Vlad Ivanov, 2018.
 #  Email: vlad94568@gmail.com
+from operator import is_
 
 import pygame
 import random
@@ -85,6 +86,10 @@ WHITE_COLOR = (255, 255, 255)
 YELLOW_COLOR = (255, 255, 0)
 BLACK_COLOR = (0, 0, 0)
 
+#Initilizing the joystick.
+pygame.joystick.init()
+joystick_count = pygame.joystick.get_count()
+
 START_ROCKET_Y = 450
 START_BRICK_Y = 0
 
@@ -98,7 +103,7 @@ fps = 30
 score = 0
 lives = 20
 ammo = 100
-playerX = 0
+playerX = 320
 
 # List of rockets, bricks and explosions.
 rockets = []
@@ -134,8 +139,27 @@ title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
 
+# Whether or not a supported joystick is found.
+is_joystick_found = False
+
 # Window title.
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
+
+
+def init_joystick():
+    global is_joystick_found
+
+    joystick_count = pygame.joystick.get_count()
+
+    for i in range(joystick_count):
+        joystick = pygame.joystick.Joystick(i)
+        joystick.init()
+
+        # Get the name from the OS for the controller/joystick
+        name = joystick.get_name()
+
+        if name.startswith("USB,2-axis 8-button gamepad"):
+            is_joystick_found = True
 
 
 # Sounds kill of the brick.
@@ -419,7 +443,11 @@ def draw_title():
     screen.blit(title_font.render("+1 live", 1, YELLOW_COLOR), (x2 + 30, y2))
 
     screen.blit(title_font.render("SPACE to shoot | MOUSE to move", 1, YELLOW_COLOR), (180, 330))
-    screen.blit(title_font.render("Press ENTER to start", 1, WHITE_COLOR), (220, 400))
+
+    if is_joystick_found:
+        screen.blit(title_font.render("Supported joystick found", 1, YELLOW_COLOR), (200, 370))
+
+    screen.blit(title_font.render("Press ENTER to start", 1, WHITE_COLOR), (220, 410))
 
     # Start title background music.
     pygame.mixer.Channel(0).play(title_bg_sound, -1)
@@ -469,7 +497,7 @@ def main_game_loop():
     # Start main background music.
     pygame.mixer.Channel(0).play(main_bg_sound, -1)
 
-    player_x = 0
+    player_x = 320
     left = 0
     right = 0
 
@@ -477,7 +505,6 @@ def main_game_loop():
     while True:
         # Clear the screen.
         screen.fill(BLACK_COLOR)
-
         if lives == 0 or ammo == 0:
             game_over = True
         else:
@@ -521,6 +548,8 @@ def main_game_loop():
                 elif typ == pygame.KEYUP and event.key == pygame.K_RIGHT:
                     # Stop right movement.
                     right = 0
+                if typ == pygame.JOYBUTTONDOWN:
+                    print("Joystick button pressed.")
 
             if left == 1:
                 player_x = player_x - HOR_PIXELS
@@ -545,6 +574,12 @@ def main_game_loop():
 
                 bricks.append(Brick(brick_x, 0, speed, kind))
 
+            #Checking if player touches wall.
+            if player_x == 0 or player_x < 0:
+                player_x = 0
+            elif player_x == 640 or player_x > 640:
+                player_x = 640
+
             # Check bricks and rockets for collision.
             check_bricks_rockets()
 
@@ -565,6 +600,7 @@ def main_game_loop():
 # +=================+
 # | Start the game. |
 # +=================+
+init_joystick()
 draw_title()
 main_game_loop()
 
