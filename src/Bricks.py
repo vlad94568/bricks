@@ -84,15 +84,16 @@ RED_COLOR = (255, 0, 0)
 RED2_COLOR = (255, 65, 25)
 GREEN_COLOR = (0, 255, 0)
 WHITE_COLOR = (255, 255, 255)
-GREY_COLOR = (225, 225, 225)
 YELLOW_COLOR = (255, 255, 0)
 BLACK_COLOR = (0, 0, 0)
 SLACK_COLOR = webcolors.hex_to_rgb("#4d394b")
 BLACK_COLOR = (0, 0, 0)
-BLUE_COLOR = (215,220,250)
-DARK_GREEN_COLOR = (60,160,40)
-PINK_COLOR = (255,105,130)
-DARK_BLUE_COLOR = (39,32,98)
+BLUE_COLOR = (215, 220, 250)
+DARK_GREEN_COLOR = (60, 160, 40)
+PINK_COLOR = (255, 105, 130)
+DARK_BLUE_COLOR = (39, 32, 98)
+
+
 STAR_SIZE = 5
 
 
@@ -198,9 +199,18 @@ def draw_flower(flower_x):
     pygame.draw.rect(screen, DARK_GREEN_COLOR, (flower_x - 7, 447, 4, 40))
 
 
+max_star_sparkle_size = STAR_SIZE
+curr_star_sparkle_size = 0
+
+
 def draw_stars(star_x, star_y):
+    global curr_star_sparkle_size
+
     s1 = STAR_SIZE * 1.5
 
+    #
+    # Main lines.
+    #
     pygame.draw.line(
         screen,
         WHITE_COLOR,
@@ -214,20 +224,26 @@ def draw_stars(star_x, star_y):
         (star_x + s1, star_y)
     )
 
-    s2 = STAR_SIZE * 0.7
+    #
+    # Sparkle lines.
+    #
+    pygame.draw.line(
+        screen,
+        mk_random_color(),
+        (star_x + curr_star_sparkle_size, star_y + curr_star_sparkle_size),
+        (star_x - curr_star_sparkle_size, star_y - curr_star_sparkle_size)
+    )
+    pygame.draw.line(
+        screen,
+        mk_random_color(),
+        (star_x + curr_star_sparkle_size, star_y - curr_star_sparkle_size),
+        (star_x - curr_star_sparkle_size, star_y + curr_star_sparkle_size)
+    )
 
-    pygame.draw.line(
-        screen,
-        GREY_COLOR,
-        (star_x + s2, star_y + s2),
-        (star_x - s2, star_y - s2)
-    )
-    pygame.draw.line(
-        screen,
-        GREY_COLOR,
-        (star_x + s2, star_y - s2),
-        (star_x - s2, star_y + s2)
-    )
+    if curr_star_sparkle_size > max_star_sparkle_size:
+        curr_star_sparkle_size = 0
+    else:
+        curr_star_sparkle_size = curr_star_sparkle_size + 0.4
 
 
 def draw_background():
