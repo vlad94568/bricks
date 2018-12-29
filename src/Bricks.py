@@ -84,12 +84,15 @@ RED_COLOR = (255, 0, 0)
 RED2_COLOR = (255, 65, 25)
 GREEN_COLOR = (0, 255, 0)
 WHITE_COLOR = (255, 255, 255)
+GREY_COLOR = (225, 225, 225)
 YELLOW_COLOR = (255, 255, 0)
 BLACK_COLOR = (0, 0, 0)
 BLUE_COLOR = (215,220,250)
 DARK_GREEN_COLOR = (60,160,40)
 PINK_COLOR = (255,105,130)
 DARK_BLUE_COLOR = (39,32,98)
+STAR_SIZE = 5
+
 
 # Initilizing the joystick.
 pygame.joystick.init()
@@ -150,6 +153,15 @@ is_joystick_found = False
 # Window title.
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
+# Generates random color.
+def mk_random_color():
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+
+    return r, g, b
+
+FLOWER_COLOR = mk_random_color()
 
 def init_joystick():
     global is_joystick_found
@@ -174,35 +186,61 @@ def draw_grass_blades(grassx):
 
 
 def draw_flower(flowerx):
-    pygame.draw.rect(screen,PINK_COLOR,(flowerx,427,10,10))
-    pygame.draw.rect(screen, PINK_COLOR, (flowerx - 10, 417, 10, 10))
-    pygame.draw.rect(screen, PINK_COLOR, (flowerx - 10, 437, 10, 10))
-    pygame.draw.rect(screen, PINK_COLOR, (flowerx - 20, 427, 10, 10))
+    pygame.draw.rect(screen,FLOWER_COLOR,(flowerx,427,10,10))
+    pygame.draw.rect(screen, FLOWER_COLOR, (flowerx - 10, 417, 10, 10))
+    pygame.draw.rect(screen, FLOWER_COLOR, (flowerx - 10, 437, 10, 10))
+    pygame.draw.rect(screen, FLOWER_COLOR, (flowerx - 20, 427, 10, 10))
     pygame.draw.rect(screen, YELLOW_COLOR, (flowerx - 10, 427, 10, 10))
     pygame.draw.rect(screen, DARK_GREEN_COLOR,(flowerx - 7,447,4,40))
 
 
 def draw_stars(starx, stary):
-    pygame.draw.rect(screen, WHITE_COLOR, (starx, stary, 3, 3))
-    pygame.draw.rect(screen, WHITE_COLOR, (starx - 3, stary - 3, 3, 3))
-    pygame.draw.rect(screen, WHITE_COLOR, (starx - 3, stary + 3, 3, 3))
-    pygame.draw.rect(screen, WHITE_COLOR, (starx - 6, stary, 3, 3))
-    pygame.draw.rect(screen, WHITE_COLOR, (starx - 3, stary, 3, 3))
+    pygame.draw.line(
+        screen,
+        WHITE_COLOR,
+        (starx, stary + STAR_SIZE * 1.5),
+        (starx, stary - STAR_SIZE * 1.5)
+    )
+    pygame.draw.line(
+        screen,
+        WHITE_COLOR,
+        (starx - STAR_SIZE * 1.5, stary),
+        (starx + STAR_SIZE * 1.5, stary)
+    )
+
+    S2 = STAR_SIZE * 0.7
+
+    pygame.draw.line(
+        screen,
+        GREY_COLOR,
+        (starx + S2,stary + S2),
+        (starx - S2, stary - S2)
+    )
+    pygame.draw.line(
+        screen,
+        GREY_COLOR,
+        (starx + S2, stary - S2),
+        (starx - S2, stary + S2)
+    )
 
 def draw_background():
     global DARK_GREEN_COLOR
-    #Drawing the ground.
+
+    # Drawing the ground.
     pygame.draw.rect(screen,DARK_GREEN_COLOR,(0,460,640,200))
-    #Drawing grass.
+
+    # Drawing grass.
     draw_grass_blades(10)
     draw_grass_blades(100)
     draw_grass_blades(345)
     draw_grass_blades(550)
     draw_grass_blades(200)
-    #Drawing flowers.
+
+    # Drawing flowers.
     draw_flower(300)
     draw_flower(532)
-    #Drawing stars.
+
+    # Drawing stars.
     draw_stars(100,300)
 
 # Sounds kill of the brick.
@@ -221,13 +259,9 @@ def rocket_sound():
     pygame.mixer.Channel(1).play(rocket_fire_sound)
 
 
-# Generates random color.
-def mk_random_color():
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
 
-    return r, g, b
+
+
 
 
 # Draws the player at 'x' coordinate.
