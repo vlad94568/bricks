@@ -11,11 +11,10 @@
 #  Email: vlad94568@gmail.com
 
 import pygame
-import random
 import sys
 import math
 from pygame import gfxdraw
-from basics import *
+from src.basics import *
 
 
 STAR_SIZE = 5
@@ -586,7 +585,7 @@ def main_game_loop():
 
                 bricks.append(Brick(brick_x, 0, speed, kind))
 
-            #Checking if player touches wall.
+            # Checking if player touches wall.
             if player_x == 0 or player_x < 0:
                 player_x = 0
             elif player_x == 640 or player_x > 640:
@@ -595,7 +594,7 @@ def main_game_loop():
             # Check bricks and rockets for collision.
             check_bricks_rockets()
 
-            # Draw player, bricks & rockets & headers.
+            # Draw player, bricks, rockets & headers.
             draw_player(player_x)
             draw_rockets()
             draw_bricks()
