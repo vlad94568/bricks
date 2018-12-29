@@ -12,6 +12,7 @@ import pygame
 import random
 import sys
 import math
+import webcolors
 from pygame import gfxdraw
 
 
@@ -86,6 +87,8 @@ WHITE_COLOR = (255, 255, 255)
 GREY_COLOR = (225, 225, 225)
 YELLOW_COLOR = (255, 255, 0)
 BLACK_COLOR = (0, 0, 0)
+SLACK_COLOR = webcolors.hex_to_rgb("#4d394b")
+BLACK_COLOR = (0, 0, 0)
 BLUE_COLOR = (215,220,250)
 DARK_GREEN_COLOR = (60,160,40)
 PINK_COLOR = (255,105,130)
@@ -151,6 +154,7 @@ is_joystick_found = False
 # Window title.
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
+
 # Generates random color.
 def mk_random_color():
     r = random.randint(0, 255)
@@ -159,7 +163,9 @@ def mk_random_color():
 
     return r, g, b
 
+
 FLOWER_COLOR = mk_random_color()
+
 
 def init_joystick():
     global is_joystick_found
@@ -221,6 +227,7 @@ def draw_stars(starx, stary):
         (starx - S2, stary + S2)
     )
 
+
 def draw_background():
     global DARK_GREEN_COLOR
 
@@ -239,7 +246,8 @@ def draw_background():
     draw_flower(532)
 
     # Drawing stars.
-    draw_stars(100,300)
+    draw_stars(100, 300)
+
 
 # Sounds kill of the brick.
 def boom_sound():
@@ -255,11 +263,6 @@ def squish_sound():
 def rocket_sound():
     pygame.mixer.Channel(1).set_volume(0.3)
     pygame.mixer.Channel(1).play(rocket_fire_sound)
-
-
-
-
-
 
 
 # Draws the player at 'x' coordinate.
@@ -493,7 +496,7 @@ def draw_title():
     x = 50
     y = 50
 
-    screen.fill(BLACK_COLOR)
+    screen.fill(SLACK_COLOR)
 
     for line in name:
         screen.blit(title_font.render(line, 1, mk_random_color()), (x, y))
