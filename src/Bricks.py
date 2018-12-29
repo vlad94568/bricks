@@ -12,7 +12,6 @@ import pygame
 import random
 import sys
 import math
-import webcolors
 from pygame import gfxdraw
 
 
@@ -86,7 +85,7 @@ GREEN_COLOR = (0, 255, 0)
 WHITE_COLOR = (255, 255, 255)
 YELLOW_COLOR = (255, 255, 0)
 BLACK_COLOR = (0, 0, 0)
-SLACK_COLOR = webcolors.hex_to_rgb("#4d394b")
+SLACK_COLOR = (30, 22, 29)
 BLACK_COLOR = (0, 0, 0)
 BLUE_COLOR = (215, 220, 250)
 DARK_GREEN_COLOR = (60, 160, 40)
