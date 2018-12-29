@@ -81,12 +81,17 @@ class Brick:
 
 
 RED_COLOR = (255, 0, 0)
+RED2_COLOR = (255, 65, 25)
 GREEN_COLOR = (0, 255, 0)
 WHITE_COLOR = (255, 255, 255)
 YELLOW_COLOR = (255, 255, 0)
 BLACK_COLOR = (0, 0, 0)
+BLUE_COLOR = (215,220,250)
+DARK_GREEN_COLOR = (60,160,40)
+PINK_COLOR = (255,105,130)
+DARK_BLUE_COLOR = (39,32,98)
 
-#Initilizing the joystick.
+# Initilizing the joystick.
 pygame.joystick.init()
 joystick_count = pygame.joystick.get_count()
 
@@ -161,6 +166,44 @@ def init_joystick():
         if name.startswith("USB,2-axis 8-button gamepad"):
             is_joystick_found = True
 
+
+def draw_grass_blades(grassx):
+    pygame.draw.rect(screen,DARK_GREEN_COLOR,(grassx + 3,450,2,20))
+    pygame.draw.rect(screen, DARK_GREEN_COLOR, (grassx + 6, 450, 2, 20))
+    pygame.draw.rect(screen, DARK_GREEN_COLOR, (grassx + 9, 450, 2, 20))
+
+
+def draw_flower(flowerx):
+    pygame.draw.rect(screen,PINK_COLOR,(flowerx,427,10,10))
+    pygame.draw.rect(screen, PINK_COLOR, (flowerx - 10, 417, 10, 10))
+    pygame.draw.rect(screen, PINK_COLOR, (flowerx - 10, 437, 10, 10))
+    pygame.draw.rect(screen, PINK_COLOR, (flowerx - 20, 427, 10, 10))
+    pygame.draw.rect(screen, YELLOW_COLOR, (flowerx - 10, 427, 10, 10))
+    pygame.draw.rect(screen, DARK_GREEN_COLOR,(flowerx - 7,447,4,40))
+
+
+def draw_stars(starx, stary):
+    pygame.draw.rect(screen, WHITE_COLOR, (starx, stary, 3, 3))
+    pygame.draw.rect(screen, WHITE_COLOR, (starx - 3, stary - 3, 3, 3))
+    pygame.draw.rect(screen, WHITE_COLOR, (starx - 3, stary + 3, 3, 3))
+    pygame.draw.rect(screen, WHITE_COLOR, (starx - 6, stary, 3, 3))
+    pygame.draw.rect(screen, WHITE_COLOR, (starx - 3, stary, 3, 3))
+
+def draw_background():
+    global DARK_GREEN_COLOR
+    #Drawing the ground.
+    pygame.draw.rect(screen,DARK_GREEN_COLOR,(0,460,640,200))
+    #Drawing grass.
+    draw_grass_blades(10)
+    draw_grass_blades(100)
+    draw_grass_blades(345)
+    draw_grass_blades(550)
+    draw_grass_blades(200)
+    #Drawing flowers.
+    draw_flower(300)
+    draw_flower(532)
+    #Drawing stars.
+    draw_stars(100,300)
 
 # Sounds kill of the brick.
 def boom_sound():
@@ -364,7 +407,7 @@ def check_bricks_rockets():
 
 # Draw score, live and ammo.
 def draw_header():
-    score_label = headerFont.render("score: " + str(score), 1, RED_COLOR)
+    score_label = headerFont.render("score: " + str(score), 1, RED2_COLOR)
     lives_label = headerFont.render("lives: " + str(lives), 1, GREEN_COLOR)
     ammo_label = headerFont.render("ammo: " + str(ammo), 1, WHITE_COLOR)
 
@@ -504,7 +547,8 @@ def main_game_loop():
     # Main game loop.
     while True:
         # Clear the screen.
-        screen.fill(BLACK_COLOR)
+        screen.fill(DARK_BLUE_COLOR)
+        draw_background()
         if lives == 0 or ammo == 0:
             game_over = True
         else:
