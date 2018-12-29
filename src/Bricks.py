@@ -183,33 +183,33 @@ def init_joystick():
             is_joystick_found = True
 
 
-def draw_grass_blades(grassx):
-    pygame.draw.rect(screen,DARK_GREEN_COLOR,(grassx + 3,450,2,20))
-    pygame.draw.rect(screen, DARK_GREEN_COLOR, (grassx + 6, 450, 2, 20))
-    pygame.draw.rect(screen, DARK_GREEN_COLOR, (grassx + 9, 450, 2, 20))
+def draw_grass_blades(grass_x):
+    pygame.draw.rect(screen, DARK_GREEN_COLOR, (grass_x + 3, 450, 2, 20))
+    pygame.draw.rect(screen, DARK_GREEN_COLOR, (grass_x + 6, 450, 2, 20))
+    pygame.draw.rect(screen, DARK_GREEN_COLOR, (grass_x + 9, 450, 2, 20))
 
 
-def draw_flower(flowerx):
-    pygame.draw.rect(screen,FLOWER_COLOR,(flowerx,427,10,10))
-    pygame.draw.rect(screen, FLOWER_COLOR, (flowerx - 10, 417, 10, 10))
-    pygame.draw.rect(screen, FLOWER_COLOR, (flowerx - 10, 437, 10, 10))
-    pygame.draw.rect(screen, FLOWER_COLOR, (flowerx - 20, 427, 10, 10))
-    pygame.draw.rect(screen, YELLOW_COLOR, (flowerx - 10, 427, 10, 10))
-    pygame.draw.rect(screen, DARK_GREEN_COLOR,(flowerx - 7,447,4,40))
+def draw_flower(flower_x):
+    pygame.draw.rect(screen, FLOWER_COLOR, (flower_x, 427, 10, 10))
+    pygame.draw.rect(screen, FLOWER_COLOR, (flower_x - 10, 417, 10, 10))
+    pygame.draw.rect(screen, FLOWER_COLOR, (flower_x - 10, 437, 10, 10))
+    pygame.draw.rect(screen, FLOWER_COLOR, (flower_x - 20, 427, 10, 10))
+    pygame.draw.rect(screen, YELLOW_COLOR, (flower_x - 10, 427, 10, 10))
+    pygame.draw.rect(screen, DARK_GREEN_COLOR, (flower_x - 7, 447, 4, 40))
 
 
-def draw_stars(starx, stary):
+def draw_stars(star_x, star_y):
     pygame.draw.line(
         screen,
         WHITE_COLOR,
-        (starx, stary + STAR_SIZE * 1.5),
-        (starx, stary - STAR_SIZE * 1.5)
+        (star_x, star_y + STAR_SIZE * 1.5),
+        (star_x, star_y - STAR_SIZE * 1.5)
     )
     pygame.draw.line(
         screen,
         WHITE_COLOR,
-        (starx - STAR_SIZE * 1.5, stary),
-        (starx + STAR_SIZE * 1.5, stary)
+        (star_x - STAR_SIZE * 1.5, star_y),
+        (star_x + STAR_SIZE * 1.5, star_y)
     )
 
     S2 = STAR_SIZE * 0.7
@@ -217,14 +217,14 @@ def draw_stars(starx, stary):
     pygame.draw.line(
         screen,
         GREY_COLOR,
-        (starx + S2,stary + S2),
-        (starx - S2, stary - S2)
+        (star_x + S2, star_y + S2),
+        (star_x - S2, star_y - S2)
     )
     pygame.draw.line(
         screen,
         GREY_COLOR,
-        (starx + S2, stary - S2),
-        (starx - S2, stary + S2)
+        (star_x + S2, star_y - S2),
+        (star_x - S2, star_y + S2)
     )
 
 
