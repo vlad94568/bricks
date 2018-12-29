@@ -6,6 +6,8 @@
 #  _/_/_/    _/    _/  _/_/_/    _/_/_/  _/    _/  _/_/_/
 #
 #  By Vlad Ivanov, 2018.
+#  By Nikita Ivanov, 2018
+#
 #  Email: vlad94568@gmail.com
 
 import pygame
@@ -13,88 +15,10 @@ import random
 import sys
 import math
 from pygame import gfxdraw
-
-
-class Rocket:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-        self.frame_cnt = 0
-        self.color = mk_random_color()
-
-
-class Explosion:
-    def __init__(self, frags):
-        self.frags = frags
-
-    def is_done(self):
-        return self.frags[0].frame_cnt == 30
-
-
-class AirFragment:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-        self.speed = random.randint(2, 4)  # Speed in pixels per frame.
-        self.angle = random.randint(0, 360)  # Angle of movement.
-        self.turn_angle = random.randint(0, 360)  # Angle of turning.
-        self.frame_cnt = 0
-        self.size = random.randint(3, 10)  # Size of the square in pixels.
-
-
-class GroundFragment:
-    def __init__(self, x, y, brick_kind):
-        self.x = x
-        self.y = y
-
-        if brick_kind == 1:
-            self.color = RED_COLOR
-        elif brick_kind == 2:
-            self.color = WHITE_COLOR
-        else:  # kind == 3
-            self.color = GREEN_COLOR
-
-        self.speed = random.randint(2, 4)  # Speed in pixels per frame.
-        self.angle = random.randint(10, 170)  # Angle of movement.
-        self.turn_angle = random.randint(0, 360)  # Angle of turning.
-        self.frame_cnt = 0
-        self.size = random.randint(3, 10)  # Size of the square in pixels.
-
-
-class Brick:
-    # kinds:
-    # 1 - normal brick (RED)
-    # 2 - ammo brick (WHITE)
-    # 3 - live break (GREEN)
-    def __init__(self, x, y, y_speed, kind):
-        self.x = x
-        self.y = y
-        self.y_speed = y_speed
-        self.kind = kind
-
-        self.state = 1  # 1 - falling (normal), 2 - explosion
-        self.frame_cnt = 0
-        self.x_adj = 0
-
-
-RED_COLOR = (255, 0, 0)
-RED2_COLOR = (255, 65, 25)
-GREEN_COLOR = (0, 255, 0)
-WHITE_COLOR = (255, 255, 255)
-YELLOW_COLOR = (255, 255, 0)
-BLACK_COLOR = (0, 0, 0)
-SLACK_COLOR = (30, 22, 29)
-BLACK_COLOR = (0, 0, 0)
-BLUE_COLOR = (215, 220, 250)
-DARK_GREEN_COLOR = (60, 160, 40)
-PINK_COLOR = (255, 105, 130)
-DARK_BLUE_COLOR = (39, 32, 98)
+from basics import *
 
 
 STAR_SIZE = 5
-
 
 # Initializing the joystick.
 pygame.joystick.init()
@@ -153,15 +77,6 @@ is_joystick_found = False
 
 # Window title.
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
-
-
-# Generates random color.
-def mk_random_color():
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
-
-    return r, g, b
 
 
 def init_joystick():
