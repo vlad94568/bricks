@@ -174,8 +174,11 @@ def draw_background():
     draw_flower(300)
     draw_flower(532)
 
-    # Drawing stars.
-    draw_stars(100, 300)
+    # Drawing stars randomly.
+    # for a in range(1,30):
+    #     randomstarx = random.randint(30,630)
+    #     randomstary = random.randint(30,470)
+    #     draw_stars(randomstarx, randomstary)
 
 
 # Sounds kill of the brick.

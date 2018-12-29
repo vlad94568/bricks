@@ -45,6 +45,18 @@ class Flower(SceneElement):
         self.center_color = center_color
 
 
+
+class Star(SceneElement):
+    def __init__(self, x, y, max_star_sparkle_size,
+                 curr_star_sparkle_size,
+                 star_color):
+        SceneElement.__init__(self, x, y)
+
+        self.max_star_sparkle_size = max_star_sparkle_size
+        self.curr_star_sparkle_size = curr_star_sparkle_size
+        self.star_color = star_color
+
+
 class Rocket(SceneElement):
     def __init__(self, x, y):
         SceneElement.__init__(self, x, y)
