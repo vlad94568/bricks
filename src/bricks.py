@@ -294,7 +294,16 @@ def draw_bricks():
     global lives
     global ammo
 
-    explosions.extend([Explosion([GroundFragment(brick.x, brick.y, brick.kind) for x in range(5)]) for brick in bricks if brick.y >= 470])
+    explosions.extend(
+        [
+            Explosion(
+                [
+                    GroundFragment(brick.x, brick.y, brick.kind) for _ in range(5)
+                ]
+            )
+            for brick in bricks if brick.y >= 470
+        ]
+    )
 
     old_cnt = len(bricks)
     bricks[:] = [brick for brick in bricks if brick.y < 470]  # Filter out fallen bricks.
@@ -360,7 +369,7 @@ def check_bricks_rockets():
                         frag_x = brick.x + 7
                         frag_y = brick.y + 5
 
-                        explosions.append(Explosion([AirFragment(frag_x, frag_y) for x in range(5)]))
+                        explosions.append(Explosion([AirFragment(frag_x, frag_y) for _ in range(5)]))
 
     if len(bricks_to_remove) > 0:
         boom_sound()
@@ -504,6 +513,9 @@ def main_game_loop():
     # Start main background music.
     pygame.mixer.Channel(0).play(main_bg_sound, -1)
 
+    global left
+    global right
+
     player_x = 320
     left = 0
     right = 0
@@ -614,6 +626,4 @@ def main_game_loop():
 init_joystick()
 draw_title()
 main_game_loop()
-
-
 
