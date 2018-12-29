@@ -164,9 +164,6 @@ def mk_random_color():
     return r, g, b
 
 
-FLOWER_COLOR = mk_random_color()
-
-
 def init_joystick():
     global is_joystick_found
 
@@ -190,49 +187,52 @@ def draw_grass_blades(grass_x):
 
 
 def draw_flower(flower_x):
-    pygame.draw.rect(screen, FLOWER_COLOR, (flower_x, 427, 10, 10))
-    pygame.draw.rect(screen, FLOWER_COLOR, (flower_x - 10, 417, 10, 10))
-    pygame.draw.rect(screen, FLOWER_COLOR, (flower_x - 10, 437, 10, 10))
-    pygame.draw.rect(screen, FLOWER_COLOR, (flower_x - 20, 427, 10, 10))
-    pygame.draw.rect(screen, YELLOW_COLOR, (flower_x - 10, 427, 10, 10))
+    c1 = mk_random_color()
+    c2 = mk_random_color()
+
+    pygame.draw.rect(screen, c1, (flower_x, 427, 10, 10))
+    pygame.draw.rect(screen, c1, (flower_x - 10, 417, 10, 10))
+    pygame.draw.rect(screen, c1, (flower_x - 10, 437, 10, 10))
+    pygame.draw.rect(screen, c1, (flower_x - 20, 427, 10, 10))
+    pygame.draw.rect(screen, c2, (flower_x - 10, 427, 10, 10))
     pygame.draw.rect(screen, DARK_GREEN_COLOR, (flower_x - 7, 447, 4, 40))
 
 
 def draw_stars(star_x, star_y):
+    s1 = STAR_SIZE * 1.5
+
     pygame.draw.line(
         screen,
         WHITE_COLOR,
-        (star_x, star_y + STAR_SIZE * 1.5),
-        (star_x, star_y - STAR_SIZE * 1.5)
+        (star_x, star_y + s1),
+        (star_x, star_y - s1)
     )
     pygame.draw.line(
         screen,
         WHITE_COLOR,
-        (star_x - STAR_SIZE * 1.5, star_y),
-        (star_x + STAR_SIZE * 1.5, star_y)
+        (star_x - s1, star_y),
+        (star_x + s1, star_y)
     )
 
-    S2 = STAR_SIZE * 0.7
+    s2 = STAR_SIZE * 0.7
 
     pygame.draw.line(
         screen,
         GREY_COLOR,
-        (star_x + S2, star_y + S2),
-        (star_x - S2, star_y - S2)
+        (star_x + s2, star_y + s2),
+        (star_x - s2, star_y - s2)
     )
     pygame.draw.line(
         screen,
         GREY_COLOR,
-        (star_x + S2, star_y - S2),
-        (star_x - S2, star_y + S2)
+        (star_x + s2, star_y - s2),
+        (star_x - s2, star_y + s2)
     )
 
 
 def draw_background():
-    global DARK_GREEN_COLOR
-
     # Drawing the ground.
-    pygame.draw.rect(screen,DARK_GREEN_COLOR,(0,460,640,200))
+    pygame.draw.rect(screen, DARK_GREEN_COLOR, (0, 460, 640, 200))
 
     # Drawing grass.
     draw_grass_blades(10)
@@ -583,7 +583,10 @@ def main_game_loop():
     while True:
         # Clear the screen.
         screen.fill(DARK_BLUE_COLOR)
+
+        # Draw the world.
         draw_background()
+
         if lives == 0 or ammo == 0:
             game_over = True
         else:
