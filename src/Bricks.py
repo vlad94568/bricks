@@ -7,7 +7,6 @@
 #
 #  By Vlad Ivanov, 2018.
 #  Email: vlad94568@gmail.com
-from operator import is_
 
 import pygame
 import random
@@ -94,9 +93,8 @@ DARK_BLUE_COLOR = (39,32,98)
 STAR_SIZE = 5
 
 
-# Initilizing the joystick.
+# Initializing the joystick.
 pygame.joystick.init()
-joystick_count = pygame.joystick.get_count()
 
 START_ROCKET_Y = 450
 START_BRICK_Y = 0
