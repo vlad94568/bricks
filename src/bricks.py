@@ -17,8 +17,6 @@ from pygame import gfxdraw
 from src.basics import *
 
 
-STAR_SIZE = 5
-
 # Initializing the joystick.
 pygame.joystick.init()
 
@@ -112,51 +110,10 @@ def draw_flower(flower_x):
     pygame.draw.rect(screen, DARK_GREEN_COLOR, (flower_x - 7, 447, 4, 40))
 
 
-max_star_sparkle_size = STAR_SIZE
-curr_star_sparkle_size = 0
-
-
-def draw_stars(star_x, star_y):
-    global curr_star_sparkle_size
-
-    s1 = STAR_SIZE * 1.5
-
-    #
-    # Main lines.
-    #
-    pygame.draw.line(
-        screen,
-        WHITE_COLOR,
-        (star_x, star_y + s1),
-        (star_x, star_y - s1)
-    )
-    pygame.draw.line(
-        screen,
-        WHITE_COLOR,
-        (star_x - s1, star_y),
-        (star_x + s1, star_y)
-    )
-
-    #
-    # Sparkle lines.
-    #
-    pygame.draw.line(
-        screen,
-        mk_random_color(),
-        (star_x + curr_star_sparkle_size, star_y + curr_star_sparkle_size),
-        (star_x - curr_star_sparkle_size, star_y - curr_star_sparkle_size)
-    )
-    pygame.draw.line(
-        screen,
-        mk_random_color(),
-        (star_x + curr_star_sparkle_size, star_y - curr_star_sparkle_size),
-        (star_x - curr_star_sparkle_size, star_y + curr_star_sparkle_size)
-    )
-
-    if curr_star_sparkle_size > max_star_sparkle_size:
-        curr_star_sparkle_size = 0
-    else:
-        curr_star_sparkle_size = curr_star_sparkle_size + 0.4
+# TODO
+star1 = Star(100, 100, WHITE_COLOR, 15)
+star2 = Star(130, 150, YELLOW_COLOR, 10)
+star3 = Star(180, 190, RED2_COLOR, 5)
 
 
 def draw_background():
@@ -179,6 +136,10 @@ def draw_background():
     #     randomstarx = random.randint(30,630)
     #     randomstary = random.randint(30,470)
     #     draw_stars(randomstarx, randomstary)
+
+    star1.draw(screen)
+    star2.draw(screen)
+    star3.draw(screen)
 
 
 # Sounds kill of the brick.

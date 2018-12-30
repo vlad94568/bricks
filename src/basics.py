@@ -12,6 +12,7 @@
 
 
 import random
+import pygame
 from src.colors import *
 
 #
@@ -45,27 +46,76 @@ class Flower(SceneElement):
         self.center_color = center_color
 
 
-
+# Sparkling star.
 class Star(SceneElement):
-    def __init__(self, x, y, max_star_sparkle_size,
-                 curr_star_sparkle_size,
-                 star_color):
+    def __init__(self, x, y,
+                 star_color,
+                 max_size):
         SceneElement.__init__(self, x, y)
 
-        self.max_star_sparkle_size = max_star_sparkle_size
-        self.curr_star_sparkle_size = curr_star_sparkle_size
+        self.curr_sparkle_size = 0
         self.star_color = star_color
+        self.max_size = max_size
 
+    # Draws this star.
+    def draw(self, screen):
+        s1 = self.max_size * 1.5
+
+        #
+        # Main lines.
+        #
+        pygame.draw.line(
+            screen,
+            self.star_color,
+            (self.x, self.y + s1),
+            (self.x, self.y - s1)
+        )
+        pygame.draw.line(
+            screen,
+            self.star_color,
+            (self.x - s1, self.y),
+            (self.x + s1, self.y)
+        )
+
+        #
+        # Sparkle lines.
+        #
+        pygame.draw.line(
+            screen,
+            mk_random_color(),
+            (self.x + self.curr_sparkle_size, self.y + self.curr_sparkle_size),
+            (self.x - self.curr_sparkle_size, self.y - self.curr_sparkle_size)
+        )
+        pygame.draw.line(
+            screen,
+            mk_random_color(),
+            (self.x + self.curr_sparkle_size, self.y - self.curr_sparkle_size),
+            (self.x - self.curr_sparkle_size, self.y + self.curr_sparkle_size)
+        )
+
+        if self.curr_sparkle_size > self.max_size:
+            self.curr_sparkle_size = 0
+        else:
+            self.curr_sparkle_size = self.curr_sparkle_size + 0.4
+
+
+# Patch of grass.
 class Grass(SceneElement):
-    def __init__(self, x, y, max_grass_height,
-                 least_grass_height,
-                 current_grass_height,
+    def __init__(self, x, y,
+                 max_grass_height,
+                 min_grass_height,
+                 num_of_stalks,
                  grass_color):
+        SceneElement.__init__(self, x, y)
+
         self.max_grass_height = max_grass_height
-        self.least_grass_height = least_grass_height
-        self.current_grass_height = current_grass_height
+        self.least_grass_height = min_grass_height
+        self.num_of_stalks = num_of_stalks
         self.grass_color = grass_color
 
+    # Gets the list of all pre-created grass stalks.
+    def get_stalks(self):
+        return []  # TODO
 
 
 class Rocket(SceneElement):
