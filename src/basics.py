@@ -56,6 +56,17 @@ class Star(SceneElement):
         self.curr_star_sparkle_size = curr_star_sparkle_size
         self.star_color = star_color
 
+class Grass(SceneElement):
+    def __init__(self, x, y, max_grass_height,
+                 least_grass_height,
+                 current_grass_height,
+                 grass_color):
+        self.max_grass_height = max_grass_height
+        self.least_grass_height = least_grass_height
+        self.current_grass_height = current_grass_height
+        self.grass_color = grass_color
+
+
 
 class Rocket(SceneElement):
     def __init__(self, x, y):
