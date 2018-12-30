@@ -99,16 +99,16 @@ def draw_grass_blades(grass_x):
     pygame.draw.rect(screen, DARK_GREEN_COLOR, (grass_x + 6, 450, 2, 20))
     pygame.draw.rect(screen, DARK_GREEN_COLOR, (grass_x + 9, 450, 2, 20))
 
-
+c1 = mk_random_color()
+# c2 = mk_random_color()
 def draw_flower(flower_x):
-    c1 = mk_random_color()
-    c2 = mk_random_color()
+
 
     pygame.draw.rect(screen, c1, (flower_x, 427, 10, 10))
     pygame.draw.rect(screen, c1, (flower_x - 10, 417, 10, 10))
     pygame.draw.rect(screen, c1, (flower_x - 10, 437, 10, 10))
     pygame.draw.rect(screen, c1, (flower_x - 20, 427, 10, 10))
-    pygame.draw.rect(screen, c2, (flower_x - 10, 427, 10, 10))
+    pygame.draw.rect(screen, YELLOW_COLOR, (flower_x - 10, 427, 10, 10))
     pygame.draw.rect(screen, DARK_GREEN_COLOR, (flower_x - 7, 447, 4, 40))
 
 

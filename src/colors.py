@@ -14,6 +14,7 @@
 # All colors used in the game.
 #
 
+
 RED_COLOR = (255, 0, 0)
 RED2_COLOR = (255, 65, 25)
 GREEN_COLOR = (0, 255, 0)
@@ -25,3 +26,4 @@ BLUE_COLOR = (215, 220, 250)
 DARK_GREEN_COLOR = (60, 160, 40)
 PINK_COLOR = (255, 105, 130)
 DARK_BLUE_COLOR = (39, 32, 98)
+
