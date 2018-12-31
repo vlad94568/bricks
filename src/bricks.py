@@ -17,6 +17,7 @@ from pygame import gfxdraw
 # Import all scene elements.
 from src.scene.star import *
 from src.scene.brick import *
+from src.scene.flower import *
 
 # Initializing the joystick.
 pygame.joystick.init()
