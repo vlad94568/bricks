@@ -54,7 +54,7 @@ pygame.font.init()
 # 3 - brick ground-kill (reached the bottom)
 
 # Sounds.
-main_bg_sound = pygame.mixer.Sound("sounds/background_sound0.ogg")
+main_bg_sound = pygame.mixer.Sound("sounds/background_sound0.1.ogg")
 title_bg_sound = pygame.mixer.Sound("sounds/background_sound1.ogg")
 final_bg_sound = pygame.mixer.Sound("sounds/background_sound2.ogg")
 rocket_fire_sound = pygame.mixer.Sound("sounds/rocket_fired.ogg")
