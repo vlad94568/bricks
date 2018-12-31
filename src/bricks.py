@@ -414,7 +414,7 @@ def draw_title():
     draw_brick(x2, y2, GREEN_COLOR)
     screen.blit(title_font.render("+1 live", 1, YELLOW_COLOR), (x2 + 30, y2))
 
-    screen.blit(title_font.render("SPACE to shoot | MOUSE to move", 1, YELLOW_COLOR), (180, 330))
+    screen.blit(title_font.render("SPACE to shoot | ARROW KEYS to move", 1, YELLOW_COLOR), (150, 330))
 
     if is_joystick_found:
         screen.blit(title_font.render("Supported joystick found", 1, YELLOW_COLOR), (200, 370))
