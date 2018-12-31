@@ -16,6 +16,7 @@ from pygame import gfxdraw
 
 # Import all scene elements.
 from src.scene.star import *
+from src.scene.brick import *
 
 # Initializing the joystick.
 pygame.joystick.init()
@@ -162,11 +163,6 @@ def draw_rockets():
         rocket.frame_cnt += 1
 
 
-# Draws a brick with given (x, y) coordinates and color.
-def draw_brick(x, y, color):
-    pygame.draw.rect(screen, color, (x, y, 15, 10), 3)
-
-
 # Draws all the explosions.
 def draw_explosions():
     exp_to_remove = []
@@ -264,12 +260,7 @@ def draw_bricks():
         squished = False
 
     for brick in bricks:
-        if brick.kind == 1:
-            draw_brick(brick.x, brick.y, RED_COLOR)
-        elif brick.kind == 2:
-            draw_brick(brick.x, brick.y, WHITE_COLOR)
-        else:  # kind == 3
-            draw_brick(brick.x, brick.y, GREEN_COLOR)
+        brick.draw(screen)
 
         brick.frame_cnt += 1
 
@@ -393,17 +384,17 @@ def draw_title():
     x2 = 260
     y2 = 225
 
-    draw_brick(x2, y2, RED_COLOR)
+    Brick(x2, y2, 0, 1).draw(screen)
     screen.blit(title_font.render("+1 score", 1, YELLOW_COLOR), (x2 + 30, y2))
 
     y2 += 20
 
-    draw_brick(x2, y2, WHITE_COLOR)
+    Brick(x2, y2, 0, 2).draw(screen)
     screen.blit(title_font.render("+5 ammo", 1, YELLOW_COLOR), (x2 + 30, y2))
 
     y2 += 20
 
-    draw_brick(x2, y2, GREEN_COLOR)
+    Brick(x2, y2, 0, 3).draw(screen)
     screen.blit(title_font.render("+1 live", 1, YELLOW_COLOR), (x2 + 30, y2))
 
     screen.blit(title_font.render("SPACE to shoot | ARROW KEYS to move", 1, YELLOW_COLOR), (150, 330))

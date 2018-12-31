@@ -13,6 +13,7 @@
 
 import random
 import pygame
+
 from src.colors import *
 
 #
@@ -131,18 +132,3 @@ class GroundFragment(SceneElement):
         self.turn_angle = random.randint(0, 360)  # Angle of turning.
         self.frame_cnt = 0
         self.size = random.randint(3, 10)  # Size of the square in pixels.
-
-
-class Brick(SceneElement):
-    # kinds:
-    # 1 - normal brick (RED)
-    # 2 - ammo brick (WHITE)
-    # 3 - live break (GREEN)
-    def __init__(self, x, y, y_speed, kind):
-        SceneElement.__init__(self, x, y)
-
-        self.y_speed = y_speed
-        self.kind = kind
-        self.state = 1  # 1 - falling (normal), 2 - explosion
-        self.frame_cnt = 0
-        self.x_adj = 0
