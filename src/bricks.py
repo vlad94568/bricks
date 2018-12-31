@@ -10,12 +10,12 @@
 #
 #  Email: vlad94568@gmail.com
 
-import pygame
-import sys
 import math
+import sys
 from pygame import gfxdraw
-from src.basics import *
 
+# Import all scene elements.
+from src.scene.star import *
 
 # Initializing the joystick.
 pygame.joystick.init()
