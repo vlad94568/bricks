@@ -111,7 +111,6 @@ flower3 = Flower(300)
 flower4 = Flower(400)
 
 
-
 def draw_background():
     # Drawing the ground.
     pygame.draw.rect(screen, DARK_GREEN_COLOR, (0, 460, 640, 200))
@@ -438,7 +437,7 @@ def draw_final_score():
     x = 54
     y = 50
 
-    screen.fill(BLACK_COLOR)
+    screen.fill(SLACK_COLOR)
 
     for line in lines:
         screen.blit(final_font1.render(line, 1, mk_random_color()), (x, y))
