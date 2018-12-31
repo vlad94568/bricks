@@ -38,13 +38,35 @@ class SceneElement:
 
 # Colorful flower.
 class Flower(SceneElement):
-    def __init__(self, x, y, stem_height, petal_color, center_color):
+    def __init__(self, x):
+        SceneElement.__init__(self, x, 427)
+
+        self.stem_height = 40
+        self.petal_color = mk_random_color()
+        self.center_color = YELLOW_COLOR
+        self.stem_color = DARK_GREEN_COLOR
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, self.petal_color, (self.x, 427, 10, 10))
+        pygame.draw.rect(screen, self.petal_color, (self.x - 10, 417, 10, 10))
+        pygame.draw.rect(screen, self.petal_color, (self.x - 10, 437, 10, 10))
+        pygame.draw.rect(screen, self.petal_color, (self.x - 20, 427, 10, 10))
+        pygame.draw.rect(screen, self.center_color, (self.x - 10, 427, 10, 10))
+        pygame.draw.rect(screen, self.stem_color, (self.x - 7, 447, 4, 40))
+
+
+# Tree
+class Tree(SceneElement):
+    def __init__(self, x):
         SceneElement.__init__(self, x, y)
 
-        self.stem_height = stem_height
-        self.petal_color = petal_color
-        self.center_color = center_color
+        self.tree_size = 75
+        self.wood_color = BROWN_COLOR
+        self.leave_color = GREEN_COLOR
 
+    def draw(self, screen):
+        a=0
+        # TODO
 
 # Sparkling star.
 class Star(SceneElement):
@@ -56,6 +78,7 @@ class Star(SceneElement):
         self.curr_sparkle_size = 0
         self.star_color = star_color
         self.max_size = max_size
+
 
     # Draws this star.
     def draw(self, screen):

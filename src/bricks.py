@@ -99,15 +99,6 @@ def draw_grass_blades(grass_x):
 
 c1 = mk_random_color()
 # c2 = mk_random_color()
-def draw_flower(flower_x):
-
-
-    pygame.draw.rect(screen, c1, (flower_x, 427, 10, 10))
-    pygame.draw.rect(screen, c1, (flower_x - 10, 417, 10, 10))
-    pygame.draw.rect(screen, c1, (flower_x - 10, 437, 10, 10))
-    pygame.draw.rect(screen, c1, (flower_x - 20, 427, 10, 10))
-    pygame.draw.rect(screen, YELLOW_COLOR, (flower_x - 10, 427, 10, 10))
-    pygame.draw.rect(screen, DARK_GREEN_COLOR, (flower_x - 7, 447, 4, 40))
 
 
 # TODO
@@ -115,6 +106,7 @@ star1 = Star(100, 100, WHITE_COLOR, 15)
 star2 = Star(130, 150, YELLOW_COLOR, 10)
 star3 = Star(180, 190, RED2_COLOR, 5)
 
+flower1 = Flower(56)
 
 def draw_background():
     # Drawing the ground.
@@ -128,8 +120,8 @@ def draw_background():
     draw_grass_blades(200)
 
     # Drawing flowers.
-    draw_flower(300)
-    draw_flower(532)
+
+    flower1.draw(screen)
 
     # Drawing stars randomly.
     # for a in range(1,30):
