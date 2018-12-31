@@ -105,7 +105,11 @@ star1 = Star(100, 100, WHITE_COLOR, 15)
 star2 = Star(130, 150, YELLOW_COLOR, 10)
 star3 = Star(180, 190, RED2_COLOR, 5)
 
-flower1 = Flower(300)
+flower1 = Flower(100)
+flower2 = Flower(200)
+flower3 = Flower(300)
+flower4 = Flower(400)
+
 
 
 def draw_background():
@@ -121,6 +125,9 @@ def draw_background():
 
     # Drawing flowers.
     flower1.draw(screen)
+    flower2.draw(screen)
+    flower3.draw(screen)
+    flower4.draw(screen)
 
     # Drawing stars.
     star1.draw(screen)

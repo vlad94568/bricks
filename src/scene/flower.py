@@ -18,7 +18,7 @@ class Flower(SceneElement):
     def __init__(self, x):
         SceneElement.__init__(self, x, 427)
 
-        self.stem_height = random.randint(40, 80)
+        self.stem_height = random.randint(20, 40)
         self.petal_color = mk_random_color()
         self.center_color = YELLOW_COLOR
         self.stem_color = DARK_GREEN_COLOR
@@ -34,5 +34,5 @@ class Flower(SceneElement):
         # Drawing stem.
         pygame.draw.rect(screen, self.stem_color, (self.x - 7, 447 - self.stem_height + 10, 4, self.stem_height + 10))
         # Drawing leaves.
-        pygame.draw.rect(screen, self.stem_color, (self.x - 12, 425 + (self.stem_height % 2), 14, 8))
+        pygame.draw.rect(screen, self.stem_color, (self.x - 12, 447 - (self.stem_height - 15) / 2, 14, 6))
 
