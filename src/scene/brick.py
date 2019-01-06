@@ -36,5 +36,7 @@ class Brick(SceneElement):
         else:
             self.color = GREEN_COLOR
 
+    # Draws the brick.
     def draw(self, screen):
+        # TODO: add different visual depending on the kind of the brick.
         pygame.draw.rect(screen, self.color, (self.x, self.y, 15, 10), 3)

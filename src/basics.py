@@ -37,47 +37,6 @@ class SceneElement:
         self.y = y
 
 
-# Tree
-class Tree(SceneElement):
-    def __init__(self, x, y, tree_size):
-        SceneElement.__init__(self, x, y)
-
-        self.tree_size = tree_size
-        self.wood_color = BROWN_COLOR
-        self.leave_color = GREEN_COLOR
-
-    def draw(self, screen):
-        a=0
-        # TODO: add implementation
-
-
-# Patch of grass.
-class Grass(SceneElement):
-    def __init__(self, x, y, num_of_stalks):
-        SceneElement.__init__(self, x, y)
-
-        self.max_grass_height = 10
-        self.least_grass_height = 5
-        self.num_of_stalks = 100
-        self.grass_color = GREEN_COLOR
-        self.stalks = []
-
-    # Gets the list of all pre-created grass stalks.
-    def get_stalks(self):
-        for _ in range(0, 100):
-            self.stalks.append(self.num_of_stalks)
-        print(self.stalks)
-        return [self.stalks]
-
-
-class Rocket(SceneElement):
-    def __init__(self, x, y):
-        SceneElement.__init__(self, x, y)
-
-        self.frame_cnt = 0
-        self.color = mk_random_color()
-
-
 class Explosion:
     def __init__(self, frags):
         self.frags = frags

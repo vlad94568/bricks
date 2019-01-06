@@ -18,6 +18,9 @@ from pygame import gfxdraw
 from src.scene.star import *
 from src.scene.brick import *
 from src.scene.flower import *
+from src.scene.rocket import *
+from src.scene.grass import *
+from src.scene.tree import *
 
 # Initializing the joystick.
 pygame.joystick.init()
@@ -161,13 +164,8 @@ def draw_rockets():
     rockets[:] = [rocket for rocket in rockets if rocket.y > 5]  # Filter out out of screen rockets.
 
     for rocket in rockets:
-        if rocket.frame_cnt % 5 == 0:
-            rocket.color = mk_random_color()
-
-        pygame.draw.rect(screen, rocket.color, (rocket.x, rocket.y, 5, 8), 1)
-
+        rocket.draw(screen)
         rocket.y -= 6
-        rocket.frame_cnt += 1
 
 
 # Draws all the explosions.
