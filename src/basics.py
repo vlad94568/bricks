@@ -12,7 +12,6 @@
 
 
 import random
-import pygame
 
 from src.colors import *
 

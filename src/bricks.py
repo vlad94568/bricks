@@ -12,6 +12,7 @@
 
 import math
 import sys
+import pygame
 from pygame import gfxdraw
 
 # Import all scene elements.
