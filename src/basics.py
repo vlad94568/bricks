@@ -53,21 +53,21 @@ class Tree(SceneElement):
 
 # Patch of grass.
 class Grass(SceneElement):
-    def __init__(self, x, y,
-                 max_grass_height,
-                 min_grass_height,
-                 num_of_stalks,
-                 grass_color):
+    def __init__(self, x, y, num_of_stalks):
         SceneElement.__init__(self, x, y)
 
-        self.max_grass_height = max_grass_height
-        self.least_grass_height = min_grass_height
-        self.num_of_stalks = num_of_stalks
-        self.grass_color = grass_color
+        self.max_grass_height = 10
+        self.least_grass_height = 5
+        self.num_of_stalks = 100
+        self.grass_color = GREEN_COLOR
+        self.stalks = []
 
     # Gets the list of all pre-created grass stalks.
     def get_stalks(self):
-        return []  # TODO
+        for _ in range(0, 100):
+            self.stalks.append(self.num_of_stalks)
+        print(self.stalks)
+        return [self.stalks]
 
 
 class Rocket(SceneElement):
