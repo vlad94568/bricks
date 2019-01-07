@@ -12,8 +12,9 @@
 
 
 import random
-
+import pygame
 from src.colors import *
+
 
 #
 # Contains basic functions and classes for the game.
@@ -74,15 +75,35 @@ class Level:
 class Game:
     def __init__(self,
                  init_lives,
-                 is_joystick_on,
                  title_sound,
                  end_sound
                  ):
         self.score = 0
         self.lives = init_lives
-        self.is_joystick_on = is_joystick_on
+        self.is_joystick_on = self.detect_joystick()
         self.title_sound = title_sound
         self.end_sound = end_sound
+        self.screen = pygame.display.set_mode((640, 480))
+        self.clock = pygame.time.Clock()
+
+    # Detects if supported joystick is found.
+    @staticmethod
+    def detect_joystick():
+        is_joystick_found = False
+
+        joystick_count = pygame.joystick.get_count()
+
+        for i in range(joystick_count):
+            joystick = pygame.joystick.Joystick(i)
+            joystick.init()
+
+            # Get the name from the OS for the controller/joystick
+            name = joystick.get_name()
+
+            if name.startswith("USB,2-axis 8-button gamepad"):
+                is_joystick_found = True
+
+        return is_joystick_found
 
 
 # TODO: refactor

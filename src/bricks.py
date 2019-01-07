@@ -70,7 +70,7 @@ screen = pygame.display.set_mode((640, 480))
 clock = pygame.time.Clock()
 
 # Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
-headerFont = pygame.font.Font("fonts/Anonymous.ttf", 13)
+header_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
 title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
@@ -325,9 +325,9 @@ def check_bricks_rockets():
 
 # Draw score, live and ammo.
 def draw_header():
-    score_label = headerFont.render("score: " + str(score), 1, RED2_COLOR)
-    lives_label = headerFont.render("lives: " + str(lives), 1, GREEN_COLOR)
-    ammo_label = headerFont.render("ammo: " + str(ammo), 1, WHITE_COLOR)
+    score_label = header_font.render("score: " + str(score), 1, RED2_COLOR)
+    lives_label = header_font.render("lives: " + str(lives), 1, GREEN_COLOR)
+    ammo_label = header_font.render("ammo: " + str(ammo), 1, WHITE_COLOR)
 
     screen.blit(score_label, (10, 10))
     screen.blit(lives_label, (150, 10))
