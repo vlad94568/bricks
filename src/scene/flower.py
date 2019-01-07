@@ -11,7 +11,7 @@
 #  Email: vlad94568@gmail.com
 
 import pygame
-from src.basics import *
+from src.common import *
 
 
 class Flower(SceneElement):
