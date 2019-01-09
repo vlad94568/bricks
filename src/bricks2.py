@@ -32,6 +32,9 @@ pygame.mixer.init()
 pygame.font.init()
 pygame.joystick.init()
 
+# Window title.
+pygame.display.set_caption("--==B.R.I.C.K.S==--")
+
 # Sounds.
 bg_sound_1 = pygame.mixer.Sound("sounds/background_sound0.1.ogg")
 title_bg_sound = pygame.mixer.Sound("sounds/background_sound1.ogg")
@@ -41,6 +44,7 @@ final_bg_sound = pygame.mixer.Sound("sounds/background_sound2.ogg")
 # Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
 header_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
 title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
+ver_font = pygame.font.Font("fonts/Anonymous.ttf", 10)
 final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
 
@@ -48,9 +52,11 @@ final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
 game = Game(
     20,  # Initial number of lives given to the user.
     title_bg_sound,
-    final_bg_sound
+    final_bg_sound,
+    []
 )
 
+# Soundtrack mixer.
 mixer = SoundMixer()
 
 
@@ -67,7 +73,8 @@ def wait_key_pressed(key):
 
 
 def end_game():
-    ()
+    pygame.quit()
+    sys.exit()
 
 
 # Draws the game's title.
@@ -89,7 +96,8 @@ def draw_title():
         game.screen.blit(title_font.render(line, 1, mk_random_color()), (x, y))
         y += 15
 
-        game.screen.blit(title_font.render("--== Copyright 2018 (C) by Vlad Ivanov ==--", 1, YELLOW_COLOR), (115, 150))
+    game.screen.blit(title_font.render("--== Copyright 2018-2019 (C) by Vlad Ivanov ==--", 1, YELLOW_COLOR), (105, 150))
+    game.screen.blit(ver_font.render("ver. 2.0.0", 1, YELLOW_COLOR), (270, 170))
 
     x2 = 260
     y2 = 225
@@ -126,9 +134,7 @@ def draw_title():
 def main_game_loop():
     ()
 
-# +=================+
-# | Start the game. |
-# +=================+
+
 draw_title()
 main_game_loop()
 

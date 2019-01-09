@@ -23,9 +23,10 @@ from src.colors import *
 
 # Generates random color.
 def mk_random_color():
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+    # Start with 32 to make sure that random colors are minimally bright.
+    r = random.randint(32, 255)
+    g = random.randint(32, 255)
+    b = random.randint(32, 255)
 
     return r, g, b
 
@@ -76,15 +77,18 @@ class Game:
     def __init__(self,
                  init_lives,
                  title_sound,
-                 end_sound
+                 end_sound,
+                 levels
                  ):
         self.score = 0
         self.lives = init_lives
-        self.is_joystick_on = self.detect_joystick()
+        self.is_joystick_found = self.detect_joystick()
         self.title_sound = title_sound
         self.end_sound = end_sound
         self.screen = pygame.display.set_mode((640, 480))
         self.clock = pygame.time.Clock()
+        self.levels = levels
+        self.lvl_idx = 0
 
     # Detects if supported joystick is found.
     @staticmethod
