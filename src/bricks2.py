@@ -15,8 +15,15 @@ import sys
 import pygame
 from pygame import gfxdraw
 
+# Initialize pygame & its modules.
+pygame.init()
+pygame.mixer.init()
+pygame.font.init()
+pygame.joystick.init()
+
 # Import all scene elements.
 from src.common import *
+from src.levels import *
 from src.scene.star import *
 from src.scene.brick import *
 from src.scene.flower import *
@@ -25,12 +32,6 @@ from src.scene.grass import *
 from src.scene.tree import *
 
 from src.sound_mixer import *
-
-# Initialize pygame & its modules.
-pygame.init()
-pygame.mixer.init()
-pygame.font.init()
-pygame.joystick.init()
 
 # Window title.
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
@@ -51,6 +52,7 @@ final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
 # Game.
 game = Game(
     20,  # Initial number of lives given to the user.
+    20,  # Initial ammo amount.
     title_bg_sound,
     final_bg_sound,
     []
@@ -79,7 +81,7 @@ def end_game():
 
 # Draws the game's title.
 def draw_title():
-    name = [
+    ascii_name = [
         "    _/_/_/    _/_/_/    _/_/_/    _/_/_/  _/    _/    _/_/_/",
         "   _/    _/  _/    _/    _/    _/        _/  _/    _/",
         "  _/_/_/    _/_/_/      _/    _/        _/_/        _/_/",
@@ -92,35 +94,39 @@ def draw_title():
 
     game.screen.fill(SLACK_COLOR)
 
-    for line in name:
-        game.screen.blit(title_font.render(line, 1, mk_random_color()), (x, y))
+    # Shortcut function.
+    def pri(s, s_x, s_y, color=YELLOW_COLOR, font=title_font):
+        game.screen.blit(font.render(s, 1, color), (s_x, s_y))
+
+    for line in ascii_name:
+        pri(line, x, y, mk_random_color())
         y += 15
 
-    game.screen.blit(title_font.render("--== Copyright 2018-2019 (C) by Vlad Ivanov ==--", 1, YELLOW_COLOR), (105, 150))
-    game.screen.blit(ver_font.render("ver. 2.0.0", 1, YELLOW_COLOR), (270, 170))
+    pri("--== Copyright 2018-2019 (C) by Vlad Ivanov ==--", 105, 150)
+    pri("ver. 2.0.0", 270, 170, font=ver_font)
 
     x2 = 260
     y2 = 225
 
     Brick(x2, y2, 0, 1).draw(game.screen)
-    game.screen.blit(title_font.render("+1 score", 1, YELLOW_COLOR), (x2 + 30, y2))
+    pri("+1 score", x2 + 30, y2)
 
     y2 += 20
 
     Brick(x2, y2, 0, 2).draw(game.screen)
-    game.screen.blit(title_font.render("+5 ammo", 1, YELLOW_COLOR), (x2 + 30, y2))
+    pri("+5 ammo", x2 + 30, y2)
 
     y2 += 20
 
     Brick(x2, y2, 0, 3).draw(game.screen)
-    game.screen.blit(title_font.render("+1 live", 1, YELLOW_COLOR), (x2 + 30, y2))
+    pri("+1 live", x2 + 30, y2)
 
-    game.screen.blit(title_font.render("SPACE to shoot | ARROW KEYS to move", 1, YELLOW_COLOR), (150, 330))
+    pri("SPACE to shoot | ARROW KEYS to move", 150, 330)
 
     if game.is_joystick_found:
-        game.screen.blit(title_font.render("Supported joystick found", 1, YELLOW_COLOR), (200, 370))
+        pri("Supported joystick found", 200, 370)
 
-    game.screen.blit(title_font.render("Press ENTER to start", 1, WHITE_COLOR), (220, 410))
+    pri("Press ENTER to start", 220, 410)
 
     # Start title background music.
     mixer.background_sound(game.title_sound)
@@ -131,8 +137,20 @@ def draw_title():
     wait_key_pressed(pygame.K_RETURN)
 
 
-def main_game_loop():
+#
+def switch_to_level(lvl):
     ()
+
+
+#
+def play_level(lvl):
+    ()
+
+
+def main_game_loop():
+    for lvl in game.levels:
+        switch_to_level(lvl)
+        play_level(lvl)
 
 
 draw_title()

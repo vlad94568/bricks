@@ -16,11 +16,6 @@ import pygame
 from src.colors import *
 
 
-#
-# Contains basic functions and classes for the game.
-#
-
-
 # Generates random color.
 def mk_random_color():
     # Start with 32 to make sure that random colors are minimally bright.
@@ -29,6 +24,11 @@ def mk_random_color():
     b = random.randint(32, 255)
 
     return r, g, b
+
+
+# Global vars.
+screen_width = 640
+screen_height = 480
 
 
 # Base class for all scene elements.
@@ -42,7 +42,6 @@ class SceneElement:
 class Level:
     def __init__(self,
                  lvl_num,  # E.g. 1
-                 lvl_name,  # E.g. "Tokyo" or "Moscow"
                  bg_color,
                  bg_sound,
                  num_red_bricks,  # Total number of red bricks to be dropped at this level.
@@ -57,7 +56,6 @@ class Level:
                  scene_elements  # List of different scene elements for this level world.
                  ):
         self.lvl_num = lvl_num
-        self.lvl_name = lvl_name
         self.bg_color = bg_color
         self.bg_sound = bg_sound
         self.num_red_bricks = num_red_bricks
@@ -76,16 +74,18 @@ class Level:
 class Game:
     def __init__(self,
                  init_lives,
+                 init_ammo,
                  title_sound,
                  end_sound,
                  levels
                  ):
         self.score = 0
+        self.ammo = init_ammo
         self.lives = init_lives
-        self.is_joystick_found = self.detect_joystick()
+        self.is_joystick_found = self.detect_joystick()  # Auto-detect joystick at the start.
         self.title_sound = title_sound
         self.end_sound = end_sound
-        self.screen = pygame.display.set_mode((640, 480))
+        self.screen = pygame.display.set_mode((screen_width, screen_height))
         self.clock = pygame.time.Clock()
         self.levels = levels
         self.lvl_idx = 0

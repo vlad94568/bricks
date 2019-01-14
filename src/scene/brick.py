@@ -10,7 +10,6 @@
 #
 #  Email: vlad94568@gmail.com
 
-import pygame
 from src.common import *
 
 
@@ -38,5 +37,13 @@ class Brick(SceneElement):
 
     # Draws the brick.
     def draw(self, screen):
-        # TODO: add different visual depending on the kind of the brick.
+        # Common rectangle.
         pygame.draw.rect(screen, self.color, (self.x, self.y, 15, 10), 3)
+
+        # Additional features.
+        if self.kind == 2:  # White.
+            pygame.draw.line(screen, self.color, (self.x + 5, self.y + 3), (self.x + 5, self.y + 6), 1)
+            pygame.draw.line(screen, self.color, (self.x + 9, self.y + 3), (self.x + 9, self.y + 6), 1)
+        elif self.kind == 3:  # Green.
+            pygame.draw.line(screen, self.color, (self.x + 7, self.y + 3), (self.x + 7, self.y + 6), 1)
+            pygame.draw.line(screen, self.color, (self.x + 5, self.y + 5), (self.x + 9, self.y + 5), 1)
