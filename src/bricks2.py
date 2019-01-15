@@ -49,7 +49,7 @@ title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
 ver_font = pygame.font.Font("fonts/Anonymous.ttf", 10)
 final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
-level_font = pygame.font.Font("fonts/Anonymous.ttf", 60)
+level_font = pygame.font.Font("fonts/Anonymous.ttf", 16)
 
 # Game.
 game = Game(
@@ -156,16 +156,42 @@ def draw_header(lvl):
 
 # Animations to switch to a given level.
 def switch_to_level(lvl):
-    mixer.stop_sounds()
+    mixer.fadeout_all()
 
-    game.screen.fill(WHITE_COLOR)
-    game.screen.blit(level_font.render("Level " + str(lvl.lvl_num), 1, BLACK_COLOR), (250, 250))
+    ani = True
+
+    x = screen_width / 2 - 2
+    y = screen_height / 2 - 2
+    w = 4
+    h = 4
+
+    # Slow growing black rectangle.
+    while ani:
+        pygame.draw.rect(game.screen, BLACK_COLOR, (x, y, w, h))
+
+        w += 20  # Grow faster horizontally since screen isn't perfect square.
+        h += 16
+        x -= 10  # Grow faster horizontally since screen isn't perfect square.
+        y -= 8
+
+        # Quite loop when rectangle covers all screen.
+        if w > screen_width and h > screen_height:
+            ani = False
+
+        pygame.event.get()
+        pygame.display.update()
+
+        game.tick_clock()
+
+    # Draw level number.
+    game.screen.fill(BLACK_COLOR)
+    game.screen.blit(level_font.render("--== level " + str(lvl.lvl_num) + " ==--", 1, DARK_GREEN_COLOR), (225, 210))
 
     pygame.display.update()
-
     pygame.event.get()
 
-    time.sleep(300)
+    # Sleep for 3 seconds.
+    time.sleep(3)
 
 
 # Plays given level.
