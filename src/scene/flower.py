@@ -34,5 +34,5 @@ class Flower(SceneElement):
         pygame.draw.rect(screen, self.center_color, (self.x - 10, screen_height - self.stem_height - 10, 10, 10))
         # Drawing leaves.
         pygame.draw.rect(screen, self.stem_color, (self.x - 12, screen_height - (self.stem_height - 15), 7, 5))
-        pygame.draw.rect(screen, self.stem_color, (self.x - 4, screen_height - (self.stem_height - 20), 7, 5))
+        pygame.draw.rect(screen, self.stem_color, (self.x - 5, screen_height - (self.stem_height - 20), 7, 5))
 

@@ -37,6 +37,11 @@ class SoundMixer:
         pygame.mixer.Channel(1).set_volume(0.3)
         pygame.mixer.Channel(1).play(self.rocket_fire_sound)
 
+    # Stops all sounds.
+    @staticmethod
+    def stop_sounds():
+        pygame.mixer.stop()
+
     # Plays background sound (channel 0).
     @staticmethod
     def background_sound(sound):

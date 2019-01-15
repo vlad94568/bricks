@@ -73,6 +73,10 @@ class Level:
         self.white_bricks_min_speed = white_bricks_min_speed
         self.player_x = screen_width / 2
 
+    # Gets level complete percentage.
+    def level_complete(self):
+        return 0
+
 
 # Global game data holder.
 class Game:

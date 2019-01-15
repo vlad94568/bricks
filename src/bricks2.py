@@ -13,6 +13,7 @@
 import math
 import sys
 import pygame
+import time
 from pygame import gfxdraw
 
 # Initialize pygame & its modules.
@@ -48,6 +49,7 @@ title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
 ver_font = pygame.font.Font("fonts/Anonymous.ttf", 10)
 final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
+level_font = pygame.font.Font("fonts/Anonymous.ttf", 60)
 
 # Game.
 game = Game(
@@ -139,9 +141,31 @@ def draw_title():
     wait_key_pressed(pygame.K_RETURN)
 
 
+# Draw score, live and ammo.
+def draw_header(lvl):
+    score_label = header_font.render("score: " + str(game.score), 1, RED2_COLOR)
+    lives_label = header_font.render("lives: " + str(game.lives), 1, GREEN_COLOR)
+    ammo_label = header_font.render("ammo: " + str(game.ammo), 1, WHITE_COLOR)
+    level_label = header_font.render("level: " + str(lvl.level_complete()) + "%", 1, YELLOW_COLOR)
+
+    game.screen.blit(score_label, (70, 10))
+    game.screen.blit(lives_label, (210, 10))
+    game.screen.blit(ammo_label, (350, 10))
+    game.screen.blit(level_label, (480, 10))
+
+
 # Animations to switch to a given level.
 def switch_to_level(lvl):
-    ()
+    mixer.stop_sounds()
+
+    game.screen.fill(WHITE_COLOR)
+    game.screen.blit(level_font.render("Level " + str(lvl.lvl_num), 1, BLACK_COLOR), (250, 250))
+
+    pygame.display.update()
+
+    pygame.event.get()
+
+    time.sleep(300)
 
 
 # Plays given level.
@@ -165,6 +189,8 @@ def play_level(lvl):
 
             if typ == pygame.QUIT:
                 end_game()
+
+        draw_header(lvl)
 
         # Update (refresh) screen.
         pygame.display.update()
