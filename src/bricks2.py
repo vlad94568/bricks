@@ -207,13 +207,16 @@ def play_level(lvl):
     w = screen_width
     h = screen_height
 
+    # Intro-animation: shrinking black rectangle.
     while intro_ani:
         # Clear the screen.
         scr.fill(lvl.bg_color)
 
-        # Draw the scene.
+        # Draw the scene elements.
         for scene_elem in lvl.scene_elements:
             scene_elem.draw(scr)
+
+        draw_header(lvl)
 
         pygame.draw.rect(scr, DARK_GREY_COLOR, (x, y, w, h))
 
@@ -231,12 +234,12 @@ def play_level(lvl):
 
         game.tick_clock()
 
-    # Main game loop.
+    # Main level loop.
     while True:
         # Clear the screen.
         scr.fill(lvl.bg_color)
 
-        # Draw the scene.
+        # Draw the scene elements.
         for scene_elem in lvl.scene_elements:
             scene_elem.draw(scr)
 

@@ -38,6 +38,8 @@ game_lvl1 = Level(
         Star(180, 190, RED2_COLOR, 5),
         Star(280, 290, YELLOW_COLOR, 5),
         Star(400, 50, WHITE_COLOR, 5),
-        Grass(60, 10, 20, 43, GREEN_COLOR)
+        Grass(60, 10, 20, 43, GREEN_COLOR),
+        Grass(260, 10, 20, 18, GREEN_COLOR),
+        Grass(360, 10, 20, 43, GREEN_COLOR)
     ]
 )
