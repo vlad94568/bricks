@@ -167,12 +167,12 @@ def switch_to_level(lvl):
 
     # Slow growing black rectangle.
     while ani:
-        pygame.draw.rect(game.screen, BLACK_COLOR, (x, y, w, h))
+        pygame.draw.rect(game.screen, DARK_GREY_COLOR, (x, y, w, h))
 
-        w += 20  # Grow faster horizontally since screen isn't perfect square.
-        h += 16
-        x -= 10  # Grow faster horizontally since screen isn't perfect square.
-        y -= 8
+        w += 30  # Grow faster horizontally since screen isn't perfect square.
+        h += 20
+        x -= 15  # Grow faster horizontally since screen isn't perfect square.
+        y -= 10
 
         # Quite loop when rectangle covers all screen.
         if w > screen_width and h > screen_height:
@@ -184,8 +184,8 @@ def switch_to_level(lvl):
         game.tick_clock()
 
     # Draw level number.
-    game.screen.fill(BLACK_COLOR)
-    game.screen.blit(level_font.render("--== level " + str(lvl.lvl_num) + " ==--", 1, DARK_GREEN_COLOR), (225, 210))
+    game.screen.fill(DARK_GREY_COLOR)
+    game.screen.blit(level_font.render("--== level " + str(lvl.lvl_num) + " ==--", 1, DARK_GREEN_COLOR), (220, 210))
 
     pygame.display.update()
     pygame.event.get()
@@ -198,8 +198,38 @@ def switch_to_level(lvl):
 def play_level(lvl):
     mixer.background_sound(lvl.bg_sound)
 
-    # Shortcut.
     scr = game.screen
+
+    intro_ani = True
+
+    x = 0
+    y = 0
+    w = screen_width
+    h = screen_height
+
+    while intro_ani:
+        # Clear the screen.
+        scr.fill(lvl.bg_color)
+
+        # Draw the scene.
+        for scene_elem in lvl.scene_elements:
+            scene_elem.draw(scr)
+
+        pygame.draw.rect(scr, DARK_GREY_COLOR, (x, y, w, h))
+
+        w -= 30  # Shrink faster horizontally since screen isn't perfect square.
+        h -= 20
+        x += 15  # Shrink faster horizontally since screen isn't perfect square.
+        y += 10
+
+        # Quite loop when rectangle covers all screen.
+        if w <= 0 and h <= 0:
+            intro_ani = False
+
+        pygame.event.get()
+        pygame.display.update()
+
+        game.tick_clock()
 
     # Main game loop.
     while True:
