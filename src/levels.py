@@ -12,8 +12,9 @@
 
 # Import all scene elements.
 from src.scene.flower import *
+from src.scene.simple_ground import *
 
-lvl1 = Level(
+game_lvl1 = Level(
     1,
     DARK_BLUE_COLOR,
     pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
@@ -27,9 +28,10 @@ lvl1 = Level(
     white_bricks_max_speed=2,
     white_bricks_min_speed=2,
     scene_elements=[
-        Flower(100),
-        Flower(200),
-        Flower(300),
-        Flower(400)
+        SimpleGround(10, DARK_GREEN_COLOR),
+        Flower(50, 40, 60),
+        Flower(250, 40, 80),
+        Flower(350, 50, 50),
+        Flower(550, 40, 40)
     ]
 )

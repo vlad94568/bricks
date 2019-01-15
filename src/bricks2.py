@@ -55,7 +55,9 @@ game = Game(
     20,  # Initial ammo amount.
     title_bg_sound,
     final_bg_sound,
-    []
+    [
+        game_lvl1
+    ]
 )
 
 # Soundtrack mixer.
@@ -137,14 +139,38 @@ def draw_title():
     wait_key_pressed(pygame.K_RETURN)
 
 
-#
+# Animations to switch to a given level.
 def switch_to_level(lvl):
     ()
 
 
-#
+# Plays given level.
 def play_level(lvl):
-    ()
+    mixer.background_sound(lvl.bg_sound)
+
+    # Shortcut.
+    scr = game.screen
+
+    # Main game loop.
+    while True:
+        # Clear the screen.
+        scr.fill(lvl.bg_color)
+
+        # Draw the scene.
+        for scene_elem in lvl.scene_elements:
+            scene_elem.draw(scr)
+
+        for event in pygame.event.get():
+            typ = event.type
+
+            if typ == pygame.QUIT:
+                end_game()
+
+        # Update (refresh) screen.
+        pygame.display.update()
+
+        # Wait for FPS.
+        game.tick_clock()
 
 
 def main_game_loop():

@@ -37,6 +37,9 @@ class SceneElement:
         self.x = x
         self.y = y
 
+    def draw(self, screen):
+        assert True, "Not implemented"
+
 
 # Definition of a single level.
 class Level:
@@ -68,6 +71,7 @@ class Level:
         self.green_bricks_min_speed = green_bricks_min_speed
         self.white_bricks_max_speed = white_bricks_max_speed
         self.white_bricks_min_speed = white_bricks_min_speed
+        self.player_x = screen_width / 2
 
 
 # Global game data holder.
@@ -89,6 +93,11 @@ class Game:
         self.clock = pygame.time.Clock()
         self.levels = levels
         self.lvl_idx = 0
+        self.fps = 30
+
+    # Ticks FPS clock.
+    def tick_clock(self):
+        self.clock.tick(self.fps)
 
     # Detects if supported joystick is found.
     @staticmethod

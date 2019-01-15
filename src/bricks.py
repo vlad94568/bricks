@@ -557,7 +557,6 @@ def main_game_loop():
             draw_bricks()
             draw_header()
             draw_explosions()
-            print()
 
         # Update (refresh) screen.
         pygame.display.update()
