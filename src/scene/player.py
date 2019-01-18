@@ -10,6 +10,7 @@
 #
 #  Email: vlad94568@gmail.com
 
+import pygame
 from src.common import *
 
 
