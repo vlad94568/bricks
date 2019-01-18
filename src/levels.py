@@ -19,6 +19,7 @@ from src.scene.grass import *
 game_lvl1 = Level(
     1,
     DARK_BLUE_COLOR,
+    WHITE_COLOR,
     pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
     num_red_bricks=20,
     num_green_bricks=20,

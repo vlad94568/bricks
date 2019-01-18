@@ -234,28 +234,75 @@ def play_level(lvl):
 
         game.tick_clock()
 
+    left = 0
+    right = 0
+
     # Main level loop.
     while True:
-        # Clear the screen.
-        scr.fill(lvl.bg_color)
+        if game.lives == 0 or game.ammo == 0:
+            game_over = True
+        else:
+            game_over = False
 
-        # Draw the scene elements.
-        for scene_elem in lvl.scene_elements:
-            scene_elem.draw(scr)
+        if game_over:
+            # Fade out all sounds.
+            mixer.fadeout_all()
 
-        for event in pygame.event.get():
-            typ = event.type
+            # Clear data.
+            game.clear_data()
 
-            if typ == pygame.QUIT:
+            # Draw final score.
+            end_it = draw_final_score()
+
+            if end_it:
+                # End the game.
                 end_game()
+            else:
+                ()  # TODO
+        else:
+            # Clear the screen.
+            scr.fill(lvl.bg_color)
 
-        draw_header(lvl)
+            # Draw the scene elements.
+            for scene_elem in lvl.scene_elements:
+                scene_elem.draw(scr)
 
-        # Update (refresh) screen.
-        pygame.display.update()
+            for event in pygame.event.get():
+                typ = event.type
 
-        # Wait for FPS.
-        game.tick_clock()
+                if typ == pygame.QUIT:
+                    end_game()
+                elif typ == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    # Fire the rocket using last 'playerX'.
+                    fire_rocket(player_x + 7)
+                elif typ == pygame.KEYDOWN and event.key == pygame.K_LEFT:
+                    # Move the player left.
+                    left = 1
+                    right = 0
+                elif typ == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+                    # Move the player right.
+                    right = 1
+                    left = 0
+                elif typ == pygame.KEYUP and event.key == pygame.K_LEFT:
+                    # Stop left movement.
+                    left = 0
+                elif typ == pygame.KEYUP and event.key == pygame.K_RIGHT:
+                    # Stop right movement.
+                    right = 0
+
+            if left == 1:
+                game.move_player_left()
+            elif right == 1:
+                game.move_player_right()
+
+            draw_header(lvl)
+            game.draw_player(lvl)
+
+            # Update (refresh) screen.
+            pygame.display.update()
+
+            # Wait for FPS.
+            game.tick_clock()
 
 
 def main_game_loop():

@@ -46,6 +46,7 @@ class Level:
     def __init__(self,
                  lvl_num,  # E.g. 1
                  bg_color,
+                 player_color,
                  bg_sound,
                  num_red_bricks,  # Total number of red bricks to be dropped at this level.
                  num_green_bricks,  # Total number of green bricks to be dropped at this level.
@@ -59,6 +60,7 @@ class Level:
                  scene_elements  # List of different scene elements for this level world.
                  ):
         self.lvl_num = lvl_num
+        self.player_color = player_color
         self.bg_color = bg_color
         self.bg_sound = bg_sound
         self.num_red_bricks = num_red_bricks
@@ -98,10 +100,36 @@ class Game:
         self.levels = levels
         self.lvl_idx = 0
         self.fps = 30
+        self.player_x = screen_width / 2 - 10
+
+    # Clears & resets all internal game data.
+    def reset_data(self):
+        ()  # TODO
+
+    # Moved player X coordinate left.
+    def move_player_left(self):
+        self.player_x -= 8
+
+        # Roll around the screen.
+        if self.player_x < -20:
+            self.player_x = screen_width
+
+    # Moved player X coordinate right.
+    def move_player_right(self):
+        self.player_x += 8
+
+        # Roll around the screen.
+        if self.player_x > screen_width:
+            self.player_x = 0
 
     # Ticks FPS clock.
     def tick_clock(self):
         self.clock.tick(self.fps)
+
+    # Draws the player.
+    def draw_player(self, lvl):
+        pygame.draw.rect(self.screen, lvl.player_color, (self.player_x, 450, 20, 20), 5)  # Base.
+        pygame.draw.line(self.screen, lvl.player_color, [self.player_x + 9, 450], [self.player_x + 9, 435], 5)  # Turret.
 
     # Detects if supported joystick is found.
     @staticmethod
