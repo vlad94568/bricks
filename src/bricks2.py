@@ -75,7 +75,7 @@ header_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
 title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
 ver_font = pygame.font.Font("fonts/Anonymous.ttf", 10)
 final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
-final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
+final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 13)
 level_font = pygame.font.Font("fonts/Anonymous.ttf", 16)
 
 # Soundtrack mixer.
@@ -153,7 +153,7 @@ def draw_title():
     Brick(x2, y2, 0, 3).draw(game.screen)
     pri("+1 live", x2 + 30, y2)
 
-    pri("SPACE to shoot | ARROW KEYS to move", 150, 330)
+    pri("SPACE to shoot | <- -> to move", 175, 330)
 
     if game.is_joystick_found:
         pri("Supported joystick found", 200, 370)
@@ -197,7 +197,7 @@ def draw_bricks(lvl):
     ()
 
 
-def screen_fade_out():
+def screen_fade_out(color=DARK_GREY_COLOR):
     ani = True
 
     x = screen_width / 2 - 2
@@ -207,7 +207,7 @@ def screen_fade_out():
 
     # Slowly growing black rectangle.
     while ani:
-        pygame.draw.rect(game.screen, DARK_GREY_COLOR, (x, y, w, h))
+        pygame.draw.rect(game.screen, color, (x, y, w, h))
 
         w += 30  # Grow faster horizontally since screen isn't perfect square.
         h += 20
@@ -249,9 +249,43 @@ def draw_final_score():
     mixer.fadeout_all()
 
     # Fade out the screen.
-    screen_fade_out()
+    screen_fade_out(SLACK_COLOR)
 
-    return True  # TODO
+    lines = [
+        "  ________",
+        " /  _____/_____    _____   ____     _______  __ ___________",
+        "/   \  ___\__  \  /     \_/ __ \   /  _ \  \/ // __ \_  __ \\",
+        "\    \_\  \/ __ \|  v v  \  ___/  (  <_> )   /\  ___/|  | \/",
+        " \______  (____  /__|_|  /\___  >  \____/ \_/  \___  >__|",
+        "        \/     \/      \/     \/                   \/"
+    ]
+
+    x = 54
+    y = 50
+
+    # Shortcut
+    src = game.screen
+
+    src.fill(SLACK_COLOR)
+
+    for line in lines:
+        src.blit(final_font1.render(line, 1, mk_random_color()), (x, y))
+        y += 15
+
+    src.blit(final_font2.render("Your final score: " + str(game.score), 1, RED_COLOR), (230, 240))
+    src.blit(final_font1.render("'Q' to Quit | 'R' to Restart", 1, YELLOW_COLOR), (200, 340))
+
+    # Start final background music.
+    mixer.background_sound(game.end_sound)
+
+    pygame.display.update()
+
+    while True:
+        for evt in pygame.event.get():
+            if evt.type == pygame.KEYDOWN and evt.key == pygame.K_q:
+                return True
+            elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_r:
+                return False
 
 
 # Draws the player.
@@ -327,7 +361,8 @@ def play_level(lvl):
                 # End the game.
                 end_game()
             else:
-                ()  # TODO
+                # Restart game.
+                main_game_loop()
         else:
             # Clear the screen.
             scr.fill(lvl.bg_color)

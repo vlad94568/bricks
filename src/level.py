@@ -48,15 +48,19 @@ class Level:
         self.green_bricks_min_speed = green_bricks_min_speed
         self.white_bricks_max_speed = white_bricks_max_speed
         self.white_bricks_min_speed = white_bricks_min_speed
-        self.player_x = screen_width / 2
         self.rockets = []
         self.bricks = []
         self.explosions = []
 
         self.total_bricks = num_red_bricks + num_green_bricks + num_white_bricks
-        self.used_white_bricks = 0
-        self.used_green_bricks = 0
-        self.used_red_bricks = 0
+        self.used_bricks = 0
+        self.level_completion = 0
+
+    def reset_data(self):
+        self.rockets = []
+        self.bricks = []
+        self.explosions = []
+        self.used_bricks = 0
         self.level_completion = 0
 
     # Adds, if necessary, a new random brick.
@@ -70,23 +74,14 @@ class Level:
             if rnd < 10:
                 kind = 3
                 speed = random.randint(self.green_bricks_min_speed, self.green_bricks_max_speed)
-                self.used_green_bricks += 1
             elif rnd < 35:
                 kind = 2
                 speed = random.randint(self.white_bricks_min_speed, self.white_bricks_max_speed)
-                self.used_white_bricks += 1
             else:
                 kind = 1
                 speed = random.randint(self.red_bricks_min_speed, self.red_bricks_max_speed)
-                self.used_red_bricks += 1
 
             self.bricks.append(Brick(brick_x, 0, speed, kind))
-
-            self.level_completion = round(((
-                self.used_green_bricks +
-                self.used_red_bricks +
-                self.used_white_bricks
-                ) / self.total_bricks) * 100)
 
     # Filters and returns the array of all still active rockets (to draw).
     def get_active_rockets(self):

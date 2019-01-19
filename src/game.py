@@ -27,6 +27,8 @@ class Game:
                  ):
         self.mixer = mixer
         self.score = 0
+        self.init_ammo = init_ammo
+        self.init_lives = init_lives
         self.ammo = init_ammo
         self.lives = init_lives
         self.is_joystick_found = self.detect_joystick()  # Auto-detect joystick at the start.
@@ -52,7 +54,14 @@ class Game:
 
     # Clears & resets all internal game data.
     def reset_data(self):
-        ()  # TODO
+        self.score = 0
+        self.ammo = self.init_ammo
+        self.lives = self.init_lives
+        self.lvl_idx = 0
+        self.player_x = screen_width / 2 - 10
+
+        for lvl in self.levels:
+            lvl.reset_data()
 
     # Moved player X coordinate left.
     def move_player_left(self):
