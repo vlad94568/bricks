@@ -11,7 +11,7 @@
 #  Email: vlad94568@gmail.com
 
 
-from src.common import *
+from src.scene.brick import *
 
 
 # Definition of a single level.
@@ -30,10 +30,12 @@ class Level:
                  green_bricks_min_speed,  # Speed is in pixels per frame.
                  white_bricks_max_speed,  # Speed is in pixels per frame.
                  white_bricks_min_speed,  # Speed is in pixels per frame.
+                 max_bricks_on_screen,  # Max number of bricks on the screen in the same time.
                  scene_elements  # List of different scene elements for this level world.
                  ):
         self.lvl_num = lvl_num
         self.player_color = player_color
+        self.max_bricks_on_screen = max_bricks_on_screen
         self.bg_color = bg_color
         self.bg_sound = bg_sound
         self.num_red_bricks = num_red_bricks
@@ -48,10 +50,54 @@ class Level:
         self.white_bricks_min_speed = white_bricks_min_speed
         self.player_x = screen_width / 2
         self.rockets = []
+        self.bricks = []
+        self.explosions = []
 
-    # Gets level complete percentage.
-    def level_complete(self):
-        return 0
+        self.total_bricks = num_red_bricks + num_green_bricks + num_white_bricks
+        self.used_white_bricks = 0
+        self.used_green_bricks = 0
+        self.used_red_bricks = 0
+        self.level_completion = 0
+
+    # Adds, if necessary, a new random brick.
+    def add_new_bricks(self):
+        # Randomly place bricks, if necessary.
+        if len(self.bricks) < self.max_bricks_on_screen:
+            brick_x = random.randint(20, 620)
+
+            rnd = random.randint(0, 100)
+
+            if rnd < 10:
+                kind = 3
+                speed = random.randint(self.green_bricks_min_speed, self.green_bricks_max_speed)
+                self.used_green_bricks += 1
+            elif rnd < 35:
+                kind = 2
+                speed = random.randint(self.white_bricks_min_speed, self.white_bricks_max_speed)
+                self.used_white_bricks += 1
+            else:
+                kind = 1
+                speed = random.randint(self.red_bricks_min_speed, self.red_bricks_max_speed)
+                self.used_red_bricks += 1
+
+            self.bricks.append(Brick(brick_x, 0, speed, kind))
+
+            self.level_completion = round(((
+                self.used_green_bricks +
+                self.used_red_bricks +
+                self.used_white_bricks
+                ) / self.total_bricks) * 100)
+
+    # Filters and returns the array of all still active rockets (to draw).
+    def get_active_rockets(self):
+        self.rockets[:] = [rocket for rocket in self.rockets if rocket.y > 5]
+
+        return self.rockets
+
+    # Moves all active rockets up.
+    def move_up_rockets(self):
+        for rocket in self.rockets:
+            rocket.y -= 6
 
     # Adds new rocket.
     def add_rocket(self, rocket):

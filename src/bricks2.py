@@ -46,6 +46,7 @@ game_lvl1 = Level(
     green_bricks_min_speed=4,
     white_bricks_max_speed=2,
     white_bricks_min_speed=2,
+    max_bricks_on_screen=5,
     scene_elements=[
         SimpleGround(10, BROWN_COLOR),
         Flower(50, 40, 60),
@@ -173,7 +174,7 @@ def draw_header(lvl):
     score_label = header_font.render("score: " + str(game.score), 1, RED2_COLOR)
     lives_label = header_font.render("lives: " + str(game.lives), 1, GREEN_COLOR)
     ammo_label = header_font.render("ammo: " + str(game.ammo), 1, WHITE_COLOR)
-    level_label = header_font.render("level: " + str(lvl.level_complete()) + "%", 1, YELLOW_COLOR)
+    level_label = header_font.render("level: " + str(lvl.level_completion) + "%", 1, YELLOW_COLOR)
 
     game.screen.blit(score_label, (70, 10))
     game.screen.blit(lives_label, (210, 10))
@@ -181,10 +182,22 @@ def draw_header(lvl):
     game.screen.blit(level_label, (480, 10))
 
 
-# Animations to switch to a given level.
-def switch_to_level(lvl):
-    mixer.fadeout_all()
+# Draws all the rockets in 'rockets' list.
+def draw_rockets(lvl):
+    rockets = lvl.get_active_rockets()
 
+    for rocket in rockets:
+        rocket.draw(game.screen)
+
+    lvl.move_up_rockets()
+
+
+# Draws bricks.
+def draw_bricks(lvl):
+    ()
+
+
+def screen_fade_out():
     ani = True
 
     x = screen_width / 2 - 2
@@ -192,7 +205,7 @@ def switch_to_level(lvl):
     w = 4
     h = 4
 
-    # Slow growing black rectangle.
+    # Slowly growing black rectangle.
     while ani:
         pygame.draw.rect(game.screen, DARK_GREY_COLOR, (x, y, w, h))
 
@@ -210,15 +223,44 @@ def switch_to_level(lvl):
 
         game.tick_clock()
 
+
+# Animations to switch to a given level.
+def switch_to_level(lvl):
+    # Fade out sounds.
+    mixer.fadeout_all()
+
+    # Fade out the screen.
+    screen_fade_out()
+
     # Draw level number.
     game.screen.fill(DARK_GREY_COLOR)
-    game.screen.blit(level_font.render("--== level " + str(lvl.lvl_num) + " ==--", 1, DARK_GREEN_COLOR), (220, 210))
+    game.screen.blit(level_font.render("--== level " + str(lvl.lvl_num) + " ==--", 1, GREEN_COLOR), (220, 210))
 
     pygame.display.update()
     pygame.event.get()
 
     # Sleep for 3 seconds.
     time.sleep(3)
+
+
+# Draws final score screen and ask for quite or restart.
+def draw_final_score():
+    # Fade out sounds.
+    mixer.fadeout_all()
+
+    # Fade out the screen.
+    screen_fade_out()
+
+    return True  # TODO
+
+
+# Draws the player.
+def draw_player(lvl):
+    pygame.draw.rect(game.screen, lvl.player_color, (game.player_x, 450, 20, 20), 3)  # Base.
+    pygame.draw.line(game.screen, lvl.player_color, [game.player_x + 9, 450], [game.player_x + 9, 435], 5)  # Turret.
+
+    pygame.draw.rect(game.screen, mk_random_color(), (game.player_x + 8, 445, 3, 5))
+    pygame.draw.rect(game.screen, mk_random_color(), (game.player_x + 8, 435, 3, 5))
 
 
 # Plays given level.
@@ -265,7 +307,7 @@ def play_level(lvl):
     right = 0
 
     # Main level loop.
-    while True:
+    while lvl.level_completion < 100:
         if game.lives == 0 or game.ammo == 0:
             game_over = True
         else:
@@ -276,7 +318,7 @@ def play_level(lvl):
             mixer.fadeout_all()
 
             # Clear data.
-            game.clear_data()
+            game.reset_data()
 
             # Draw final score.
             end_it = draw_final_score()
@@ -322,8 +364,12 @@ def play_level(lvl):
             elif right == 1:
                 game.move_player_right()
 
+            lvl.add_new_bricks()
+
             draw_header(lvl)
-            game.draw_player(lvl)
+            draw_player(lvl)
+            draw_bricks(lvl)
+            draw_rockets(lvl)
 
             # Update (refresh) screen.
             pygame.display.update()

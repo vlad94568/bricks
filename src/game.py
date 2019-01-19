@@ -74,11 +74,6 @@ class Game:
     def tick_clock(self):
         self.clock.tick(self.fps)
 
-    # Draws the player.
-    def draw_player(self, lvl):
-        pygame.draw.rect(self.screen, lvl.player_color, (self.player_x, 450, 20, 20), 5)  # Base.
-        pygame.draw.line(self.screen, lvl.player_color, [self.player_x + 9, 450], [self.player_x + 9, 435], 5)  # Turret.
-
     # Detects if supported joystick is found.
     @staticmethod
     def detect_joystick():
