@@ -22,7 +22,6 @@ from src.scene.grass import *
 from src.scene.rocket import *
 from src.scene.air_fragment import *
 from src.scene.ground_fragment import *
-from src.scene.explosion import *
 
 # Initialize pygame & its modules.
 pygame.init()
@@ -120,6 +119,21 @@ game_lvl1 = Level(
         Grass(360, 10, 20, 43, GREEN_COLOR)
     ]
 )
+
+
+# Explosion is just a container for fragments.
+class Explosion:
+    def __init__(self, frags):
+        self.frags = frags
+
+    def is_done(self):
+        return self.frags[0].frame_cnt == 30
+
+    # Draws explosion (i.e. its fragments).
+    def draw(self, screen):
+        for frag in self.frags:
+            frag.draw(screen)
+
 
 # Game levels.
 levels = [
