@@ -10,80 +10,29 @@
 #
 #  Email: vlad94568@gmail.com
 
-import math
 import sys
-import pygame
-from pygame import gfxdraw
+import time
 
 # Import all scene elements.
 from src.scene.star import *
 from src.scene.brick import *
 from src.scene.flower import *
-from src.scene.rocket import *
+from src.scene.simple_ground import *
 from src.scene.grass import *
-from src.scene.tree import *
-
-# Initializing the joystick.
-pygame.joystick.init()
-
-START_ROCKET_Y = 450
-START_BRICK_Y = 0
-
-# Horizontal speed in pixels.
-HOR_PIXELS = 8
-
-left = 0
-right = 0
-
-fps = 30
-score = 0
-lives = 20
-ammo = 100
-playerX = 320
-
-# List of rockets, bricks and explosions.
-rockets = []
-bricks = []
-explosions = []
+from src.scene.rocket import *
+from src.scene.air_fragment import *
+from src.scene.ground_fragment import *
+from src.scene.explosion import *
 
 # Initialize pygame & its modules.
 pygame.init()
 pygame.mixer.init()
 pygame.font.init()
-
-# Mixer channels:
-# 0 - background (title and main game)
-# 1 - rocket fire
-# 2 - brick air-kill (killed by rocket)
-# 3 - brick ground-kill (reached the bottom)
-
-# Sounds.
-main_bg_sound = pygame.mixer.Sound("sounds/background_sound0.1.ogg")
-title_bg_sound = pygame.mixer.Sound("sounds/background_sound1.ogg")
-final_bg_sound = pygame.mixer.Sound("sounds/background_sound2.ogg")
-rocket_fire_sound = pygame.mixer.Sound("sounds/rocket_fired.ogg")
-brick_kill_sound = pygame.mixer.Sound("sounds/brick_kill.ogg")
-brick_squish_sound = pygame.mixer.Sound("sounds/brick_squished.ogg")
-
-# Pygame initialization.
-screen = pygame.display.set_mode((640, 480))
-clock = pygame.time.Clock()
-
-# Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
-header_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
-title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
-final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
-final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 16)
-
-# Whether or not a supported joystick is found.
-is_joystick_found = False
-
-# Window title.
-pygame.display.set_caption("--==B.R.I.C.K.S==--")
+pygame.joystick.init()
 
 
-def init_joystick():
-    global is_joystick_found
+def detect_joystick():
+    found = False
 
     joystick_count = pygame.joystick.get_count()
 
@@ -95,47 +44,133 @@ def init_joystick():
         name = joystick.get_name()
 
         if name.startswith("USB,2-axis 8-button gamepad"):
-            is_joystick_found = True
+            found = True
+
+    return found
 
 
-def draw_grass_blades(grass_x):
-    pygame.draw.rect(screen, DARK_GREEN_COLOR, (grass_x + 3, 450, 2, 20))
-    pygame.draw.rect(screen, DARK_GREEN_COLOR, (grass_x + 6, 450, 2, 20))
-    pygame.draw.rect(screen, DARK_GREEN_COLOR, (grass_x + 9, 450, 2, 20))
+# Definition of a single level.
+class Level:
+    def __init__(self,
+                 lvl_num,  # E.g. 1
+                 bg_color,
+                 player_color,
+                 bg_sound,
+                 num_red_bricks,  # Total number of red bricks to be dropped at this level.
+                 num_green_bricks,  # Total number of green bricks to be dropped at this level.
+                 num_white_bricks,  # Total number of white bricks to be dropped at this level.
+                 red_bricks_max_speed,  # Speed is in pixels per frame.
+                 red_bricks_min_speed,  # Speed is in pixels per frame.
+                 green_bricks_max_speed,  # Speed is in pixels per frame.
+                 green_bricks_min_speed,  # Speed is in pixels per frame.
+                 white_bricks_max_speed,  # Speed is in pixels per frame.
+                 white_bricks_min_speed,  # Speed is in pixels per frame.
+                 max_bricks_on_screen,  # Max number of bricks on the screen in the same time.
+                 scene_elements  # List of different scene elements for this level world.
+                 ):
+        self.lvl_num = lvl_num
+        self.player_color = player_color
+        self.max_bricks_on_screen = max_bricks_on_screen
+        self.bg_color = bg_color
+        self.bg_sound = bg_sound
+        self.num_red_bricks = num_red_bricks
+        self.num_green_bricks = num_green_bricks
+        self.num_white_bricks = num_white_bricks
+        self.scene_elements = scene_elements
+        self.red_bricks_max_speed = red_bricks_max_speed
+        self.red_bricks_min_speed = red_bricks_min_speed
+        self.green_bricks_max_speed = green_bricks_max_speed
+        self.green_bricks_min_speed = green_bricks_min_speed
+        self.white_bricks_max_speed = white_bricks_max_speed
+        self.white_bricks_min_speed = white_bricks_min_speed
+
+        self.total_bricks = self.num_red_bricks + self.num_white_bricks + self.num_green_bricks
+        self.red_brick_factor = self.num_red_bricks / self.total_bricks
+        self.white_brick_factor = self.num_white_bricks / self.total_bricks
+        self.green_brick_factor = self.num_green_bricks / self.total_bricks
 
 
-# TODO
-star1 = Star(100, 100, WHITE_COLOR, 15)
-star2 = Star(130, 150, YELLOW_COLOR, 10)
-star3 = Star(180, 190, RED2_COLOR, 5)
+# Game levels.
+game_lvl1 = Level(
+    1,
+    DARK_BLUE_COLOR,
+    WHITE_COLOR,
+    pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
+    num_red_bricks=20,
+    num_green_bricks=20,
+    num_white_bricks=15,
+    red_bricks_max_speed=4,
+    red_bricks_min_speed=1,
+    green_bricks_max_speed=4,
+    green_bricks_min_speed=4,
+    white_bricks_max_speed=2,
+    white_bricks_min_speed=2,
+    max_bricks_on_screen=5,
+    scene_elements=[
+        SimpleGround(10, BROWN_COLOR),
+        Flower(50, 40, 60),
+        Flower(250, 40, 80),
+        Flower(350, 50, 50),
+        Flower(550, 40, 40),
+        Star(180, 190, RED2_COLOR, 5),
+        Star(280, 290, YELLOW_COLOR, 5),
+        Star(400, 50, WHITE_COLOR, 5),
+        Grass(60, 10, 20, 43, GREEN_COLOR),
+        Grass(260, 10, 20, 18, GREEN_COLOR),
+        Grass(360, 10, 20, 43, GREEN_COLOR)
+    ]
+)
 
-flower1 = Flower(100)
-flower2 = Flower(200)
-flower3 = Flower(300)
-flower4 = Flower(400)
+# Game levels.
+levels = [
+    game_lvl1
+]
 
+# Sounds from 'sounds' sub-folder.
+bg_sound_1 = pygame.mixer.Sound("sounds/background_sound0.1.ogg")
+title_bg_sound = pygame.mixer.Sound("sounds/background_sound1.ogg")
+final_bg_sound = pygame.mixer.Sound("sounds/background_sound2.ogg")
+rocket_fire_sound = pygame.mixer.Sound("sounds/rocket_fired.ogg")
+brick_kill_sound = pygame.mixer.Sound("sounds/brick_kill.ogg")
+brick_squish_sound = pygame.mixer.Sound("sounds/brick_squished.ogg")
 
-def draw_background():
-    # Drawing the ground.
-    pygame.draw.rect(screen, DARK_GREEN_COLOR, (0, 460, 640, 200))
+# Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
+header_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
+title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
+ver_font = pygame.font.Font("fonts/Anonymous.ttf", 10)
+final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
+final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 13)
+level_font = pygame.font.Font("fonts/Anonymous.ttf", 16)
 
-    # Drawing grass.
-    draw_grass_blades(10)
-    draw_grass_blades(100)
-    draw_grass_blades(345)
-    draw_grass_blades(550)
-    draw_grass_blades(200)
+# Pygame globals.
+screen = pygame.display.set_mode((screen_width, screen_height))
+clock = pygame.time.Clock()
 
-    # Drawing flowers.
-    flower1.draw(screen)
-    flower2.draw(screen)
-    flower3.draw(screen)
-    flower4.draw(screen)
+# Initial lives & ammo.
+init_ammo = 30
+init_lives = 20
 
-    # Drawing stars.
-    star1.draw(screen)
-    star2.draw(screen)
-    star3.draw(screen)
+# Current stats.
+lives = init_lives
+ammo = init_ammo
+score = 0
+used_bricks = 0
+level_completion = 0
+
+is_joystick_found = detect_joystick()  # Auto-detect joystick at the start.
+fps = 30
+player_x = screen_width / 2 - 10
+
+# Current playing level data.
+bricks = []
+rockets = []
+explosions = []
+used_green_bricks = 0
+used_white_bricks = 0
+used_red_bricks = 0
+
+# Window title.
+pygame.display.set_caption("--==B.R.I.C.K.S==--")
 
 
 # Sounds kill of the brick.
@@ -143,7 +178,7 @@ def boom_sound():
     pygame.mixer.Channel(2).play(brick_kill_sound)
 
 
-# Sounds of the brick hitting the bottom.
+# Sounds the brick hitting the bottom.
 def squish_sound():
     pygame.mixer.Channel(3).play(brick_squish_sound)
 
@@ -154,23 +189,161 @@ def rocket_sound():
     pygame.mixer.Channel(1).play(rocket_fire_sound)
 
 
-# Draws the player at 'x' coordinate.
-def draw_player(x):
-    pygame.draw.rect(screen, GREEN_COLOR, (x, 450, 20, 20), 5)  # Base.
-    pygame.draw.line(screen, GREEN_COLOR, [x + 9, 450], [x + 9, 435], 5)  # Turret.
+# Fades out all channels.
+def fadeout_all_sounds():
+    pygame.mixer.Channel(0).fadeout(2000)
+    pygame.mixer.Channel(1).fadeout(2000)
+    pygame.mixer.Channel(2).fadeout(2000)
+    pygame.mixer.Channel(3).fadeout(2000)
 
 
-# Draws all the rockets in 'rockets' list.
-def draw_rockets():
-    rockets[:] = [rocket for rocket in rockets if rocket.y > 5]  # Filter out out of screen rockets.
+# Plays background sound (channel 0).
+def background_sound(sound):
+    pygame.mixer.Channel(0).play(sound, -1)
 
-    for rocket in rockets:
-        rocket.draw(screen)
-        rocket.y -= 6
+
+# Adds, if necessary, a new random brick.
+def add_new_bricks(lvl):
+    global bricks
+    global used_red_bricks, used_white_bricks, used_green_bricks
+
+    # Randomly place bricks, if necessary.
+    if len(bricks) < lvl.max_bricks_on_screen:
+        brick_x = random.randint(20, 620)
+
+        rnd = random.random()
+        factor = random.random()
+
+        if rnd < 0.33:
+            if used_green_bricks < lvl.num_green_bricks and factor < lvl.green_brick_factor:
+                used_green_bricks += 1
+                speed = random.randint(lvl.green_bricks_min_speed, lvl.green_bricks_max_speed)
+                bricks.append(Brick(brick_x, 0, speed, 3))
+        elif rnd < 0.66:
+            if used_white_bricks < lvl.num_white_bricks and factor < lvl.white_brick_factor:
+                used_white_bricks += 1
+                speed = random.randint(lvl.white_bricks_min_speed, lvl.white_bricks_max_speed)
+                bricks.append(Brick(brick_x, 0, speed, 2))
+        elif used_red_bricks < lvl.num_red_bricks and factor < lvl.red_brick_factor:
+            used_red_bricks += 1
+            speed = random.randint(lvl.red_bricks_min_speed, lvl.red_bricks_max_speed)
+            bricks.append(Brick(brick_x, 0, speed, 1))
+
+
+# Waits until given keyboard key is pressed.
+def wait_key_pressed(key):
+    is_pressed = False
+
+    while not is_pressed:
+        for evt in pygame.event.get():
+            if evt.type == pygame.QUIT:
+                end_game()
+            elif evt.type == pygame.KEYDOWN and evt.key == key:
+                is_pressed = True
+
+
+def end_game():
+    pygame.quit()
+    sys.exit()
+
+
+# Draws the game's title.
+def draw_title():
+    ascii_name = [
+        "    _/_/_/    _/_/_/    _/_/_/    _/_/_/  _/    _/    _/_/_/",
+        "   _/    _/  _/    _/    _/    _/        _/  _/    _/",
+        "  _/_/_/    _/_/_/      _/    _/        _/_/        _/_/",
+        " _/    _/  _/    _/    _/    _/        _/  _/          _/",
+        "_/_/_/    _/    _/  _/_/_/    _/_/_/  _/    _/  _/_/_/"
+    ]
+
+    x = 50
+    y = 50
+
+    screen.fill(SLACK_COLOR)
+
+    # Shortcut function.
+    def pri(s, s_x, s_y, color=YELLOW_COLOR, font=title_font):
+        screen.blit(font.render(s, 1, color), (s_x, s_y))
+
+    for line in ascii_name:
+        pri(line, x, y, mk_random_color())
+        y += 15
+
+    pri("--== Copyright 2018-2019 (C) by Vlad Ivanov ==--", 105, 150)
+    pri("ver. 2.0.0", 270, 170, font=ver_font)
+
+    x2 = 260
+    y2 = 225
+
+    Brick(x2, y2, 0, 1).draw(screen)
+    pri("+1 score", x2 + 30, y2)
+
+    y2 += 20
+
+    Brick(x2, y2, 0, 2).draw(screen)
+    pri("+9 ammo", x2 + 30, y2)
+
+    y2 += 20
+
+    Brick(x2, y2, 0, 3).draw(screen)
+    pri("+2 live", x2 + 30, y2)
+
+    pri("SPACE to shoot | <- -> to move", 175, 330)
+
+    if is_joystick_found:
+        pri("Supported joystick found", 200, 370)
+
+    pri("Press ENTER to start", 220, 410)
+
+    # Start title background music.
+    background_sound(title_bg_sound)
+
+    # Update (refresh) screen.
+    pygame.display.update()
+
+    wait_key_pressed(pygame.K_RETURN)
+
+
+# Moved player X coordinate left.
+def move_player_left():
+    global player_x
+
+    player_x -= 8
+
+    # Roll around the screen.
+    if player_x < -20:
+        player_x = screen_width
+
+
+# Moved player X coordinate right.
+def move_player_right():
+    global player_x
+
+    player_x += 8
+
+    # Roll around the screen.
+    if player_x > screen_width:
+        player_x = 0
+
+
+# Draw score, live and ammo.
+def draw_header():
+    score_label = header_font.render("score: " + str(score), 1, RED2_COLOR)
+    lives_label = header_font.render("lives: " + str(lives), 1, GREEN_COLOR)
+    ammo_label = header_font.render("ammo: " + str(ammo), 1, WHITE_COLOR)
+    level_label = header_font.render("level: " + str(level_completion) + "%", 1, YELLOW_COLOR)
+
+    screen.blit(score_label, (70, 10))
+    screen.blit(lives_label, (210, 10))
+    screen.blit(ammo_label, (350, 10))
+    screen.blit(level_label, (480, 10))
 
 
 # Draws all the explosions.
 def draw_explosions():
+    global explosions
+
     exp_to_remove = []
 
     for exp in explosions:
@@ -178,71 +351,14 @@ def draw_explosions():
             exp_to_remove.append(exp)
         else:
             for frag in exp.frags:
-                draw_fragment(frag)
+                frag.draw(screen)
 
     explosions[:] = [exp for exp in explosions if exp not in exp_to_remove]
 
 
-# Draws an individual fragment.
-def draw_fragment(frag):
-    if type(frag) is AirFragment:
-        draw_turned_square(frag.x, frag.y, frag.size, mk_random_color(), frag.turn_angle)
-
-        frag.turn_angle += frag.speed + 10
-        frag.frame_cnt += 1
-
-        frag.x, frag.y = transform(frag.x, frag.y, frag.speed, frag.angle)
-    else:  # GroundFragment
-        draw_turned_square(frag.x, frag.y, frag.size, frag.color, frag.turn_angle)
-
-        frag.turn_angle += frag.speed + 10
-        frag.frame_cnt += 1
-
-        # Transform with the angle in [280, 80] range (upper two quadrants).
-        frag.x, frag.y = transform(frag.x, frag.y, frag.speed, (360 + frag.angle - 90) % 360)
-
-
-# Draws a square with (x, y) center, 2*size diagonal, and turned at the angle.
-def draw_turned_square(x, y, size, color, angle):
-    x1, y1 = transform(x, y, size, angle % 360)
-    x2, y2 = transform(x, y, size, (angle + 90) % 360)
-    x3, y3 = transform(x, y, size, (angle + 180) % 360)
-    x4, y4 = transform(x, y, size, (angle + 270) % 360)
-
-    pygame.gfxdraw.aapolygon(screen, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)], color)
-
-
-# Transforms (x, y) coordinate to distance at a given angle.
-# Returns new (x, y) coordinate for the new location.
-def transform(x, y, distance, angle):
-    if angle <= 90:
-        rad = math.radians(angle)
-
-        new_x = x + distance * math.sin(rad)
-        new_y = y - distance * math.cos(rad)
-    elif angle <= 180:
-        rad = math.radians(180 - angle)
-
-        new_x = x + distance * math.sin(rad)
-        new_y = y + distance * math.cos(rad)
-    elif angle <= 270:
-        rad = math.radians(270 - angle)
-
-        new_x = x - distance * math.cos(rad)
-        new_y = y + distance * math.sin(rad)
-    else:
-        rad = math.radians(360 - angle)
-
-        new_x = x - distance * math.sin(rad)
-        new_y = y - distance * math.cos(rad)
-
-    return new_x, new_y
-
-
-# Draws all the bricks in 'bricks' list.
+# Draws all the bricks.
 def draw_bricks():
-    global lives
-    global ammo
+    global lives, ammo, explosions, used_bricks
 
     explosions.extend(
         [
@@ -258,6 +374,8 @@ def draw_bricks():
     old_cnt = len(bricks)
     bricks[:] = [brick for brick in bricks if brick.y < 470]  # Filter out fallen bricks.
     new_cnt = len(bricks)
+
+    used_bricks += old_cnt - new_cnt
 
     if old_cnt != new_cnt:
         squished = True
@@ -287,7 +405,7 @@ def draw_bricks():
 
 # Checking for crashes between rockets and bricks.
 def check_bricks_rockets():
-    global score, ammo, lives
+    global score, ammo, lives, used_bricks
 
     bricks_to_remove = []
     rockets_to_remove = []
@@ -306,10 +424,10 @@ def check_bricks_rockets():
                             score += 1
                         elif brick.kind == 2:  # WHITE brick.
                             # Add ammo.
-                            ammo += 5
+                            ammo += 9
                         elif brick.kind == 3:  # GREEN brick.
                             # Add lives.
-                            lives += 1
+                            lives += 2
 
                         frag_x = brick.x + 7
                         frag_y = brick.y + 5
@@ -319,33 +437,30 @@ def check_bricks_rockets():
     if len(bricks_to_remove) > 0:
         boom_sound()
 
+    used_bricks += len(bricks_to_remove)
+
     bricks[:] = [brick for brick in bricks if brick not in bricks_to_remove]
     rockets[:] = [rocket for rocket in rockets if rocket not in rockets_to_remove]
 
 
-# Draw score, live and ammo.
-def draw_header():
-    score_label = header_font.render("score: " + str(score), 1, RED2_COLOR)
-    lives_label = header_font.render("lives: " + str(lives), 1, GREEN_COLOR)
-    ammo_label = header_font.render("ammo: " + str(ammo), 1, WHITE_COLOR)
+# Draws all the rockets in 'rockets' list.
+def draw_rockets():
+    global rockets
 
-    screen.blit(score_label, (10, 10))
-    screen.blit(lives_label, (150, 10))
-    screen.blit(ammo_label, (290, 10))
+    # Filter out rockets.
+    rockets[:] = [rocket for rocket in rockets if rocket.y > 5]
 
-
-# Ends the game.
-def end_game():
-    pygame.quit()
-    sys.exit()
+    for rocket in rockets:
+        rocket.draw(screen)
+        rocket.y -= 6
 
 
 # Fires the rocket.
-def fire_rocket(x):
+def fire_rocket():
     global ammo
 
     # Add new rocket.
-    rockets.append(Rocket(x, START_ROCKET_Y - 20))
+    rockets.append(Rocket(player_x + 7, screen_height - 40))
 
     # Decrease ammo.
     ammo -= 1
@@ -354,75 +469,61 @@ def fire_rocket(x):
     rocket_sound()
 
 
-# Waits until given keyboard key is pressed.
-def wait_key_pressed(key):
-    is_pressed = False
+def screen_fade_out(color=DARK_GREY_COLOR):
+    ani = True
 
-    while not is_pressed:
-        for evt in pygame.event.get():
-            if evt.type == pygame.QUIT:
-                end_game()
-            elif evt.type == pygame.KEYDOWN and evt.key == key:
-                is_pressed = True
+    x = screen_width / 2 - 2
+    y = screen_height / 2 - 2
+    w = 4
+    h = 4
+
+    # Slowly growing black rectangle.
+    while ani:
+        pygame.draw.rect(screen, color, (x, y, w, h))
+
+        w += 30  # Grow faster horizontally since screen isn't perfect square.
+        h += 20
+        x -= 15  # Grow faster horizontally since screen isn't perfect square.
+        y -= 10
+
+        # Quite loop when rectangle covers all screen.
+        if w > screen_width and h > screen_height:
+            ani = False
+
+        pygame.event.get()
+        pygame.display.update()
+
+        clock.tick(fps)
 
 
-# Draws the game's welcome screen (aka title).
-def draw_title():
-    name = [
-        "    _/_/_/    _/_/_/    _/_/_/    _/_/_/  _/    _/    _/_/_/",
-        "   _/    _/  _/    _/    _/    _/        _/  _/    _/",
-        "  _/_/_/    _/_/_/      _/    _/        _/_/        _/_/",
-        " _/    _/  _/    _/    _/    _/        _/  _/          _/",
-        "_/_/_/    _/    _/  _/_/_/    _/_/_/  _/    _/  _/_/_/"
-    ]
+# Animations to switch to a given level.
+def switch_to_level(lvl):
+    # Fade out sounds.
+    fadeout_all_sounds()
 
-    x = 50
-    y = 50
+    # Fade out the screen.
+    screen_fade_out()
 
-    screen.fill(SLACK_COLOR)
+    # Draw level number.
+    screen.fill(DARK_GREY_COLOR)
+    screen.blit(level_font.render("--== level " + str(lvl.lvl_num) + " ==--", 1, GREEN_COLOR), (220, 210))
 
-    for line in name:
-        screen.blit(title_font.render(line, 1, mk_random_color()), (x, y))
-        y += 15
-
-    screen.blit(title_font.render("--== Copyright 2018 (C) by Vlad Ivanov ==--", 1, YELLOW_COLOR), (115, 150))
-
-    x2 = 260
-    y2 = 225
-
-    Brick(x2, y2, 0, 1).draw(screen)
-    screen.blit(title_font.render("+1 score", 1, YELLOW_COLOR), (x2 + 30, y2))
-
-    y2 += 20
-
-    Brick(x2, y2, 0, 2).draw(screen)
-    screen.blit(title_font.render("+5 ammo", 1, YELLOW_COLOR), (x2 + 30, y2))
-
-    y2 += 20
-
-    Brick(x2, y2, 0, 3).draw(screen)
-    screen.blit(title_font.render("+1 live", 1, YELLOW_COLOR), (x2 + 30, y2))
-
-    screen.blit(title_font.render("SPACE to shoot | ARROW KEYS to move", 1, YELLOW_COLOR), (150, 330))
-
-    if is_joystick_found:
-        screen.blit(title_font.render("Supported joystick found", 1, YELLOW_COLOR), (200, 370))
-
-    screen.blit(title_font.render("Press ENTER to start", 1, WHITE_COLOR), (220, 410))
-
-    # Start title background music.
-    pygame.mixer.Channel(0).play(title_bg_sound, -1)
-
-    # Update (refresh) screen.
     pygame.display.update()
+    pygame.event.get()
 
-    wait_key_pressed(pygame.K_RETURN)
+    # Sleep for 3 seconds.
+    time.sleep(3)
 
 
-# Shows final score. Wait for 'ESC' button to end the game.
-def draw_final_score():
-    # Stop all sounds.
-    pygame.mixer.stop()
+# Draws final score screen and ask for quite or restart.
+def draw_final_screen():
+    global score
+
+    # Fade out sounds.
+    fadeout_all_sounds()
+
+    # Fade out the screen.
+    screen_fade_out(SLACK_COLOR)
 
     lines = [
         "  ________",
@@ -442,66 +543,120 @@ def draw_final_score():
         screen.blit(final_font1.render(line, 1, mk_random_color()), (x, y))
         y += 15
 
-    screen.blit(final_font2.render("Your final score: " + str(score), 1, RED_COLOR), (205, 240))
-    screen.blit(final_font1.render("Press ESC to exit the game", 1, WHITE_COLOR), (200, 360))
+    screen.blit(final_font2.render("Your final score: " + str(score), 1, RED_COLOR), (230, 240))
+    screen.blit(final_font1.render("'Q' to Quit | 'R' to Restart", 1, YELLOW_COLOR), (200, 340))
 
-    # Start title background music.
-    pygame.mixer.Channel(0).play(final_bg_sound, -1)
+    # Start final background music.
+    background_sound(final_bg_sound)
 
     pygame.display.update()
 
-    wait_key_pressed(pygame.K_ESCAPE)
+    while True:
+        for evt in pygame.event.get():
+            if evt.type == pygame.KEYDOWN and evt.key == pygame.K_q:
+                return True
+            elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_r:
+                return False
 
 
-# Main game loop.
-def main_game_loop():
-    # Start main background music.
-    pygame.mixer.Channel(0).play(main_bg_sound, -1)
+# Draws the player.
+def draw_player(lvl):
+    pygame.draw.rect(screen, lvl.player_color, (player_x, 450, 20, 20), 3)  # Base.
+    pygame.draw.line(screen, lvl.player_color, [player_x + 9, 450], [player_x + 9, 435], 5)  # Turret.
 
-    global left
-    global right
 
-    player_x = 320
+# Resets the game data.
+def reset_data():
+    global lives, ammo, score, bricks, rockets, explosions
+    global used_red_bricks, used_white_bricks, used_green_bricks
+    global used_bricks, level_completion
+
+    lives = init_lives
+    ammo = init_ammo
+    score = 0
+    bricks = []
+    rockets = []
+    explosions = []
+    used_green_bricks = 0
+    used_white_bricks = 0
+    used_red_bricks = 0
+    used_bricks = 0
+    level_completion = 0
+
+
+# Plays given level.
+def play_level(lvl):
+    global bricks, rockets, explosions, used_bricks, level_completion
+    global used_red_bricks, used_white_bricks, used_green_bricks
+
+    bricks = []
+    rockets = []
+    explosions = []
+    used_green_bricks = 0
+    used_white_bricks = 0
+    used_red_bricks = 0
+
+    background_sound(lvl.bg_sound)
+
+    intro_ani = True
+
+    x = 0
+    y = 0
+    w = screen_width
+    h = screen_height
+
+    # Intro-animation: shrinking black rectangle.
+    while intro_ani:
+        # Clear the screen.
+        screen.fill(lvl.bg_color)
+
+        # Draw the scene elements.
+        for scene_elem in lvl.scene_elements:
+            scene_elem.draw(screen)
+
+        draw_header()
+
+        pygame.draw.rect(screen, DARK_GREY_COLOR, (x, y, w, h))
+
+        w -= 30  # Shrink faster horizontally since screen isn't perfect square.
+        h -= 20
+        x += 15  # Shrink faster horizontally since screen isn't perfect square.
+        y += 10
+
+        # Quite loop when rectangle covers all screen.
+        if w <= 0 and h <= 0:
+            intro_ani = False
+
+        pygame.event.get()
+        pygame.display.update()
+
+        clock.tick(fps)
+
     left = 0
     right = 0
+    game_over = False
 
-    # Main game loop.
-    while True:
-        # Clear the screen.
-        screen.fill(DARK_BLUE_COLOR)
-
-        # Draw the world.
-        draw_background()
-
+    # Main level loop.
+    while level_completion < 100 and not game_over:
         if lives == 0 or ammo == 0:
             game_over = True
-        else:
-            game_over = False
 
-        if game_over:
-            game_over_delay = 3 * 1000  # 3 seconds delays.
+        if not game_over:
+            # Clear the screen.
+            screen.fill(lvl.bg_color)
 
-            pygame.mixer.Channel(0).fadeout(game_over_delay - 250)
-            pygame.time.delay(game_over_delay)
+            # Draw the scene elements.
+            for scene_elem in lvl.scene_elements:
+                scene_elem.draw(screen)
 
-            # Clear data.
-            bricks.clear()
-            rockets.clear()
-
-            # Draw final score.
-            draw_final_score()
-
-            # End the game.
-            end_game()
-        else:
             for event in pygame.event.get():
                 typ = event.type
 
                 if typ == pygame.QUIT:
                     end_game()
                 elif typ == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    # Fire the rocket using last 'playerX'.
-                    fire_rocket(player_x + 7)
+                    # Fire new rocket.
+                    fire_rocket()
                 elif typ == pygame.KEYDOWN and event.key == pygame.K_LEFT:
                     # Move the player left.
                     left = 1
@@ -516,59 +671,54 @@ def main_game_loop():
                 elif typ == pygame.KEYUP and event.key == pygame.K_RIGHT:
                     # Stop right movement.
                     right = 0
-                if typ == pygame.JOYBUTTONDOWN:
-                    print("Joystick button pressed.")
 
             if left == 1:
-                player_x = player_x - HOR_PIXELS
+                move_player_left()
             elif right == 1:
-                player_x = player_x + HOR_PIXELS
-
-            # Randomly place bricks.
-            if len(bricks) < 5:
-                brick_x = random.randint(20, 620)
-
-                rnd = random.randint(0, 100)
-
-                if rnd < 10:
-                    kind = 3
-                    speed = 4  # Lives bricks have constant "medium" speed.
-                elif rnd < 35:
-                    kind = 2
-                    speed = 2  # Ammo bricks have constant "slow" speed but they move left to right.
-                else:
-                    kind = 1
-                    speed = random.randint(1, 4)  # Random speed for red bricks.
-
-                bricks.append(Brick(brick_x, 0, speed, kind))
-
-            # Checking if player touches wall.
-            if player_x == 0 or player_x < 0:
-                player_x = 0
-            elif player_x == 640 or player_x > 640:
-                player_x = 640
+                move_player_right()
 
             # Check bricks and rockets for collision.
             check_bricks_rockets()
 
-            # Draw player, bricks, rockets & headers.
-            draw_player(player_x)
-            draw_rockets()
-            draw_bricks()
+            # Randomly place new bricks.
+            add_new_bricks(lvl)
+
             draw_header()
+            draw_player(lvl)
+            draw_bricks()
+            draw_rockets()
             draw_explosions()
 
-        # Update (refresh) screen.
-        pygame.display.update()
+            level_completion = math.floor((used_bricks / lvl.total_bricks) * 100)
 
-        # Wait for FPS.
-        clock.tick(fps)
+            # Update (refresh) screen.
+            pygame.display.update()
+
+            # Wait for FPS.
+            clock.tick(fps)
 
 
-# +=================+
-# | Start the game. |
-# +=================+
-init_joystick()
+def main_game_loop():
+    while True:
+        # Play all levels or until the end.
+        for lvl in levels:
+            switch_to_level(lvl)
+            play_level(lvl)
+
+        # Fade out all sounds.
+        fadeout_all_sounds()
+
+        # Draw final score.
+        end_it = draw_final_screen()
+
+        if end_it:
+            # End the game.
+            end_game()
+        else:
+            # Clear data.
+            reset_data()
+
+
 draw_title()
 main_game_loop()
 

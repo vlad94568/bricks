@@ -10,17 +10,16 @@
 #
 #  Email: vlad94568@gmail.com
 
-from src.common import *
 
+# Explosion container.
+class Explosion:
+    def __init__(self, frags):
+        self.frags = frags
 
-# Simple (rectangular) ground.
-class SimpleGround(SceneElement):
-    def __init__(self, height, color):
-        SceneElement.__init__(self, 0, screen_height - height)
+    def is_done(self):
+        return self.frags[0].frame_cnt == 30
 
-        self.height = height
-        self.color = color
-
-    # Draws ground.
+    # Draws explosion (i.e. its fragments).
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, (self.x, self.y, screen_width, self.height))
+        for frag in self.frags:
+            frag.draw(screen)

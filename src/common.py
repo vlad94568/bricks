@@ -11,7 +11,28 @@
 #  Email: vlad94568@gmail.com
 
 import random
-from src.colors import *
+import pygame
+import math
+from pygame import gfxdraw
+
+# Common colors.
+RED_COLOR = (255, 0, 0)
+RED2_COLOR = (255, 65, 25)
+GREEN_COLOR = (0, 255, 0)
+WHITE_COLOR = (255, 255, 255)
+YELLOW_COLOR = (255, 255, 0)
+BLACK_COLOR = (0, 0, 0)
+DARK_GREY_COLOR = (31, 31, 31)
+SLACK_COLOR = (30, 22, 29)
+BLUE_COLOR = (215, 220, 250)
+DARK_GREEN_COLOR = (60, 160, 40)
+PINK_COLOR = (255, 105, 130)
+DARK_BLUE_COLOR = (39, 32, 98)
+BROWN_COLOR = (130, 65, 65)
+
+# Global vars.
+screen_width = 640
+screen_height = 480
 
 
 # Generates random color.
@@ -24,9 +45,41 @@ def mk_random_color():
     return r, g, b
 
 
-# Global vars.
-screen_width = 640
-screen_height = 480
+# Draws a square with (x, y) center, 2*size diagonal, and turned at the angle.
+def draw_turned_square(x, y, size, color, angle, screen):
+    x1, y1 = transform(x, y, size, angle % 360)
+    x2, y2 = transform(x, y, size, (angle + 90) % 360)
+    x3, y3 = transform(x, y, size, (angle + 180) % 360)
+    x4, y4 = transform(x, y, size, (angle + 270) % 360)
+
+    pygame.gfxdraw.aapolygon(screen, [(x1, y1), (x2, y2), (x3, y3), (x4, y4)], color)
+
+
+# Transforms (x, y) coordinate to distance at a given angle.
+# Returns new (x, y) coordinate for the new location.
+def transform(x, y, distance, angle):
+    if angle <= 90:
+        rad = math.radians(angle)
+
+        new_x = x + distance * math.sin(rad)
+        new_y = y - distance * math.cos(rad)
+    elif angle <= 180:
+        rad = math.radians(180 - angle)
+
+        new_x = x + distance * math.sin(rad)
+        new_y = y + distance * math.cos(rad)
+    elif angle <= 270:
+        rad = math.radians(270 - angle)
+
+        new_x = x - distance * math.cos(rad)
+        new_y = y + distance * math.sin(rad)
+    else:
+        rad = math.radians(360 - angle)
+
+        new_x = x - distance * math.sin(rad)
+        new_y = y - distance * math.cos(rad)
+
+    return new_x, new_y
 
 
 # Base class for all scene elements.
@@ -39,41 +92,4 @@ class SceneElement:
         assert True, "Not implemented"
 
 
-# TODO: refactor
-class Explosion:
-    def __init__(self, frags):
-        self.frags = frags
 
-    def is_done(self):
-        return self.frags[0].frame_cnt == 30
-
-
-# TODO: refactor
-class AirFragment(SceneElement):
-    def __init__(self, x, y):
-        SceneElement.__init__(self, x, y)
-
-        self.speed = random.randint(2, 4)  # Speed in pixels per frame.
-        self.angle = random.randint(0, 360)  # Angle of movement.
-        self.turn_angle = random.randint(0, 360)  # Angle of turning.
-        self.frame_cnt = 0
-        self.size = random.randint(3, 10)  # Size of the square in pixels.
-
-
-# TODO: refactor
-class GroundFragment(SceneElement):
-    def __init__(self, x, y, brick_kind):
-        SceneElement.__init__(self, x, y)
-
-        if brick_kind == 1:
-            self.color = RED_COLOR
-        elif brick_kind == 2:
-            self.color = WHITE_COLOR
-        else:  # kind == 3
-            self.color = GREEN_COLOR
-
-        self.speed = random.randint(2, 4)  # Speed in pixels per frame.
-        self.angle = random.randint(10, 170)  # Angle of movement.
-        self.turn_angle = random.randint(0, 360)  # Angle of turning.
-        self.frame_cnt = 0
-        self.size = random.randint(3, 10)  # Size of the square in pixels.
