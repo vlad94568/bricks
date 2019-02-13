@@ -175,6 +175,7 @@ final_bg_sound = pygame.mixer.Sound("sounds/background_sound2.ogg")
 rocket_fire_sound = pygame.mixer.Sound("sounds/rocket_fired.ogg")
 brick_kill_sound = pygame.mixer.Sound("sounds/brick_kill.ogg")
 brick_squish_sound = pygame.mixer.Sound("sounds/brick_squished.ogg")
+you_won_sound = pygame.mixer.Sound("sounds/win_song.ogg")
 
 # Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
 header_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
@@ -600,7 +601,7 @@ def draw_final_screen():
             elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_r:
                 return False
 
-def completeGame():
+def complete_game():
     global score
     # Fade out sounds.
     fadeout_all_sounds()
@@ -619,14 +620,14 @@ def completeGame():
     screen.fill(SLACK_COLOR)
 
     for line in lines:
-        screen.blit(final_font1.render(line, 1, mk_random_color()), (x, y))
+        screen.blit(final_font1.render(line, 1, ()), (x, y))
         y += 15
 
-    screen.blit(final_font2.render("Your final score: " + str(score), 1, RED_COLOR), (230, 240))
+    screen.blit(final_font2.render("Your final score: " + str(score), 1, GREEN_COLOR()), (230, 240))
     screen.blit(final_font1.render("'Q' to Quit | 'R' to Restart", 1, YELLOW_COLOR), (200, 340))
 
     # Start final background music.
-    background_sound(final_bg_sound)
+    background_sound(you_won_sound)
 
     pygame.display.update()
 
@@ -636,7 +637,6 @@ def completeGame():
                 return True
             elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_r:
                 return False
-
 
 
 # Draws the player.
@@ -791,7 +791,7 @@ def main_game_loop():
         fadeout_all_sounds()
 
         # Draw final score.
-        end_it = completeGame()
+        end_it = complete_game()
 
         if end_it:
             # End the game.
@@ -799,7 +799,7 @@ def main_game_loop():
         else:
             # Clear data.
             reset_data()
-        if ammo == 0 or lives == 0:
+        if ammo == 0 or ammo < 0 or lives == 0 or lives < 0:
             # Fade out all sounds.
             fadeout_all_sounds()
 
