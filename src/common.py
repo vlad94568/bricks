@@ -13,6 +13,7 @@
 import random
 import pygame
 import math
+import time
 from pygame import gfxdraw
 
 # Common colors.

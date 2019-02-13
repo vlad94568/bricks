@@ -136,7 +136,7 @@ game_lvl2 = Level(
     white_bricks_min_speed=2,
     max_bricks_on_screen=5,
     scene_elements=[
-        SimpleGround(10, BROWN_COLOR),
+        SimpleGround(10,BROWN_COLOR),
         Flower(50, 40, 60),
         Flower(250, 40, 80),
         Flower(350, 50, 50),
@@ -600,6 +600,44 @@ def draw_final_screen():
             elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_r:
                 return False
 
+def completeGame():
+    global score
+    # Fade out sounds.
+    fadeout_all_sounds()
+
+    # Fade out the screen.
+    screen_fade_out(SLACK_COLOR)
+    lines = [
+" __ __            _ _ _",
+"|  |  |___ _ _   | | | |___ ___",
+"|_   _| . | | |  | | | | . |   |",
+"  |_| |___|___|  |_____|___|_|_|"
+]
+    x = 180
+    y = 50
+
+    screen.fill(SLACK_COLOR)
+
+    for line in lines:
+        screen.blit(final_font1.render(line, 1, mk_random_color()), (x, y))
+        y += 15
+
+    screen.blit(final_font2.render("Your final score: " + str(score), 1, RED_COLOR), (230, 240))
+    screen.blit(final_font1.render("'Q' to Quit | 'R' to Restart", 1, YELLOW_COLOR), (200, 340))
+
+    # Start final background music.
+    background_sound(final_bg_sound)
+
+    pygame.display.update()
+
+    while True:
+        for evt in pygame.event.get():
+            if evt.type == pygame.KEYDOWN and evt.key == pygame.K_q:
+                return True
+            elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_r:
+                return False
+
+
 
 # Draws the player.
 def draw_player(lvl):
@@ -753,7 +791,7 @@ def main_game_loop():
         fadeout_all_sounds()
 
         # Draw final score.
-        end_it = draw_final_screen()
+        end_it = completeGame()
 
         if end_it:
             # End the game.
@@ -761,6 +799,19 @@ def main_game_loop():
         else:
             # Clear data.
             reset_data()
+        if ammo == 0 or lives == 0:
+            # Fade out all sounds.
+            fadeout_all_sounds()
+
+            # Draw final score.
+            end_it = draw_final_screen()
+
+            if end_it:
+                # End the game.
+                end_game()
+            else:
+                # Clear data.
+                reset_data()
 
 
 draw_title()
