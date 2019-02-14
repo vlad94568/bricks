@@ -672,8 +672,7 @@ def is_joy_right():
 
 
 def is_joy_fire():
-    # TODO
-    return True
+    return round(joystick.get_button(0)) == 1
 
 
 # Plays given level.
@@ -765,6 +764,10 @@ def play_level(lvl):
                 elif typ == pygame.KEYUP and event.key == pygame.K_RIGHT:
                     # Stop right movement.
                     right = 0
+                elif typ == pygame.JOYBUTTONDOWN and joystick is not None:
+                    if is_joy_fire():
+                        fire_rocket()
+
                 elif typ == pygame.JOYAXISMOTION and joystick is not None:
                     if is_joy_left():
                         left = 1
