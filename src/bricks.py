@@ -31,21 +31,19 @@ pygame.joystick.init()
 
 
 def detect_joystick():
-    found = False
-
     joystick_count = pygame.joystick.get_count()
 
     for i in range(joystick_count):
-        joystick = pygame.joystick.Joystick(i)
-        joystick.init()
+        jk = pygame.joystick.Joystick(i)
+        jk.init()
 
         # Get the name from the OS for the controller/joystick
-        name = joystick.get_name()
+        name = jk.get_name()
 
         if name.startswith("USB,2-axis 8-button gamepad"):
-            found = True
+            return jk
 
-    return found
+    return None
 
 
 # Definition of a single level.
@@ -200,7 +198,7 @@ score = 0
 used_bricks = 0
 level_completion = 0
 
-is_joystick_found = detect_joystick()  # Auto-detect joystick at the start.
+joystick = detect_joystick()  # Auto-detect joystick at the start.
 fps = 30
 player_x = screen_width / 2 - 10
 
@@ -334,7 +332,7 @@ def draw_title():
 
     pri("SPACE to shoot | <- -> to move", 175, 330)
 
-    if is_joystick_found:
+    if joystick is not None:
         pri("Supported joystick found", 200, 370)
 
     pri("Press ENTER to start", 220, 410)
@@ -665,6 +663,19 @@ def reset_data():
     level_completion = 0
 
 
+def is_joy_left():
+    return round(joystick.get_axis(0)) == -1
+
+
+def is_joy_right():
+    return round(joystick.get_axis(0)) == 1
+
+
+def is_joy_fire():
+    # TODO
+    return True
+
+
 # Plays given level.
 def play_level(lvl):
     global ammo, bricks, rockets, explosions, used_bricks, level_completion
@@ -754,6 +765,16 @@ def play_level(lvl):
                 elif typ == pygame.KEYUP and event.key == pygame.K_RIGHT:
                     # Stop right movement.
                     right = 0
+                elif typ == pygame.JOYAXISMOTION and joystick is not None:
+                    if is_joy_left():
+                        left = 1
+                        right = 0
+                    elif is_joy_right():
+                        left = 0
+                        right = 1
+                    else:
+                        left = 0
+                        right = 0
 
             if left == 1:
                 move_player_left()

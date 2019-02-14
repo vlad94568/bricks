@@ -15,14 +15,14 @@ from src.common import *
 
 # Mountain.
 class Mountain(SceneElement):
-    def __init__(self, y, mounain_size):
-        SceneElement.__init__(self, x, y)
+    def __init__(self, x, w, h, base_col, top_col):
+        SceneElement.__init__(self, x, screen_height)
 
-        self.mountain_size = mounain_size
-        self.mountain_color = DARK_GREY_COLOR
-        self.snow_color = WHITE_COLOR
+        self.w = w
+        self.h = h
+        self.base_col = base_col
+        self.top_col = top_col
 
     # Draws this Mountain.
     def draw(self, screen):
-        pygame.draw.polygon(screen, self.mountain_color,[10,self.y],[])
-        # TODO
+        pygame.draw.polygon(screen, self.base_col,[self.x,screen_height - 10],[self.x])
