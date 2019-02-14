@@ -125,9 +125,9 @@ game_lvl2 = Level(
     DARK_BLUE_COLOR,
     WHITE_COLOR,
     pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
-    num_red_bricks=23,
-    num_green_bricks=24,
-    num_white_bricks=18,
+    num_red_bricks=5,
+    num_green_bricks=2,
+    num_white_bricks=2,
     red_bricks_max_speed=6,
     red_bricks_min_speed=2,
     green_bricks_max_speed=4,
@@ -559,7 +559,7 @@ def switch_to_level(lvl):
 
 
 # Draws final score screen and ask for quite or restart.
-def draw_final_screen():
+def you_lost_screen():
     global score
 
     # Fade out sounds.
@@ -601,7 +601,8 @@ def draw_final_screen():
             elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_r:
                 return False
 
-def complete_game():
+
+def you_won_screen():
     global score
     # Fade out sounds.
     fadeout_all_sounds()
@@ -609,21 +610,21 @@ def complete_game():
     # Fade out the screen.
     screen_fade_out(SLACK_COLOR)
     lines = [
-" __ __            _ _ _",
-"|  |  |___ _ _   | | | |___ ___",
-"|_   _| . | | |  | | | | . |   |",
-"  |_| |___|___|  |_____|___|_|_|"
-]
+        " __ __            _ _ _",
+        "|  |  |___ _ _   | | | |___ ___",
+        "|_   _| . | | |  | | | | . |   |",
+        "  |_| |___|___|  |_____|___|_|_|"
+    ]
     x = 180
     y = 50
 
     screen.fill(SLACK_COLOR)
 
     for line in lines:
-        screen.blit(final_font1.render(line, 1, ()), (x, y))
+        screen.blit(final_font1.render(line, 1, mk_random_color()), (x, y))
         y += 15
 
-    screen.blit(final_font2.render("Your final score: " + str(score), 1, GREEN_COLOR()), (230, 240))
+    screen.blit(final_font2.render("Your final score: " + str(score), 1, RED_COLOR), (230, 240))
     screen.blit(final_font1.render("'Q' to Quit | 'R' to Restart", 1, YELLOW_COLOR), (200, 340))
 
     # Start final background music.
@@ -666,7 +667,7 @@ def reset_data():
 
 # Plays given level.
 def play_level(lvl):
-    global bricks, rockets, explosions, used_bricks, level_completion
+    global ammo, bricks, rockets, explosions, used_bricks, level_completion
     global used_red_bricks, used_white_bricks, used_green_bricks
 
     bricks = []
@@ -779,19 +780,30 @@ def play_level(lvl):
             # Wait for FPS.
             clock.tick(fps)
 
+    return game_over
+
 
 def main_game_loop():
     while True:
+        player_died = False
+
         # Play all levels or until the end.
         for lvl in levels:
             switch_to_level(lvl)
-            play_level(lvl)
+
+            player_died = play_level(lvl)
+
+            if player_died:
+                break
 
         # Fade out all sounds.
         fadeout_all_sounds()
 
         # Draw final score.
-        end_it = complete_game()
+        if player_died:
+            end_it = you_lost_screen()
+        else:
+            end_it = you_won_screen()
 
         if end_it:
             # End the game.
@@ -799,19 +811,6 @@ def main_game_loop():
         else:
             # Clear data.
             reset_data()
-        if ammo == 0 or ammo < 0 or lives == 0 or lives < 0:
-            # Fade out all sounds.
-            fadeout_all_sounds()
-
-            # Draw final score.
-            end_it = draw_final_screen()
-
-            if end_it:
-                # End the game.
-                end_game()
-            else:
-                # Clear data.
-                reset_data()
 
 
 draw_title()
