@@ -14,6 +14,8 @@ import sys
 import time
 
 # Import all scene elements.
+from pygame.constants import K_RETURN
+
 from src.scene.star import *
 from src.scene.brick import *
 from src.scene.flower import *
@@ -271,15 +273,17 @@ def add_new_bricks(lvl):
             bricks.append(Brick(brick_x, 0, speed, 1))
 
 
-# Waits until given keyboard key is pressed.
-def wait_key_pressed(key):
+# Waits until either RETURN, ENTER or Joystick A button is pressed.
+def wait_start_pressed():
     is_pressed = False
 
     while not is_pressed:
         for evt in pygame.event.get():
             if evt.type == pygame.QUIT:
                 end_game()
-            elif evt.type == pygame.KEYDOWN and evt.key == key:
+            elif evt.type == pygame.KEYDOWN and evt.key == K_RETURN:
+                is_pressed = True
+            elif evt.type == pygame.JOYBUTTONDOWN and round(joystick.get_button(7)) == 1:
                 is_pressed = True
 
 
@@ -343,7 +347,8 @@ def draw_title():
     # Update (refresh) screen.
     pygame.display.update()
 
-    wait_key_pressed(pygame.K_RETURN)
+    if wait_start_pressed():
+        main_game_loop()
 
 
 # Moved player X coordinate left.
@@ -369,16 +374,22 @@ def move_player_right():
 
 
 # Draw score, live and ammo.
-def draw_header():
+def draw_header(lvl):
     score_label = header_font.render("score: " + str(score), 1, RED2_COLOR)
     lives_label = header_font.render("lives: " + str(lives), 1, GREEN_COLOR)
     ammo_label = header_font.render("ammo: " + str(ammo), 1, WHITE_COLOR)
-    level_label = header_font.render("level: " + str(level_completion) + "%", 1, YELLOW_COLOR)
 
-    screen.blit(score_label, (70, 10))
-    screen.blit(lives_label, (210, 10))
-    screen.blit(ammo_label, (350, 10))
-    screen.blit(level_label, (480, 10))
+    level_label = header_font.render(
+        "level: " +
+        str(lvl.lvl_num) +
+        " (" + str(level_completion) + "%) of " +
+        str(len(levels))
+        , 1, YELLOW_COLOR)
+
+    screen.blit(score_label, (50, 10))
+    screen.blit(lives_label, (190, 10))
+    screen.blit(ammo_label, (330, 10))
+    screen.blit(level_label, (450, 10))
 
 
 # Draws all the explosions.
@@ -644,7 +655,7 @@ def draw_player(lvl):
     pygame.draw.line(screen, lvl.player_color, [player_x + 9, 450], [player_x + 9, 435], 5)  # Turret.
 
 
-# Resets the game data.
+# Resets the game data for the game.
 def reset_data():
     global lives, ammo, score, bricks, rockets, explosions
     global used_red_bricks, used_white_bricks, used_green_bricks
@@ -656,6 +667,7 @@ def reset_data():
     bricks = []
     rockets = []
     explosions = []
+    used_bricks = 0
     used_green_bricks = 0
     used_white_bricks = 0
     used_red_bricks = 0
@@ -687,6 +699,7 @@ def play_level(lvl):
     used_green_bricks = 0
     used_white_bricks = 0
     used_red_bricks = 0
+    used_bricks = 0
     level_completion = 0
 
     background_sound(lvl.bg_sound)
@@ -707,7 +720,7 @@ def play_level(lvl):
         for scene_elem in lvl.scene_elements:
             scene_elem.draw(screen)
 
-        draw_header()
+        draw_header(lvl)
 
         pygame.draw.rect(screen, DARK_GREY_COLOR, (x, y, w, h))
 
@@ -790,7 +803,7 @@ def play_level(lvl):
             # Randomly place new bricks.
             add_new_bricks(lvl)
 
-            draw_header()
+            draw_header(lvl)
             draw_player(lvl)
             draw_bricks()
             draw_rockets()
