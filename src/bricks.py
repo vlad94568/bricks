@@ -24,6 +24,7 @@ from src.scene.grass import *
 from src.scene.rocket import *
 from src.scene.air_fragment import *
 from src.scene.ground_fragment import *
+from src.scene.mountain import *
 
 # Initialize pygame & its modules.
 pygame.init()
@@ -95,18 +96,19 @@ game_lvl1 = Level(
     DARK_BLUE_COLOR,
     WHITE_COLOR,
     pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
-    num_red_bricks=2,
-    num_green_bricks=2,
-    num_white_bricks=2,
+    num_red_bricks=12,
+    num_green_bricks=3,
+    num_white_bricks=4,
     red_bricks_max_speed=4,
-    red_bricks_min_speed=1,
+    red_bricks_min_speed=2,
     green_bricks_max_speed=4,
-    green_bricks_min_speed=4,
-    white_bricks_max_speed=2,
+    green_bricks_min_speed=2,
+    white_bricks_max_speed=4,
     white_bricks_min_speed=2,
     max_bricks_on_screen=5,
     scene_elements=[
         SimpleGround(10, BROWN_COLOR),
+        Mountain(200,200,300,DARK_GREY_COLOR, WHITE_COLOR),
         Flower(50, 40, 60),
         Flower(250, 40, 80),
         Flower(350, 50, 50),
@@ -117,24 +119,25 @@ game_lvl1 = Level(
         Grass(60, 10, 20, 43, GREEN_COLOR),
         Grass(260, 10, 20, 18, GREEN_COLOR),
         Grass(360, 10, 20, 43, GREEN_COLOR)
+
+
     ]
 )
-
 game_lvl2 = Level(
     2,
     DARK_BLUE_COLOR,
     WHITE_COLOR,
     pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
-    num_red_bricks=5,
-    num_green_bricks=2,
-    num_white_bricks=2,
+    num_red_bricks=23,
+    num_green_bricks=13,
+    num_white_bricks=13,
     red_bricks_max_speed=6,
-    red_bricks_min_speed=2,
-    green_bricks_max_speed=4,
+    red_bricks_min_speed=4,
+    green_bricks_max_speed=6,
     green_bricks_min_speed=4,
-    white_bricks_max_speed=2,
-    white_bricks_min_speed=2,
-    max_bricks_on_screen=5,
+    white_bricks_max_speed=5,
+    white_bricks_min_speed=3,
+    max_bricks_on_screen=6,
     scene_elements=[
         SimpleGround(10,BROWN_COLOR),
         Flower(50, 40, 60),

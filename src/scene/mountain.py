@@ -25,4 +25,8 @@ class Mountain(SceneElement):
 
     # Draws this Mountain.
     def draw(self, screen):
-        pygame.draw.polygon(screen, self.base_col,[self.x,screen_height - 10],[self.x])
+        point_list_1 = [self.x, screen_height - 10],\
+                     [(self.w / 2) + self.x , screen_height - 10 - self.h],\
+                     [self.x + self.w,screen_height - 10 ]
+        pygame.draw.polygon(screen, self.top_col, point_list_1)
+        #pygame.draw.polygon(screen, self.base_col,[self.x,screen_height - 10],[])
