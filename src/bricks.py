@@ -109,7 +109,7 @@ game_lvl1 = Level(
     max_bricks_on_screen=5,
     scene_elements=[
         SimpleGround(10, BROWN_COLOR),
-        #Mountain(200, 200, 300, GREY_COLOR, WHITE_COLOR),
+        Mountain(50, 150, 150, GREY_COLOR, WHITE_COLOR),
         Flower(50, 40, 60),
         Flower(250, 40, 80),
         Flower(350, 50, 50),
