@@ -34,10 +34,10 @@ class Tree(SceneElement):
                            self.leaf_color,
                            (self.x,
                             screen_height - 10 - self.branch_height ),
-                           self.leaf_size)
+                           int(self.leaf_size))
 
         pygame.draw.circle(screen,
                            self.leaf_color,
                            (self.x + (self.branch_width / 2),
                             screen_height - 10 - self.branch_height ),
-                           self.leaf_size)
+                           int(self.leaf_size))
