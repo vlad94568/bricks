@@ -25,6 +25,7 @@ from src.scene.rocket import *
 from src.scene.air_fragment import *
 from src.scene.ground_fragment import *
 from src.scene.mountain import *
+from src.scene.tree import *
 
 # Initialize pygame & its modules.
 pygame.init()
@@ -108,7 +109,7 @@ game_lvl1 = Level(
     max_bricks_on_screen=5,
     scene_elements=[
         SimpleGround(10, BROWN_COLOR),
-        Mountain(200,200,300,DARK_GREY_COLOR, WHITE_COLOR),
+        #Mountain(200, 200, 300, GREY_COLOR, WHITE_COLOR),
         Flower(50, 40, 60),
         Flower(250, 40, 80),
         Flower(350, 50, 50),
@@ -118,9 +119,8 @@ game_lvl1 = Level(
         Star(400, 50, WHITE_COLOR, 5),
         Grass(60, 10, 20, 43, GREEN_COLOR),
         Grass(260, 10, 20, 18, GREEN_COLOR),
-        Grass(360, 10, 20, 43, GREEN_COLOR)
-
-
+        Grass(360, 10, 20, 43, GREEN_COLOR),
+        Tree(400, 150, 15, DARK_GREY_COLOR, GREEN_COLOR)
     ]
 )
 game_lvl2 = Level(
