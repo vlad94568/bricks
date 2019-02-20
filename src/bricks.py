@@ -120,7 +120,7 @@ game_lvl1 = Level(
         Grass(60, 10, 20, 43, GREEN_COLOR),
         Grass(260, 10, 20, 18, GREEN_COLOR),
         Grass(360, 10, 20, 43, GREEN_COLOR),
-        Tree(400, 150, 15, DARK_GREY_COLOR, GREEN_COLOR)
+        Tree(400, 150, 15, BROWN_COLOR, GREEN_COLOR)
     ]
 )
 game_lvl2 = Level(
