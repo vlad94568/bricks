@@ -26,18 +26,33 @@ class Tree(SceneElement):
 
     # Draws this tree.
     def draw(self, screen):
-        pygame.draw.rect(screen, self.wood_color,
-                         (self.x, screen_height - 10 - self.branch_height,
-                          self.branch_width,
-                          self.branch_height))
-        pygame.draw.circle(screen,
-                           self.leaf_color,
-                           (self.x,
-                            screen_height - 10 - self.branch_height ),
-                           int(self.leaf_size))
+        pygame.draw.rect(
+            screen,
+            self.wood_color,
+            (
+                self.x,
+                screen_height - 10 - self.branch_height,
+                self.branch_width,
+                self.branch_height
+            )
+        )
 
-        pygame.draw.circle(screen,
-                           self.leaf_color,
-                           (self.x + (self.branch_width / 2),
-                            screen_height - 10 - self.branch_height ),
-                           int(self.leaf_size))
+        pygame.draw.circle(
+            screen,
+            self.leaf_color,
+            (
+                self.x,
+                screen_height - 10 - self.branch_height
+            ),
+            self.leaf_size
+        )
+
+        pygame.draw.circle(
+            screen,
+            self.leaf_color,
+            (
+                round(self.x + (self.branch_width / 2)),
+                screen_height - 30 - self.branch_height
+            ),
+            self.leaf_size
+        )
