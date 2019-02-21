@@ -13,11 +13,11 @@
 from src.common import *
 
 
-class Spaceship(SceneElement):
+class Clouds(SceneElement):
     def __init__(self, x, y):
         SceneElement.__init__(self, x, y)
 
-    # Draws the spaceship.
+    # Draws the clouds.
     def draw(self, screen):
         # TODO
         pass

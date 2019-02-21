@@ -12,12 +12,18 @@
 
 from src.common import *
 
+
 class Building(SceneElement):
-    def __init__(self, x, height, width, num_window):
+    # rows - how many rows of windows
+    # floors - how many windows at each rows
+    def __init__(self, x, rows, floors):
         SceneElement.__init__(self, x, screen_height)
-        self.height = height
-        self.width = width
-        self.num_window = num_window
+
+        self.rows = rows
+        self.floors = floors
+
+    # Draw building.
     def draw(self, screen):
-        ()
+        # TODO
+        pass
 
