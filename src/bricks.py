@@ -109,7 +109,7 @@ game_lvl1 = Level(
     max_bricks_on_screen=5,
     scene_elements=[
         SimpleGround(10, BROWN_COLOR),
-        Mountain(50, 150, 150, GREY_COLOR, WHITE_COLOR),
+        Mountain(50, 151, 150, GREY_COLOR, WHITE_COLOR),
         Flower(50, 40, 60),
         Flower(250, 40, 80),
         Flower(350, 50, 50),
@@ -120,7 +120,8 @@ game_lvl1 = Level(
         Grass(60, 10, 20, 43, GREEN_COLOR),
         Grass(260, 10, 20, 18, GREEN_COLOR),
         Grass(360, 10, 20, 43, GREEN_COLOR),
-        Tree(400, 150, 15, BROWN_COLOR, GREEN_COLOR)
+        Tree(400, 150, 15, BROWN_COLOR, GREEN_COLOR),
+        Tree(200, 150, 15, BROWN_COLOR, GREEN_COLOR)
     ]
 )
 game_lvl2 = Level(
