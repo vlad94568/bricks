@@ -36,6 +36,7 @@ class Tree(SceneElement):
                 self.branch_height
             )
         )
+
         # Draws the first leaf.
         pygame.draw.circle(
             screen,
@@ -46,6 +47,7 @@ class Tree(SceneElement):
             ),
             self.leaf_size
         )
+
         # Draws the second leaf.
         pygame.draw.circle(
             screen,
@@ -57,7 +59,7 @@ class Tree(SceneElement):
             self.leaf_size
         )
 
-# Draws the third leaf.
+        # Draws the third leaf.
         pygame.draw.circle(
             screen,
             self.leaf_color,

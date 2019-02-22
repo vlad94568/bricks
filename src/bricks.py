@@ -11,7 +11,6 @@
 #  Email: vlad94568@gmail.com
 
 import sys
-import time
 
 # Import all scene elements.
 from pygame.constants import K_RETURN
@@ -26,6 +25,7 @@ from src.scene.air_fragment import *
 from src.scene.ground_fragment import *
 from src.scene.mountain import *
 from src.scene.tree import *
+from src.scene.clouds import *
 
 # Initialize pygame & its modules.
 pygame.init()
@@ -121,7 +121,9 @@ game_lvl1 = Level(
         Grass(260, 10, 20, 18, GREEN_COLOR),
         Grass(360, 10, 20, 43, GREEN_COLOR),
         Tree(400, 150, 15, BROWN_COLOR, GREEN_COLOR),
-        Tree(200, 150, 15, BROWN_COLOR, GREEN_COLOR)
+        Tree(200, 150, 15, BROWN_COLOR, GREEN_COLOR),
+        Clouds(30, 70),
+        Clouds(-230, 70)
     ]
 )
 game_lvl2 = Level(
