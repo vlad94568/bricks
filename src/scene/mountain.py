@@ -27,32 +27,32 @@ class Mountain(SceneElement):
     def draw(self, screen):
         alpha = math.acos(self.w / 2 / math.sqrt(math.pow(self.w / 2, 2) + math.pow(self.h, 2)))
 
-        w_prime = round(2 / 3 * self.h / math.tan(alpha))
+        w_prime = 2 / 3 * self.h / math.tan(alpha)
 
-        x_delta = round((self.w / 2 - w_prime) / 2)
+        x_delta = (self.w / 2 - w_prime) / 2
 
         # Point #0
         x0 = self.x
         y0 = self.y - 10
 
         # Point #1
-        x1 = self.x + w_prime
+        x1 = round(self.x + w_prime)
         y1 = self.y - self.h * 2 / 3
 
         # Point #2
-        x2 = x1 + x_delta
+        x2 = round(x1 + x_delta)
         y2 = y1 + 10
 
         # Point #3
-        x3 = x2 + x_delta
+        x3 = round(x2 + x_delta)
         y3 = y1
 
         # Point #4
-        x4 = x3 + x_delta
+        x4 = round(x3 + x_delta)
         y4 = y1 + 10
 
         # Point #5
-        x5 = x4 + x_delta
+        x5 = round(x4 + x_delta)
         y5 = y1
 
         # Point #6

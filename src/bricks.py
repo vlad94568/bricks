@@ -26,6 +26,7 @@ from src.scene.ground_fragment import *
 from src.scene.mountain import *
 from src.scene.tree import *
 from src.scene.clouds import *
+from src.scene.building import *
 
 # Initialize pygame & its modules.
 pygame.init()
@@ -123,7 +124,8 @@ game_lvl1 = Level(
         Tree(400, 150, 15, BROWN_COLOR, GREEN_COLOR),
         Tree(200, 150, 15, BROWN_COLOR, GREEN_COLOR),
         Clouds(30, 70),
-        Clouds(-230, 70)
+        Clouds(-230, 70),
+        Building(300, DARK_GREY_COLOR, YELLOW_COLOR, 5, 5, False)
     ]
 )
 game_lvl2 = Level(
