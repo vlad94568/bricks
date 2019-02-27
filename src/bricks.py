@@ -94,13 +94,14 @@ class Level:
 
 # Game levels.
 game_lvl1 = Level(
+    # Desert themed level.
     1,
-    DARK_BLUE_COLOR,
+    BLUE_COLOR_2,
     WHITE_COLOR,
     pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
     num_red_bricks=12,
-    num_green_bricks=3,
-    num_white_bricks=4,
+    num_green_bricks=16,
+    num_white_bricks=10,
     red_bricks_max_speed=4,
     red_bricks_min_speed=2,
     green_bricks_max_speed=4,
@@ -109,22 +110,16 @@ game_lvl1 = Level(
     white_bricks_min_speed=2,
     max_bricks_on_screen=5,
     scene_elements=[
-        SimpleGround(10, BROWN_COLOR),
-        Mountain(50, 151, 170, GREY_COLOR, WHITE_COLOR),
+        SimpleGround(10, YELLOW_COLOR),
         Flower(50, 40, 60),
         Flower(250, 40, 80),
         Flower(350, 50, 50),
         Flower(550, 40, 40),
-        Star(180, 190, RED2_COLOR, 5),
-        Star(280, 290, YELLOW_COLOR, 5),
-        Star(400, 50, WHITE_COLOR, 5),
         Grass(60, 10, 20, 43, GREEN_COLOR),
         Grass(260, 10, 20, 18, GREEN_COLOR),
         Grass(360, 10, 20, 43, GREEN_COLOR),
-        Tree(400, 150, 15, BROWN_COLOR, GREEN_COLOR),
-        Tree(200, 150, 15, BROWN_COLOR, GREEN_COLOR),
-        Clouds(30, 70),
-        Clouds(-230, 63)
+        Tree(500, 125, 15, BROWN_COLOR, GREEN_COLOR),
+        Tree(150, 150, 15, BROWN_COLOR, GREEN_COLOR)
     ]
 )
 game_lvl2 = Level(
@@ -618,6 +613,7 @@ def you_lost_screen():
                 fadeout_all_sounds()
                 draw_title()
 
+                return False
 
 
 def you_won_screen():
