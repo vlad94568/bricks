@@ -110,7 +110,7 @@ game_lvl1 = Level(
     max_bricks_on_screen=5,
     scene_elements=[
         SimpleGround(10, BROWN_COLOR),
-        Mountain(50, 151, 150, GREY_COLOR, WHITE_COLOR),
+        Mountain(50, 151, 170, GREY_COLOR, WHITE_COLOR),
         Flower(50, 40, 60),
         Flower(250, 40, 80),
         Flower(350, 50, 50),
@@ -124,8 +124,7 @@ game_lvl1 = Level(
         Tree(400, 150, 15, BROWN_COLOR, GREEN_COLOR),
         Tree(200, 150, 15, BROWN_COLOR, GREEN_COLOR),
         Clouds(30, 70),
-        Clouds(-230, 70),
-        Building(300, DARK_GREY_COLOR, YELLOW_COLOR, 5, 5, False)
+        Clouds(-230, 63)
     ]
 )
 game_lvl2 = Level(
@@ -616,7 +615,9 @@ def you_lost_screen():
             if evt.type == pygame.KEYDOWN and evt.key == pygame.K_q:
                 return True
             elif evt.type == pygame.KEYDOWN and evt.key == pygame.K_r:
-                return False
+                fadeout_all_sounds()
+                draw_title()
+
 
 
 def you_won_screen():
