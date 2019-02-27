@@ -55,6 +55,7 @@ def detect_joystick():
 class Level:
     def __init__(self,
                  lvl_num,  # E.g. 1
+                 name,
                  bg_color,
                  player_color,
                  bg_sound,
@@ -71,6 +72,7 @@ class Level:
                  scene_elements  # List of different scene elements for this level world.
                  ):
         self.lvl_num = lvl_num
+        self.name = name
         self.player_color = player_color
         self.max_bricks_on_screen = max_bricks_on_screen
         self.bg_color = bg_color
@@ -96,6 +98,7 @@ class Level:
 game_lvl1 = Level(
     # Desert themed level.
     1,
+    'Ancient Desert',
     BLUE_COLOR_2,
     WHITE_COLOR,
     pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
@@ -124,6 +127,7 @@ game_lvl1 = Level(
 )
 game_lvl2 = Level(
     2,
+    'Grass Land',
     DARK_BLUE_COLOR,
     WHITE_COLOR,
     pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
@@ -186,6 +190,7 @@ ver_font = pygame.font.Font("fonts/Anonymous.ttf", 10)
 final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
 final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 13)
 level_font = pygame.font.Font("fonts/Anonymous.ttf", 16)
+level_font2 = pygame.font.Font("fonts/Anonymous.ttf", 24)
 
 # Pygame globals.
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -557,10 +562,11 @@ def switch_to_level(lvl):
 
     # Fade out the screen.
     screen_fade_out()
-
+    title_x = 305 - (len(lvl.name) / 2) * 17
     # Draw level number.
     screen.fill(DARK_GREY_COLOR)
     screen.blit(level_font.render("--== level " + str(lvl.lvl_num) + " ==--", 1, GREEN_COLOR), (220, 210))
+    screen.blit(level_font2.render('"' + lvl.name + '"', 1, GREEN_COLOR), (title_x, 165))
 
     pygame.display.update()
     pygame.event.get()
