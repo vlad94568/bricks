@@ -14,13 +14,15 @@ from src.common import *
 
 
 class Flower(SceneElement):
-    def __init__(self, x, min_stem_height=40, max_stem_height=60):
+    def __init__(self, x, min_stem_height, max_stem_height):
         SceneElement.__init__(self, x, screen_height)
 
         self.stem_height = random.randint(min_stem_height, max_stem_height)
         self.petal_color = mk_random_color()
         self.center_color = YELLOW_COLOR
         self.stem_color = DARK_GREEN_COLOR
+        self.min_stem_height = min_stem_height
+        self.max_stem_height = max_stem_height
 
     def draw(self, screen):
         # Drawing stem.
