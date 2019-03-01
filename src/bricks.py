@@ -562,7 +562,7 @@ def switch_to_level(lvl):
 
     # Fade out the screen.
     screen_fade_out()
-    title_x = 305 - (len(lvl.name) / 2) * 17
+    title_x = 300 - (len(lvl.name) / 2) * 17
     # Draw level number.
     screen.fill(DARK_GREY_COLOR)
     screen.blit(level_font.render("--== level " + str(lvl.lvl_num) + " ==--", 1, GREEN_COLOR), (220, 210))
