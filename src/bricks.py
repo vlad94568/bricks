@@ -212,8 +212,8 @@ class Explosion:
 
 # Game levels.
 levels = [
-    #game_lvl1,
-    #game_lvl2,
+    game_lvl1,
+    game_lvl2,
     game_lvl3
 ]
 
