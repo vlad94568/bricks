@@ -160,6 +160,41 @@ game_lvl2 = Level(
     ]
 )
 
+game_lvl3 = Level(
+    3,
+    'Rotten Covert',
+    DARK_BLUE_COLOR,
+    WHITE_COLOR,
+    pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
+    num_red_bricks=33,
+    num_green_bricks=30,
+    num_white_bricks=27,
+    red_bricks_max_speed=6,
+    red_bricks_min_speed=3,
+    green_bricks_max_speed=6,
+    green_bricks_min_speed=3,
+    white_bricks_max_speed=6,
+    white_bricks_min_speed=3,
+    max_bricks_on_screen=7,
+    scene_elements=[
+        Tree(275, 340, 25, BROWN_COLOR, GREEN_COLOR),
+        Tree(155, 350, 25, BROWN_COLOR, GREEN_COLOR),
+        Tree(75, 325, 25, BROWN_COLOR, GREEN_COLOR),
+        Tree(370, 330, 25, BROWN_COLOR, GREEN_COLOR),
+        Tree(500, 360, 25, BROWN_COLOR, GREEN_COLOR),
+        Tree(615, 310, 25, BROWN_COLOR, GREEN_COLOR),
+        Flower(50, 50, 65),
+        Flower(250, 50, 80),
+        Flower(350, 50, 70),
+        Flower(550, 50, 75),
+        Grass(0, 25, 40, 80, GREEN_COLOR),
+        Grass(260, 25, 40, 100, GREEN_COLOR),
+        Grass(360, 25, 40, 100, GREEN_COLOR),
+        SimpleGround(10,BROWN_COLOR)
+
+    ]
+)
+
 
 # Explosion is just a container for fragments.
 class Explosion:
@@ -177,8 +212,9 @@ class Explosion:
 
 # Game levels.
 levels = [
-    game_lvl1,
-    game_lvl2
+    #game_lvl1,
+    #game_lvl2,
+    game_lvl3
 ]
 
 # Sounds from 'sounds' sub-folder.

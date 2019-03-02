@@ -23,6 +23,7 @@ class Tree(SceneElement):
         self.leaf_size = branch_width * 2
         self.wood_color = wood_color
         self.leaf_color = leaf_color
+        self.dark_leaf_color = (leaf_color[0] * 0.8, leaf_color[1] * 0.8, leaf_color[2] * 0.8)
 
     # Draws the wood part of the tree.
     def draw(self, screen):
@@ -59,6 +60,17 @@ class Tree(SceneElement):
             self.leaf_size
         )
 
+        pygame.draw.circle(
+            screen,
+            self.dark_leaf_color,
+            (
+                round(self.x + (self.branch_width / 2)),
+                screen_height - 30 - self.branch_height
+            ),
+            self.leaf_size,
+            1
+        )
+
         # Draws the third leaf.
         pygame.draw.circle(
             screen,
@@ -68,4 +80,16 @@ class Tree(SceneElement):
                 screen_height - 10 - self.branch_height
             ),
             self.leaf_size
+        )
+
+        # Draws the third leaf.
+        pygame.draw.circle(
+            screen,
+            self.dark_leaf_color,
+            (
+                self.x + self.branch_width,
+                screen_height - 10 - self.branch_height
+            ),
+            self.leaf_size,
+            1
         )
