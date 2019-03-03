@@ -16,7 +16,7 @@ from src.common import *
 # Sparkling star.
 class Star(SceneElement):
     # Initializes this star.
-    def __init__(self, x, y,
+    def __init__(self, x,   y,
                  star_color,
                  max_size):
         SceneElement.__init__(self, x, y)

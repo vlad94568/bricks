@@ -132,8 +132,8 @@ game_lvl2 = Level(
     WHITE_COLOR,
     pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
     num_red_bricks=23,
-    num_green_bricks=20,
-    num_white_bricks=17,
+    num_green_bricks=17,
+    num_white_bricks=12,
     red_bricks_max_speed=5,
     red_bricks_min_speed=3,
     green_bricks_max_speed=5,
@@ -166,9 +166,9 @@ game_lvl3 = Level(
     DARK_BLUE_COLOR,
     WHITE_COLOR,
     pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
-    num_red_bricks=33,
-    num_green_bricks=30,
-    num_white_bricks=27,
+    num_red_bricks=38,
+    num_green_bricks=21,
+    num_white_bricks=14,
     red_bricks_max_speed=6,
     red_bricks_min_speed=3,
     green_bricks_max_speed=6,
@@ -195,6 +195,39 @@ game_lvl3 = Level(
     ]
 )
 
+game_lvl4 = Level(
+    4,
+    'Neon City Lights',
+    DARK_BLUE_COLOR,
+    WHITE_COLOR,
+    pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
+    num_red_bricks=50,
+    num_green_bricks=21,
+    num_white_bricks=14,
+    red_bricks_max_speed=7,
+    red_bricks_min_speed=4,
+    green_bricks_max_speed=7,
+    green_bricks_min_speed=4,
+    white_bricks_max_speed=7,
+    white_bricks_min_speed=4,
+    max_bricks_on_screen=8,
+    scene_elements=[
+        SimpleGround(10,GREY_COLOR),
+        Building(50, BROWN_COLOR, YELLOW_COLOR, 4, 3, False),
+        Building(150, BROWN_COLOR, GREY_COLOR, 5, 3, False),
+        Building(250, GREY_COLOR_2, YELLOW_COLOR, 12, 5, False),
+        Building(400, GREY_COLOR_2, YELLOW_COLOR, 10, 5, True),
+        Building(530, GREY_COLOR_2, GREY_COLOR, 7, 5, False),
+        Star(130, 80, WHITE_COLOR, 10),
+        Star(320, 120, WHITE_COLOR, 13),
+        Star(380, 85, WHITE_COLOR, 9),
+        Star(590, 82, WHITE_COLOR, 11),
+        Star(50, 85, WHITE_COLOR, 12),
+
+
+    ]
+)
+
 
 # Explosion is just a container for fragments.
 class Explosion:
@@ -212,9 +245,10 @@ class Explosion:
 
 # Game levels.
 levels = [
-    game_lvl1,
-    game_lvl2,
-    game_lvl3
+    #game_lvl1,
+    #game_lvl2,
+    #game_lvl3,
+    game_lvl4
 ]
 
 # Sounds from 'sounds' sub-folder.

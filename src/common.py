@@ -33,6 +33,7 @@ PINK_COLOR = (255, 105, 130)
 DARK_BLUE_COLOR = (39, 32, 98)
 BROWN_COLOR = (130, 65, 65)
 BLUE_COLOR_2 = (66, 173, 244)
+GREY_COLOR_2 = (105, 115, 130)
 
 # Global vars.
 screen_width = 640
