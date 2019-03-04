@@ -13,7 +13,6 @@
 import random
 import pygame
 import math
-import time
 from pygame import gfxdraw
 
 # Common colors.
@@ -26,6 +25,8 @@ YELLOW_COLOR = (255, 255, 0)
 BLACK_COLOR = (0, 0, 0)
 DARK_GREY_COLOR = (31, 31, 31)
 GREY_COLOR = (128, 128, 128)
+GREY2_COLOR = (96, 96, 96)
+GREY3_COLOR = (64, 64, 64)
 SLACK_COLOR = (30, 22, 29)
 BLUE_COLOR = (215, 220, 250)
 DARK_GREEN_COLOR = (60, 160, 40)

@@ -14,11 +14,13 @@ from src.common import *
 
 
 class Clouds(SceneElement):
-    def __init__(self, x, y):
+    def __init__(self, x, y, color=CLOUD_COLOR):
         SceneElement.__init__(self, x, y)
 
         self.frame = 0
         self.xx = x
+        self.color = color
+        self.dark_color = (color[0] * 0.8, color[1] * 0.8, color[2] * 0.8)
 
     # Draws the clouds.
     def draw(self, screen):
@@ -28,7 +30,7 @@ class Clouds(SceneElement):
 
         pygame.draw.circle(
             screen,
-            CLOUD_COLOR,
+            self.color,
             (
                 self.xx,
                 self.y
@@ -37,7 +39,7 @@ class Clouds(SceneElement):
         )
         pygame.draw.circle(
             screen,
-            GREY_COLOR,
+            self.dark_color,
             (
                 self.xx,
                 self.y
@@ -48,7 +50,7 @@ class Clouds(SceneElement):
 
         pygame.draw.circle(
             screen,
-            CLOUD_COLOR,
+            self.color,
             (
                 self.xx + 20,
                 self.y + 10
@@ -57,7 +59,7 @@ class Clouds(SceneElement):
         )
         pygame.draw.circle(
             screen,
-            GREY_COLOR,
+            self.dark_color,
             (
                 self.xx + 20,
                 self.y + 10
@@ -68,7 +70,7 @@ class Clouds(SceneElement):
 
         pygame.draw.circle(
             screen,
-            CLOUD_COLOR,
+            self.color,
             (
                 self.xx + 30,
                 self.y - 10
