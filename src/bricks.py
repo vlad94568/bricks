@@ -51,7 +51,6 @@ def detect_joystick():
 
     return None
 
-
 # Sounds from 'sounds' sub-folder.
 bg_sound_1 = pygame.mixer.Sound("sounds/background_sound0.1.ogg")
 title_bg_sound = pygame.mixer.Sound("sounds/background_sound1.ogg")
@@ -60,7 +59,6 @@ rocket_fire_sound = pygame.mixer.Sound("sounds/rocket_fired.ogg")
 brick_kill_sound = pygame.mixer.Sound("sounds/brick_kill.ogg")
 brick_squish_sound = pygame.mixer.Sound("sounds/brick_squished.ogg")
 you_won_sound = pygame.mixer.Sound("sounds/win_song.ogg")
-
 
 # Definition of a single level.
 class Level:
@@ -103,7 +101,6 @@ class Level:
         self.red_brick_factor = self.num_red_bricks / self.total_bricks
         self.white_brick_factor = self.num_white_bricks / self.total_bricks
         self.green_brick_factor = self.num_green_bricks / self.total_bricks
-
 
 # Game levels.
 game_lvl1 = Level(
@@ -167,7 +164,7 @@ game_lvl2 = Level(
         Grass(0, 25, 40, 80, GREEN_COLOR),
         Grass(260, 25, 40, 100, GREEN_COLOR),
         Grass(360, 25, 40, 100, GREEN_COLOR),
-        SimpleGround(10, BROWN_COLOR)
+        SimpleGround(10,BROWN_COLOR)
     ]
 )
 
@@ -201,7 +198,7 @@ game_lvl3 = Level(
         Grass(0, 25, 40, 80, GREEN_COLOR),
         Grass(260, 25, 40, 100, GREEN_COLOR),
         Grass(360, 25, 40, 100, GREEN_COLOR),
-        SimpleGround(10, BROWN_COLOR)
+        SimpleGround(10,BROWN_COLOR)
 
     ]
 )
@@ -223,18 +220,22 @@ game_lvl4 = Level(
     white_bricks_min_speed=4,
     max_bricks_on_screen=8,
     scene_elements=[
-        SimpleGround(10, GREY_COLOR),
-        Clouds(-75, 65, GREY3_COLOR),
+        Clouds(-55, 75, GREY3_COLOR),
         Building(50, BROWN_COLOR, YELLOW_COLOR, 4, 3, False),
-        Building(150, BROWN_COLOR, GREY_COLOR, 5, 3, False),
-        Building(250, GREY_COLOR_2, YELLOW_COLOR, 14, 5, False),
-        Building(400, GREY_COLOR_2, YELLOW_COLOR, 13, 5, True),
+        Building(135, BROWN_COLOR, GREY_COLOR, 5, 3, False),
+        Building(400, GREY_COLOR_2, YELLOW_COLOR, 13, 3, False),
+        Building(250, GREY_COLOR_2, YELLOW_COLOR, 16, 3, True),
         Building(530, GREY_COLOR_2, GREY_COLOR, 7, 5, False),
         Star(130, 80, GREY_COLOR, 5),
         Star(320, 120, GREY_COLOR, 5),
         Star(380, 85, GREY_COLOR, 5),
         Star(590, 82, GREY_COLOR, 5),
-        Star(50, 85, GREY_COLOR, 5)
+        Star(50, 85, GREY_COLOR, 5),
+        Grass(0, 17, 23, 13, DARK_GREEN_COLOR),
+        Tree(350, 80, 10, BROWN_COLOR, DARK_GREEN_COLOR),
+        Tree(515, 80, 10, BROWN_COLOR, DARK_GREEN_COLOR),
+        Tree(225, 80, 10, BROWN_COLOR, DARK_GREEN_COLOR),
+        SimpleGround(10,GREY_COLOR)
     ]
 )
 
@@ -255,9 +256,9 @@ class Explosion:
 
 # Game levels.
 levels = [
-    # game_lvl1,
-    # game_lvl2,
-    # game_lvl3,
+    #game_lvl1,
+    #game_lvl2,
+    #game_lvl3,
     game_lvl4
 ]
 
@@ -299,7 +300,6 @@ used_red_bricks = 0
 
 # Window title.
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
-
 
 # Sounds kill of the brick.
 def boom_sound():
@@ -941,3 +941,4 @@ def main_game_loop():
 
 draw_title()
 main_game_loop()
+
