@@ -50,6 +50,14 @@ def detect_joystick():
 
     return None
 
+# Sounds from 'sounds' sub-folder.
+bg_sound_1 = pygame.mixer.Sound("sounds/background_sound0.1.ogg")
+title_bg_sound = pygame.mixer.Sound("sounds/background_sound1.ogg")
+final_bg_sound = pygame.mixer.Sound("sounds/background_sound2.ogg")
+rocket_fire_sound = pygame.mixer.Sound("sounds/rocket_fired.ogg")
+brick_kill_sound = pygame.mixer.Sound("sounds/brick_kill.ogg")
+brick_squish_sound = pygame.mixer.Sound("sounds/brick_squished.ogg")
+you_won_sound = pygame.mixer.Sound("sounds/win_song.ogg")
 
 # Definition of a single level.
 class Level:
@@ -93,7 +101,6 @@ class Level:
         self.white_brick_factor = self.num_white_bricks / self.total_bricks
         self.green_brick_factor = self.num_green_bricks / self.total_bricks
 
-
 # Game levels.
 game_lvl1 = Level(
     # Desert themed level.
@@ -101,7 +108,7 @@ game_lvl1 = Level(
     'Ancient Desert',
     BLUE_COLOR_2,
     WHITE_COLOR,
-    pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
+    bg_sound_1,
     num_red_bricks=12,
     num_green_bricks=16,
     num_white_bricks=10,
@@ -130,7 +137,7 @@ game_lvl2 = Level(
     'Creepy Plains',
     DARK_BLUE_COLOR,
     WHITE_COLOR,
-    pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
+    bg_sound_1,
     num_red_bricks=23,
     num_green_bricks=17,
     num_white_bricks=12,
@@ -165,7 +172,7 @@ game_lvl3 = Level(
     'Rotten Covert',
     DARK_BLUE_COLOR,
     WHITE_COLOR,
-    pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
+    bg_sound_1,
     num_red_bricks=38,
     num_green_bricks=21,
     num_white_bricks=14,
@@ -200,7 +207,7 @@ game_lvl4 = Level(
     'Neon City Lights',
     DARK_BLUE_COLOR,
     WHITE_COLOR,
-    pygame.mixer.Sound("sounds/background_sound0.1.ogg"),
+    bg_sound_1,
     num_red_bricks=50,
     num_green_bricks=21,
     num_white_bricks=14,
@@ -215,19 +222,16 @@ game_lvl4 = Level(
         SimpleGround(10,GREY_COLOR),
         Building(50, BROWN_COLOR, YELLOW_COLOR, 4, 3, False),
         Building(150, BROWN_COLOR, GREY_COLOR, 5, 3, False),
-        Building(250, GREY_COLOR_2, YELLOW_COLOR, 12, 5, False),
-        Building(400, GREY_COLOR_2, YELLOW_COLOR, 10, 5, True),
+        Building(250, GREY_COLOR_2, YELLOW_COLOR, 14, 5, False),
+        Building(400, GREY_COLOR_2, YELLOW_COLOR, 13, 5, True),
         Building(530, GREY_COLOR_2, GREY_COLOR, 7, 5, False),
-        Star(130, 80, WHITE_COLOR, 10),
-        Star(320, 120, WHITE_COLOR, 13),
-        Star(380, 85, WHITE_COLOR, 9),
-        Star(590, 82, WHITE_COLOR, 11),
-        Star(50, 85, WHITE_COLOR, 12),
-
-
+        Star(130, 80, WHITE_COLOR, 5),
+        Star(320, 120, WHITE_COLOR, 5),
+        Star(380, 85, WHITE_COLOR, 5),
+        Star(590, 82, WHITE_COLOR, 5),
+        Star(50, 85, WHITE_COLOR, 5)
     ]
 )
-
 
 # Explosion is just a container for fragments.
 class Explosion:
@@ -250,15 +254,6 @@ levels = [
     game_lvl3,
     game_lvl4
 ]
-
-# Sounds from 'sounds' sub-folder.
-bg_sound_1 = pygame.mixer.Sound("sounds/background_sound0.1.ogg")
-title_bg_sound = pygame.mixer.Sound("sounds/background_sound1.ogg")
-final_bg_sound = pygame.mixer.Sound("sounds/background_sound2.ogg")
-rocket_fire_sound = pygame.mixer.Sound("sounds/rocket_fired.ogg")
-brick_kill_sound = pygame.mixer.Sound("sounds/brick_kill.ogg")
-brick_squish_sound = pygame.mixer.Sound("sounds/brick_squished.ogg")
-you_won_sound = pygame.mixer.Sound("sounds/win_song.ogg")
 
 # Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
 header_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
@@ -298,7 +293,6 @@ used_red_bricks = 0
 
 # Window title.
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
-
 
 # Sounds kill of the brick.
 def boom_sound():
