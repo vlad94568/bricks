@@ -218,7 +218,7 @@ game_lvl4 = Level(
     green_bricks_min_speed=4,
     white_bricks_max_speed=7,
     white_bricks_min_speed=4,
-    max_bricks_on_screen=8,
+    max_bricks_on_screen=7,
     scene_elements=[
         Clouds(-55, 75, GREY3_COLOR),
         Building(50, BROWN_COLOR, YELLOW_COLOR, 4, 3, False),
@@ -232,9 +232,9 @@ game_lvl4 = Level(
         Star(590, 82, GREY_COLOR, 5),
         Star(50, 85, GREY_COLOR, 5),
         Grass(0, 17, 23, 13, DARK_GREEN_COLOR),
-        Tree(350, 80, 10, BROWN_COLOR, DARK_GREEN_COLOR),
-        Tree(515, 80, 10, BROWN_COLOR, DARK_GREEN_COLOR),
-        Tree(225, 80, 10, BROWN_COLOR, DARK_GREEN_COLOR),
+        Tree(355, 80, 10, BROWN_COLOR, DARK_GREEN_COLOR),
+        Tree(497, 80, 10, BROWN_COLOR, DARK_GREEN_COLOR),
+        Tree(223, 80, 10, BROWN_COLOR, DARK_GREEN_COLOR),
         SimpleGround(10,GREY_COLOR)
     ]
 )
