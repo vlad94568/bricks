@@ -35,6 +35,10 @@ DARK_BLUE_COLOR = (1, 22, 56)
 BROWN_COLOR = (130, 65, 65)
 BLUE_COLOR_2 = (66, 173, 244)
 GREY_COLOR_2 = (150, 90, 100)
+DARK_RED = (68, 6, 0)
+BLOOD_RED = (117, 9, 0)
+DEAD_YELLOW = (122, 122, 0)
+
 
 # Global vars.
 screen_width = 640

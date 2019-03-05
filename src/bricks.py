@@ -239,6 +239,43 @@ game_lvl4 = Level(
     ]
 )
 
+game_lvl5 = Level(
+    5,
+    'City of Mayhem',
+    DARK_RED,
+    WHITE_COLOR,
+    bg_sound_1,
+    num_red_bricks=50,
+    num_green_bricks=21,
+    num_white_bricks=14,
+    red_bricks_max_speed=7,
+    red_bricks_min_speed=4,
+    green_bricks_max_speed=7,
+    green_bricks_min_speed=4,
+    white_bricks_max_speed=7,
+    white_bricks_min_speed=4,
+    max_bricks_on_screen=7,
+    scene_elements=[
+        Clouds(-55, 75, GREY3_COLOR),
+        Building(50, BROWN_COLOR, BLOOD_RED, 13, 3, False),
+        Building(135, BROWN_COLOR, BLOOD_RED, 12, 3, False),
+        Building(400, GREY_COLOR_2, BLOOD_RED, 13, 3, False),
+        Building(250, GREY_COLOR_2, BLOOD_RED, 16, 3, False),
+        Building(530, GREY_COLOR_2, BLOOD_RED, 15, 3, False),
+        Star(130, 80, BLOOD_RED, 5),
+        Star(320, 120, BLOOD_RED, 5),
+        Star(380, 85, BLOOD_RED, 5),
+        Star(590, 82, BLOOD_RED, 5),
+        Star(50, 85, BLOOD_RED, 5),
+        Grass(0, 17, 23, 13, DEAD_YELLOW),
+        Tree(355, 80, 10, BROWN_COLOR, DEAD_YELLOW),
+        Tree(497, 80, 10, BROWN_COLOR, DEAD_YELLOW),
+        Tree(223, 80, 10, BROWN_COLOR, DEAD_YELLOW),
+        SimpleGround(10,GREY_COLOR)
+    ]
+)
+
+
 
 # Explosion is just a container for fragments.
 class Explosion:
@@ -256,10 +293,11 @@ class Explosion:
 
 # Game levels.
 levels = [
-    #game_lvl1,
-    #game_lvl2,
-    #game_lvl3,
-    game_lvl4
+    game_lvl1,
+    game_lvl2,
+    game_lvl3,
+    game_lvl4,
+    game_lvl5
 ]
 
 # Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
