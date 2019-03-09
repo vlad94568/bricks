@@ -284,17 +284,17 @@ class Explosion:
         return self.frags[0].frame_cnt == 30
 
     # Draws explosion (i.e. its fragments).
-    def draw(self, screen):
+    def draw(self, scr):
         for frag in self.frags:
-            frag.draw(screen)
+            frag.draw(scr)
 
 
 # Game levels.
 levels = [
-    game_lvl1,
-    game_lvl2,
-    game_lvl3,
-    game_lvl4,
+    # game_lvl1,
+    # game_lvl2,
+    # game_lvl3,
+    # game_lvl4,
     game_lvl5
 ]
 
