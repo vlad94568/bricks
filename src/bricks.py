@@ -6,6 +6,7 @@
 #  _/_/_/    _/    _/  _/_/_/    _/_/_/  _/    _/  _/_/_/
 #
 #  By Vlad Ivanov, 2018.
+
 #  By Nikita Ivanov, 2018
 #
 #  Email: vlad94568@gmail.com
