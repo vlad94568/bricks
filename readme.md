@@ -20,3 +20,5 @@ Game works with the keyboard and [Buffalo Classic USB Gamepad](https://www.amazo
 ![Screenshot](/src/images/pic3.png?raw=true&s=160)
 
 ![Screenshot](/src/images/pic4.png?raw=true&s=160)
+
+![Screenshot](/src/images/pic5.png?raw=true&s=160)
