@@ -1,40 +1,18 @@
 # --==B.R.I.C.K.S==--
-Welcome to my first pygame-based game. My name is Vlad and im 9 years old. I've been coding for couple of years 
+Welcome to my pygame-based game. My name is Vlad and I'm 10 years old. I've been coding for couple of years 
 starting with Scratch, a bit of JavaScript and now Python. I've built this game with the help of my dad.
 
-This is rather simple shoot'em type of the game. It is retro-inspired with ASCII art and simple geometry.
+This is rather simple shoot'em type of the game. It is retro-inspired with ASCII art and simple geometry. The
+goal of the game is to kill of as many bricks as possible. Each brick that hits the bottom descreses the lives count.
+Each brick you hit - gives you ammo or an extra live or a +1 score. 
 
 I hope you enjoyed it!
 
-## How to run
-As a prerequisite you need to have `Python3` and `git` installed 
-in your system. You can find download instructions at https://www.python.org/downloads/ and https://git-scm.com/downloads
- 
-1. Make sure you have `pygame` library installed:
-```commandline
-pip3 install pygame
-```
-
-2. Clone this git project:
-```
-git clone https://github.com/vlad94568/bricks.git
-```
-Alternatively you can download ZIP archive of this project and unzip it.
-
-3. Change to `src` directory:
-```commandline
-cd src
-```
-
-4. Run it:
-```commandline
-python3 bricks.py 
-```
+## Gamepad 
+Game works with the keyboard and [Buffalo Classic USB Gamepad](https://www.amazon.com/Buffalo-iBuffalo-Classic-USB-Gamepad/dp/B002B9XB0E).
 
 ## Screenshots
 
-![Screenshot](/src/images/pic3.png?raw=true&s=640)
+![Screenshot](/src/images/pic3.png?raw=true&s=320)
 
-![Screenshot](/src/images/pic1.png?raw=true&s=640)
-
-![Screenshot](/src/images/pic2.png?raw=true&s=640)
+![Screenshot](/src/images/pic1.png?raw=true&s=320)
