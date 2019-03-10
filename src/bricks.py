@@ -51,6 +51,7 @@ def detect_joystick():
 
     return None
 
+
 # Sounds from 'sounds' sub-folder.
 bg_sound_1 = pygame.mixer.Sound("sounds/background_sound0.1.ogg")
 title_bg_sound = pygame.mixer.Sound("sounds/background_sound1.ogg")
@@ -59,6 +60,7 @@ rocket_fire_sound = pygame.mixer.Sound("sounds/rocket_fired.ogg")
 brick_kill_sound = pygame.mixer.Sound("sounds/brick_kill.ogg")
 brick_squish_sound = pygame.mixer.Sound("sounds/brick_squished.ogg")
 you_won_sound = pygame.mixer.Sound("sounds/win_song.ogg")
+
 
 # Definition of a single level.
 class Level:
@@ -102,6 +104,7 @@ class Level:
         self.white_brick_factor = self.num_white_bricks / self.total_bricks
         self.green_brick_factor = self.num_green_bricks / self.total_bricks
 
+
 # Game levels.
 game_lvl1 = Level(
     # Desert themed level.
@@ -111,15 +114,15 @@ game_lvl1 = Level(
     WHITE_COLOR,
     bg_sound_1,
     num_red_bricks=12,
-    num_green_bricks=16,
-    num_white_bricks=10,
+    num_green_bricks=14,
+    num_white_bricks=12,
     red_bricks_max_speed=4,
     red_bricks_min_speed=2,
     green_bricks_max_speed=4,
     green_bricks_min_speed=2,
     white_bricks_max_speed=4,
     white_bricks_min_speed=2,
-    max_bricks_on_screen=5,
+    max_bricks_on_screen=3,
     scene_elements=[
         SimpleGround(10, YELLOW_COLOR),
         Flower(50, 40, 60),
@@ -133,22 +136,23 @@ game_lvl1 = Level(
         Tree(150, 150, 15, BROWN_COLOR, GREEN_COLOR)
     ]
 )
+
 game_lvl2 = Level(
     2,
     'Creepy Plains',
     (66, 123, 194),
     WHITE_COLOR,
     bg_sound_1,
-    num_red_bricks=23,
-    num_green_bricks=17,
-    num_white_bricks=12,
-    red_bricks_max_speed=5,
+    num_red_bricks=14,
+    num_green_bricks=16,
+    num_white_bricks=14,
+    red_bricks_max_speed=4,
     red_bricks_min_speed=3,
-    green_bricks_max_speed=5,
+    green_bricks_max_speed=4,
     green_bricks_min_speed=3,
-    white_bricks_max_speed=5,
+    white_bricks_max_speed=4,
     white_bricks_min_speed=3,
-    max_bricks_on_screen=5,
+    max_bricks_on_screen=4,
     scene_elements=[
         Mountain(300, 250, 250, BROWN_COLOR, (216, 244, 255)),
         Mountain(500, 275, 275, (192, 130, 157), (216, 244, 255)),
@@ -174,16 +178,16 @@ game_lvl3 = Level(
     (71, 91, 123),
     WHITE_COLOR,
     bg_sound_1,
-    num_red_bricks=30,
-    num_green_bricks=21,
-    num_white_bricks=17,
+    num_red_bricks=15,
+    num_green_bricks=17,
+    num_white_bricks=15,
     red_bricks_max_speed=5,
-    red_bricks_min_speed=4,
+    red_bricks_min_speed=3,
     green_bricks_max_speed=5,
-    green_bricks_min_speed=4,
+    green_bricks_min_speed=3,
     white_bricks_max_speed=5,
-    white_bricks_min_speed=4,
-    max_bricks_on_screen=5,
+    white_bricks_min_speed=3,
+    max_bricks_on_screen=4,
     scene_elements=[
         Tree(275, 340, 25, (171, 64, 47), (18, 123, 56)),
         Tree(155, 350, 25, (213, 80, 59), (127, 123, 170)),
@@ -209,16 +213,16 @@ game_lvl4 = Level(
     DARK_BLUE_COLOR,
     WHITE_COLOR,
     bg_sound_1,
-    num_red_bricks=35,
-    num_green_bricks=21,
-    num_white_bricks=14,
-    red_bricks_max_speed=7,
+    num_red_bricks=16,
+    num_green_bricks=18,
+    num_white_bricks=16,
+    red_bricks_max_speed=5,
     red_bricks_min_speed=4,
-    green_bricks_max_speed=7,
+    green_bricks_max_speed=5,
     green_bricks_min_speed=4,
-    white_bricks_max_speed=7,
+    white_bricks_max_speed=5,
     white_bricks_min_speed=4,
-    max_bricks_on_screen=6,
+    max_bricks_on_screen=4,
     scene_elements=[
         Building(30, (233, 238, 214), YELLOW_COLOR, 4, 3, False),
         Building(135, BROWN_COLOR, GREY_COLOR, 5, 3, False),
@@ -244,16 +248,16 @@ game_lvl5 = Level(
     (35, 0, 29),
     WHITE_COLOR,
     bg_sound_1,
-    num_red_bricks=40,
-    num_green_bricks=28,
-    num_white_bricks=35,
-    red_bricks_max_speed=7,
-    red_bricks_min_speed=5,
-    green_bricks_max_speed=7,
-    green_bricks_min_speed=5,
-    white_bricks_max_speed=7,
-    white_bricks_min_speed=5,
-    max_bricks_on_screen=6,
+    num_red_bricks=20,
+    num_green_bricks=22,
+    num_white_bricks=20,
+    red_bricks_max_speed=6,
+    red_bricks_min_speed=4,
+    green_bricks_max_speed=5,
+    green_bricks_min_speed=4,
+    white_bricks_max_speed=3,
+    white_bricks_min_speed=2,
+    max_bricks_on_screen=5,
     scene_elements=[
         SimpleGround(10, DARK_BLUE_COLOR),
         Mountain(100, 275, 300, (185, 68, 8), (131, 118, 100)),
@@ -291,11 +295,11 @@ class Explosion:
 
 # Game levels.
 levels = [
-      game_lvl1,
-      game_lvl2,
-      game_lvl3,
-      game_lvl4,
-      game_lvl5
+    game_lvl1,
+    game_lvl2,
+    game_lvl3,
+    game_lvl4,
+    game_lvl5
 ]
 
 # Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
@@ -448,12 +452,12 @@ def draw_title():
     y2 += 20
 
     Brick(x2, y2, 0, 2).draw(screen)
-    pri("+9 ammo", x2 + 30, y2)
+    pri("+5 ammo", x2 + 30, y2)
 
     y2 += 20
 
     Brick(x2, y2, 0, 3).draw(screen)
-    pri("+2 live", x2 + 30, y2)
+    pri("+1 live", x2 + 30, y2)
 
     pri("SPACE to shoot | <- -> to move", 175, 330)
 
@@ -597,10 +601,10 @@ def check_bricks_rockets():
                             score += 1
                         elif brick.kind == 2:  # WHITE brick.
                             # Add ammo.
-                            ammo += 9
+                            ammo += 5
                         elif brick.kind == 3:  # GREEN brick.
                             # Add lives.
-                            lives += 2
+                            lives += 1
 
                         frag_x = brick.x + 7
                         frag_y = brick.y + 5
