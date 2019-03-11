@@ -29,17 +29,21 @@ Game works with both keyboard and classic gamepad.
 Game also works with [Buffalo Classic USB Gamepad](https://www.amazon.com/Buffalo-iBuffalo-Classic-USB-Gamepad/dp/B002B9XB0E).
 
 ## Screenshots
-
-![Screenshot](/src/images/pic1.png?raw=true&s=160)
-
-![Screenshot](/src/images/pic2.png?raw=true&s=160)
-
-![Screenshot](/src/images/pic3.png?raw=true&s=160)
-
-![Screenshot](/src/images/pic7.png?raw=true&s=160)
-
-![Screenshot](/src/images/pic4.png?raw=true&s=160)
-
-![Screenshot](/src/images/pic5.png?raw=true&s=160)
-
-![Screenshot](/src/images/pic6.png?raw=true&s=160)
+<table>
+   <tr>
+     <td><img src="/src/images/pic1.png" width="300px"></td>
+     <td><img src="/src/images/pic2.png" width="300px"></td>
+   <tr>
+   <tr>
+     <td><img src="/src/images/pic3.png" width="300px"></td>
+     <td><img src="/src/images/pic7.png" width="300px"></td>
+   <tr>
+   <tr>
+     <td><img src="/src/images/pic4.png" width="300px"></td>
+     <td><img src="/src/images/pic5.png" width="300px"></td>
+   <tr>
+   <tr>
+     <td><img src="/src/images/pic6.png" width="300px"></td>
+     <td></td>
+   <tr>
+</table>
