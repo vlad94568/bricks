@@ -53,13 +53,13 @@ def detect_joystick():
 
 
 # Sounds from 'sounds' sub-folder.
-bg_sound_1 = pygame.mixer.Sound("sounds/background_sound0.1.ogg")
-title_bg_sound = pygame.mixer.Sound("sounds/background_sound1.ogg")
-final_bg_sound = pygame.mixer.Sound("sounds/background_sound2.ogg")
-rocket_fire_sound = pygame.mixer.Sound("sounds/rocket_fired.ogg")
-brick_kill_sound = pygame.mixer.Sound("sounds/brick_kill.ogg")
-brick_squish_sound = pygame.mixer.Sound("sounds/brick_squished.ogg")
-you_won_sound = pygame.mixer.Sound("sounds/win_song.ogg")
+bg_sound_1 = pygame.mixer.Sound("src/sounds/background_sound0.1.ogg")
+title_bg_sound = pygame.mixer.Sound("src/sounds/background_sound1.ogg")
+final_bg_sound = pygame.mixer.Sound("src/sounds/background_sound2.ogg")
+rocket_fire_sound = pygame.mixer.Sound("src/sounds/rocket_fired.ogg")
+brick_kill_sound = pygame.mixer.Sound("src/sounds/brick_kill.ogg")
+brick_squish_sound = pygame.mixer.Sound("src/sounds/brick_squished.ogg")
+you_won_sound = pygame.mixer.Sound("src/sounds/win_song.ogg")
 
 
 # Definition of a single level.
@@ -295,21 +295,21 @@ class Explosion:
 
 # Game levels.
 levels = [
-    #game_lvl1,
-    #game_lvl2,
-    #game_lvl3,
-    #game_lvl4,
+    game_lvl1,
+    game_lvl2,
+    game_lvl3,
+    game_lvl4,
     game_lvl5
 ]
 
 # Grabbing fonts from 'fonts' sub-folder to be 100% cross-platform compatible.
-header_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
-title_font = pygame.font.Font("fonts/Anonymous.ttf", 13)
-ver_font = pygame.font.Font("fonts/Anonymous.ttf", 10)
-final_font1 = pygame.font.Font("fonts/Anonymous.ttf", 13)
-final_font2 = pygame.font.Font("fonts/Anonymous.ttf", 13)
-level_font = pygame.font.Font("fonts/Anonymous.ttf", 16)
-level_font2 = pygame.font.Font("fonts/Anonymous.ttf", 24)
+header_font = pygame.font.Font("src/fonts/Anonymous.ttf", 13)
+title_font = pygame.font.Font("src/fonts/Anonymous.ttf", 13)
+ver_font = pygame.font.Font("src/fonts/Anonymous.ttf", 10)
+final_font1 = pygame.font.Font("src/fonts/Anonymous.ttf", 13)
+final_font2 = pygame.font.Font("src/fonts/Anonymous.ttf", 13)
+level_font = pygame.font.Font("src/fonts/Anonymous.ttf", 16)
+level_font2 = pygame.font.Font("src/fonts/Anonymous.ttf", 24)
 
 # Pygame globals.
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -340,6 +340,7 @@ used_red_bricks = 0
 
 # Window title.
 pygame.display.set_caption("--==B.R.I.C.K.S==--")
+
 
 # Sounds kill of the brick.
 def boom_sound():
