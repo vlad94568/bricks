@@ -32,9 +32,9 @@ Game also works with [Buffalo Classic USB Gamepad](https://www.amazon.com/Buffal
 
 ![Screenshot](/src/images/pic1.png?raw=true&s=160)
 
-![Screenshot](/src/images/pic2.png?raw=true&s=160)
-
 ![Screenshot](/src/images/pic7.png?raw=true&s=160)
+
+![Screenshot](/src/images/pic2.png?raw=true&s=160)
 
 ![Screenshot](/src/images/pic3.png?raw=true&s=160)
 
