@@ -9,14 +9,14 @@ life count -1. Each brick you hit - gives you ammo (white) or an extra life (gre
 
 I hope you enjoyed it!
 
-## Run
- * Make sure you have Python3 anf Git installed.
- * Clone this project: `git clone https://github.com/vlad94568/bricks.git` into `/home/bricks` folder.
- * `$ export PYTHONPATH=/home/bricks`
- * `$ cd /home/bricks`
- * `$ python3 src/bricks.py`
- 
- NOTE: change `/home/bricks/` to the actual folder you cloned the project to.
+## Run on Mac OS/Linux
+Make sure you have [Python3](https://www.python.org/downloads/) anf [Git](https://git-scm.com/downloads) installed:
+```
+$ git clone https://github.com/vlad94568/bricks.git
+$ export PYTHONPATH=`pwd`
+$ cd bricks
+$ python3 src/bricks.py
+```
 
 ## Controls 
 Game works with both keyboard and classic gamepad.
