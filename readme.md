@@ -12,7 +12,7 @@ I hope you enjoyed it!
 ## Run
  * Make sure you have Python3 anf Git installed.
  * Clone this project: `git clone https://github.com/vlad94568/bricks.git` into `/home/bricks` folder.
- * `$ export export PYTHONPATH=/home/bricks`
+ * `$ export PYTHONPATH=/home/bricks`
  * `$ cd /home/bricks`
  * `$ python3 src/bricks.py`
  
