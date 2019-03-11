@@ -26,7 +26,9 @@ Game works with both keyboard and classic gamepad.
  * SPACE - fire
 
 ### Gamepad 
-Game also works with [Buffalo Classic USB Gamepad](https://www.amazon.com/Buffalo-iBuffalo-Classic-USB-Gamepad/dp/B002B9XB0E).
+Game also works with [Buffalo Classic USB Gamepad](https://www.amazon.com/Buffalo-iBuffalo-Classic-USB-Gamepad/dp/B002B9XB0E):
+
+<img src="/src/images/buffalo_gamepad.png" width="450px">
 
 ## Screenshots
 <table>
