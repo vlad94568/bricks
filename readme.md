@@ -49,3 +49,5 @@ Game also works with [Buffalo Classic USB Gamepad](https://www.amazon.com/Buffal
      <td></td>
    <tr>
 </table>
+
+<iframe frameborder="0" src="https://itch.io/embed/388104" width="552" height="167"></iframe>
