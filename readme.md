@@ -13,8 +13,8 @@ I hope you enjoyed it!
 Make sure you have [Python3](https://www.python.org/downloads/) anf [Git](https://git-scm.com/downloads) installed:
 ```
 $ git clone https://github.com/vlad94568/bricks.git
-$ export PYTHONPATH=`pwd`
 $ cd bricks
+$ export PYTHONPATH=`pwd`
 $ python3 src/bricks.py
 ```
 
